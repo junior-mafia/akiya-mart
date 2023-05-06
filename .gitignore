@@ -1,0 +1,15 @@
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Parcel JS
+node_modules/
+.cache/
+parcel-debug.log
+.parcel-cache/
+*.map
+
+# Other
+*.pyc
+__pycache__/
+.DS_Store

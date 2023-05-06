@@ -1,0 +1,51 @@
+body {
+    margin: 0; 
+    padding: 0; 
+}
+
+#container { 
+    position: absolute; 
+    top: 0; bottom: 0; 
+    width: 100%;
+    z-index: 0;
+}
+
+
+
+.joey {
+    margin: 0;
+}
+
+.mapboxgl-popup {
+    max-width: 100% !important;
+}
+
+
+
+
+
+.filters-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    z-index: 1;
+    background-color: rgba(85,84,85, 0.5);
+    margin: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.filter-flex-item {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter-input-label {
+    margin-right: 20px;
+    color: #A8A8A8;
+    font-family: 'Roboto', sans-serif;
+}
