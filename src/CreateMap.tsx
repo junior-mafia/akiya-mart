@@ -1,22 +1,31 @@
+import React from 'react'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import mapboxgl, { LngLatLike, Map } from 'mapbox-gl'
-import ReactDOM from 'react-dom'
-import Carousel from './Carousel'
+import Carousel from './Popup'
 import { createRoot } from 'react-dom/client'
 
 const DEFAULT_CENTER: LngLatLike = [-221.634321, 37.272892]
 
 const DEFAULT_ZOOM = 4.4
 
-
 const newMap = (): Map => {
     mapboxgl.accessToken = mapboxgl.accessToken = 'pk.eyJ1Ijoiam9lc3RveCIsImEiOiJjbGd6a3A0enkwazVnM3NtcGZvN2h3MWp2In0.T7zApwiAP3P0DI49LATdwA'
     return new mapboxgl.Map({
         container: 'container',
-        style: 'mapbox://styles/mapbox/dark-v11',
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: DEFAULT_CENTER,
         zoom: DEFAULT_ZOOM,
     })
+}
+
+interface FeatureProperties {
+    price_yen: number
+    price_usd: number
+    prefecture: string
+    year: number
+    url: string
+    image_urls: string
+    address: string
 }
 
 const setupMap = (map: Map): Map => {
@@ -25,7 +34,7 @@ const setupMap = (map: Map): Map => {
             type: 'geojson',
             data: 'listings.geojson'
         })
-        map.loadImage('mapbox-marker-icon-20px-green.png', (error, image) => {
+        map.loadImage('mapbox-marker-icon-20px-pink2.png', (error, image) => {
             if (image === undefined) throw error
             else 
                 map.addImage('green-marker', image)
@@ -44,40 +53,18 @@ const setupMap = (map: Map): Map => {
         })
     })
 
-//   const popupHtml = ({properties: props}) => {
-//     // const popupContent = ReactDOMServer.renderToString(Carousel())
-//     // console.log(popupContent)
-//     // return popupContent
-    
-//     const translatedUrl = `https://translate.google.com/translate?sl=ja&tl=en&u=${props.url}`
-//     return (`
-//         <h1>${props.price_usd_display}</h1>
-//         <p class='joey'>${props.prefecture}</p>
-//         <p class='joey'>${props.year}</p>
-//         <p class='joey'>${props.price_yen_display}</p>
-
-        // <a href=${translatedUrl}>English</a>
-        // <a href=${props.url}>日本語</a>
-//     `)
-//   }
-
   map.on('click', (e) => {
-    const features = map.queryRenderedFeatures(e.point, { layers: ['markers'] })
+    const features = map.queryRenderedFeatures(e.point, { layers: ['markers'] }) as GeoJSON.Feature<GeoJSON.Point>[]
     if (features.length > 0) {
         const feature = features[0]
-        
         const popupContainer = document.createElement('div')
         popupContainer.className = 'bong';
-        // ReactDOM.eateRoot i(<Carousel />, popupContainer)
 
-
-        console.log(feature.properties)
-        createRoot(popupContainer).render(<Carousel {...feature.properties}/>)
+        createRoot(popupContainer).render(<Carousel {...feature.properties as FeatureProperties}/>)
         
-        
-        const popup = new mapboxgl.Popup({ offset: [0, -15] })
-            .setLngLat(feature.geometry.coordinates)
-            // .setHTML(popupHtml(feature))
+        const lngLat = feature.geometry.coordinates as [number, number]
+        new mapboxgl.Popup({ offset: [0, -15] })
+            .setLngLat(lngLat)
             .setDOMContent(popupContainer)
             .addTo(map)
     }
@@ -96,23 +83,24 @@ const setupMap = (map: Map): Map => {
   return map
 }
 
-const filterMapByYear = (
-    year: number, 
+const filterMap = (
+    priceUsdLower: number, 
+    priceUsdUpper: number,
+    yearLower: number,
+    yearUpper: number,
     map: Map
 ) => {
-    map.setFilter('markers', ['<=', ['to-number', ['get', 'year']], year])
-}
-
-const filterMapByPriceYenUpper = (
-    priceYenUpper: number, 
-    map: Map
-) => {
-    map.setFilter('markers', ['<=', ['to-number', ['get', 'price_yen']], priceYenUpper])
+    map.setFilter('markers', [
+        'all',
+        ['>=', ['to-number', ['get', 'price_usd']], priceUsdLower],
+        ['<=', ['to-number', ['get', 'price_usd']], priceUsdUpper],
+        ['>=', ['to-number', ['get', 'year']], yearLower],
+        ['<=', ['to-number', ['get', 'year']], yearUpper],
+    ]);
 }
 
 export {
     newMap,
     setupMap,
-    filterMapByYear,
-    filterMapByPriceYenUpper,
+    filterMap,
 }

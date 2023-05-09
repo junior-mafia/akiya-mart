@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import MapboxMap from './MapboxMap'
 import Filters from './Filters'
 
+
 const strictParseInt = (input: string): number | undefined => {
     if (/^\d+$/.test(input)) {
         return parseInt(input, 10)
@@ -16,31 +17,39 @@ const parseIntFromInput = (input: string): number | undefined => {
 }
 
 const App = () => {
-    const [year, setYear] = useState<number>(2023)
-    const [priceYenUpper, setPriceYenUpper] = useState<number>(10000)
-
-    const onYearChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const year = parseIntFromInput(e.target.value)
-        if (year === undefined)
-            return
-        setYear(year)
-    }
-
-    const onPriceYenUpperChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const priceYenUpper = parseIntFromInput(e.target.value)
-        if (priceYenUpper === undefined)
-            return
-        setPriceYenUpper(priceYenUpper)
-    }
+    const priceUsdMin = 0
+    const priceUsdMax = 100000
+    const [priceUsdLower, setPriceUsdLower] = useState<number>(priceUsdMin)
+    const [priceUsdUpper, setPriceUsdUpper] = useState<number>(priceUsdMax)
+    const yearMin = 1800
+    const yearMax = 2023
+    const [yearLower, setYearLower] = useState<number>(yearMin)
+    const [yearUpper, setYearUpper] = useState<number>(yearMax)
 
     return (
         <div>
             <Filters
-                onYearChange={onYearChange}
-                onPriceYenUpperChange={onPriceYenUpperChange} 
+                priceUsdMin={priceUsdMin}
+                priceUsdMax={priceUsdMax}
+                priceUsdLower={priceUsdLower}
+                priceUsdUpper={priceUsdUpper}
+                onPriceUsdLowerChange={setPriceUsdLower} 
+                onPriceUsdUpperChange={setPriceUsdUpper}
+                yearMin={yearMin}
+                yearMax={yearMax}
+                yearLower={yearLower}
+                yearUpper={yearUpper}
+                onYearLowerChange={setYearLower} 
+                onYearUpperChange={setYearUpper}
             />
+            
             <div style={{ width: '100%', height: '70vh' }}>
-                <MapboxMap year={year} priceYenUpper={priceYenUpper} />
+                <MapboxMap 
+                    priceUsdLower={priceUsdLower} 
+                    priceUsdUpper={priceUsdUpper} 
+                    yearLower={yearLower}
+                    yearUpper={yearUpper}
+                />
             </div>
         </div>
     )
