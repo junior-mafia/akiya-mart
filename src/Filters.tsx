@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import RangeSlider from './Slider'
+import Button from '@mui/material/Button';
 
 interface FiltersProps {
     priceUsdMin: number
@@ -38,10 +39,8 @@ const Filters = ({
         setIsMinimized(!isMinimized);
     };
 
-    const containerStyle = {
-        width: isMinimized ? '100px' : 'auto',
-        height: isMinimized ? '50px' : 'auto',
-        transition: 'width 0.3s ease-out, height 0.3s ease-out',
+    const containerHideItStyle = {
+        padding: isMinimized ? '0px' : '2%'
     }
 
     const hideItStyle = {
@@ -49,7 +48,7 @@ const Filters = ({
     }
 
     return (
-        <div className="filters-container" style={containerStyle}>
+        <div className="filters-container" style={containerHideItStyle}>
             
             <div className="filter-flex-item" style={hideItStyle}>
                 <p className="filters-header">あきやマート</p>
@@ -57,7 +56,7 @@ const Filters = ({
             
             <div className="filter-flex-item" style={hideItStyle}>
                 <label htmlFor="filter" className="filter-input-label">
-                    Price (USD)
+                    PRICE (USD)
                 </label>
                 <RangeSlider
                     min={priceUsdMin}
@@ -71,7 +70,7 @@ const Filters = ({
 
             <div className="filter-flex-item" style={hideItStyle}>
                 <label htmlFor="filter" className="filter-input-label">
-                    Year Built
+                    YEAR BUILT
                 </label>
                 <RangeSlider
                     min={yearMin}
@@ -84,7 +83,23 @@ const Filters = ({
             </div>
 
             <div className="filter-flex-item">
-                <button className="filter-show-hide" onClick={handleClick}>{isMinimized ? 'Show Filters' : 'Hide Filters'}</button>
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    className="filter-show-hide" 
+                    onClick={handleClick}
+                    size="small"
+                    sx={{
+                        backgroundColor: '#ffabeb', // Set the background color
+                        fontFamily: 'daruma',
+                        color: '#ffffff', // Set the text color
+                        '&:hover': {
+                            backgroundColor: '#fc80de', // Set the hover background color
+                        },
+                    }}
+                >
+                    {isMinimized ? 'Show' : 'Hide'}
+                </Button>
             </div>
 
         </div>
