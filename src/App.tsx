@@ -19,12 +19,16 @@ const parseIntFromInput = (input: string): number | undefined => {
 const App = () => {
     const priceUsdMin = 0
     const priceUsdMax = 100000
-    const [priceUsdLower, setPriceUsdLower] = useState<number>(priceUsdMin)
-    const [priceUsdUpper, setPriceUsdUpper] = useState<number>(priceUsdMax)
+    const defaultUsdPriceMin = 0
+    const defaultUsdPriceMax = 15000
+    const [priceUsdLower, setPriceUsdLower] = useState<number>(defaultUsdPriceMin)
+    const [priceUsdUpper, setPriceUsdUpper] = useState<number>(defaultUsdPriceMax)
     const yearMin = 1800
     const yearMax = 2023
-    const [yearLower, setYearLower] = useState<number>(yearMin)
-    const [yearUpper, setYearUpper] = useState<number>(yearMax)
+    const defaultYearMin = 1988
+    const defaultYearMax = yearMax
+    const [yearLower, setYearLower] = useState<number>(defaultYearMin)
+    const [yearUpper, setYearUpper] = useState<number>(defaultYearMax)
 
     return (
         <div>

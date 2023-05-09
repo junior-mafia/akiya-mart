@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import RangeSlider from './Slider'
 
 interface FiltersProps {
@@ -30,10 +30,32 @@ const Filters = ({
     onYearLowerChange,
     onYearUpperChange,
 }: FiltersProps) => {
-    return (
-        <div className="filters-container">
 
-            <div className="filter-flex-item">
+
+    const [isMinimized, setIsMinimized] = useState(false);
+
+    const handleClick = () => {
+        setIsMinimized(!isMinimized);
+    };
+
+    const containerStyle = {
+        width: isMinimized ? '100px' : 'auto',
+        height: isMinimized ? '50px' : 'auto',
+        transition: 'width 0.3s ease-out, height 0.3s ease-out',
+    }
+
+    const hideItStyle = {
+        display: isMinimized ? 'none' : 'block'
+    }
+
+    return (
+        <div className="filters-container" style={containerStyle}>
+            
+            <div className="filter-flex-item" style={hideItStyle}>
+                <p className="filters-header">あきやマート</p>
+            </div>
+            
+            <div className="filter-flex-item" style={hideItStyle}>
                 <label htmlFor="filter" className="filter-input-label">
                     Price (USD)
                 </label>
@@ -47,7 +69,7 @@ const Filters = ({
                 />
             </div>
 
-            <div className="filter-flex-item">
+            <div className="filter-flex-item" style={hideItStyle}>
                 <label htmlFor="filter" className="filter-input-label">
                     Year Built
                 </label>
@@ -59,6 +81,10 @@ const Filters = ({
                     onLowerChange={onYearLowerChange} 
                     onUpperChange={onYearUpperChange}
                 />
+            </div>
+
+            <div className="filter-flex-item">
+                <button className="filter-show-hide" onClick={handleClick}>{isMinimized ? 'Show Filters' : 'Hide Filters'}</button>
             </div>
 
         </div>

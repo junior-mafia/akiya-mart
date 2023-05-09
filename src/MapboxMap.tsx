@@ -22,15 +22,15 @@ const MapboxMap = ({
   // Run once - idempotent under React Strict Mode
   useEffect(() => {
     if (ignore.current) return
-    setMap(setupMap(newMap()))
+    const blankMap = newMap()
+    const map = setupMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, blankMap)
+    setMap(map)
     ignore.current = true;
   }, [])
 
   // Run when map or filter changes
   useEffect(() => {
     if (!map) return
-    // filterMapByYear(year, map)
-    // filterMapByPriceUsdLower(priceUsdLower, map)
     filterMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, map)
   }, [priceUsdLower, priceUsdUpper, yearLower, yearUpper])
 
