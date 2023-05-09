@@ -30,10 +30,14 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, lower, upper, onLow
           max={max}
           sx={{
             '& .MuiSlider-thumb': {
-              borderColor: theme.palette.primary?.main || 'blue',
+              borderColor: theme.palette.primary?.main || '#ca004c',
+              backgroundColor: theme.palette.primary?.main || '#b31450',
+              
             },
             '& .MuiSlider-track': {
-              background: theme.palette.primary?.main || 'blue',
+              borderColor: theme.palette.primary?.main || '#ca004c',
+              background: theme.palette.primary?.main || '#ca004c',
+              // boxShadow: '0 0 5px #ca004c',
             },
             '& .MuiSlider-rail': {
               opacity: 0.5,

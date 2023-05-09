@@ -28,7 +28,13 @@ interface FeatureProperties {
     address: string
 }
 
-const setupMap = (map: Map): Map => {
+const setupMap = (
+    priceUsdLower: number, 
+    priceUsdUpper: number,
+    yearLower: number,
+    yearUpper: number,
+    map: Map
+): Map => {
     map.on('load', () => {
         map.addSource('listings', {
             type: 'geojson',
@@ -50,7 +56,11 @@ const setupMap = (map: Map): Map => {
                         'text-anchor': 'top'
                     }
                 })
+                filterMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, map)
         })
+
+        
+
     })
 
   map.on('click', (e) => {
