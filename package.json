@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "npx parcel index.html"
+    "start": "npx parcel index.html --dist-dir docs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
