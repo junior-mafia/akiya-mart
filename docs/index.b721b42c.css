@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   margin: 2%;
-  padding: 0 2% 2%;
+  padding: 2%;
   font-family: daruma;
   display: flex;
   position: absolute;
@@ -47,23 +47,18 @@ body {
 }
 
 .filter-flex-item {
-  justify-content: space-between;
-  padding: 10px;
+  width: auto;
+  justify-content: right;
   display: flex;
 }
 
 .filter-input-label {
   color: #000;
-  margin-right: 20px;
 }
 
 .price-slider {
   width: 400px;
   margin: 0;
-}
-
-.filter-show-hide {
-  width: auto;
 }
 
 .mapboxgl-map {
