@@ -40,9 +40,14 @@ body {
 }
 
 .filter-input-label {
-  color: #a8a8a8;
+  color: #000;
   margin-right: 20px;
   font-family: Roboto, sans-serif;
+}
+
+.price-slider {
+  width: 400px;
+  margin: 0;
 }
 
 .mapboxgl-map {
