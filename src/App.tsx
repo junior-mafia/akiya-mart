@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import MapboxMap from './MapboxMap'
-import Filters from './Filters'
+import Filters from './Sidebar'
 
 const App = () => {
     const priceUsdMin = 0
-    const priceUsdMax = 100000
+    const priceUsdMax = 200000
     const defaultUsdPriceMin = 0
     const defaultUsdPriceMax = 15000
     const [priceUsdLower, setPriceUsdLower] = useState<number>(defaultUsdPriceMin)

@@ -19,7 +19,11 @@ def undisplay_yen(amount: str):
         amount = amount.split('※権利金含む')[1]
 
     amount = amount.replace("万", "").replace("円", "").replace(",", "")
-    amount = int(float(amount)) * 10000
+    try:
+        amount = int(float(amount)) * 10000
+    except:
+        print(amount)
+        raise "hiiii"
     return amount
 
 def display_yen(amount: int):

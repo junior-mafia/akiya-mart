@@ -3,9 +3,23 @@
   src: url("DarumadropOne-Regular.7c4bff78.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: Fredoka;
+  src: url("Fredoka-Regular.75e4cd84.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Fredoka-Bold;
+  src: url("Fredoka-SemiBold.02d67dbb.ttf") format("truetype");
+}
+
 body {
   margin: 0;
   padding: 0;
+}
+
+p {
+  margin: 0;
 }
 
 #container {
@@ -14,10 +28,6 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-}
-
-.joey {
-  margin: 0;
 }
 
 .mapboxgl-popup {
@@ -33,7 +43,7 @@ body {
   justify-content: flex-start;
   margin: 2%;
   padding: 2%;
-  font-family: daruma;
+  font-family: Fredoka-Bold;
   display: flex;
   position: absolute;
   top: 0;
@@ -43,6 +53,7 @@ body {
 .filters-header {
   color: #ca004c;
   margin: 0;
+  font-family: daruma;
   font-size: 100px;
 }
 
@@ -59,6 +70,59 @@ body {
 .price-slider {
   width: 400px;
   margin: 0;
+}
+
+.listings-container {
+  width: auto;
+  height: auto;
+  z-index: 1;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-family: Fredoka-Bold;
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.listing {
+  width: auto;
+  flex-direction: column;
+  display: flex;
+}
+
+.listing-info {
+  width: auto;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 1% 5%;
+  display: flex;
+}
+
+.listing-header {
+  color: #ca004c;
+  font-family: Fredoka-Bold;
+  font-size: 50px;
+}
+
+.listing-header-subscript {
+  color: #000;
+  font-size: 15px;
+}
+
+.listing-image-container {
+  width: 500px;
+  height: 500px;
+  overflow: hidden;
+}
+
+.listing-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .mapboxgl-map {
