@@ -3,9 +3,23 @@
     src: url("../static/DarumadropOne-Regular.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "Fredoka";
+    src: url("../static/Fredoka-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Fredoka-Bold";
+    src: url("../static/Fredoka-SemiBold.ttf") format("truetype");
+}
+
 body {
     margin: 0; 
     padding: 0;
+}
+
+p {
+    margin: 0;
 }
 
 #container { 
@@ -13,10 +27,6 @@ body {
     top: 0; bottom: 0; 
     width: 100%;
     z-index: 0;
-}
-
-.joey {
-    margin: 0;
 }
 
 .mapboxgl-popup {
@@ -43,13 +53,14 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    font-family: 'daruma';
+    font-family: 'Fredoka-Bold';
 }
 
 .filters-header {
     margin: 0;
     font-size: 100px;
     color: #ca004c;
+    font-family: 'daruma';
 }
 
 .filter-flex-item {
@@ -65,4 +76,67 @@ body {
 .price-slider {
     width: 400px;
     margin: 0;
+}
+
+
+
+
+
+
+
+.listings-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: auto;
+    z-index: 1;
+    background-color: rgba(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-family: 'Fredoka-Bold';
+}
+
+.listing {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-info {
+    width: auto;
+    align-items: flex-end;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    padding: 1%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.listing-header {
+    font-size: 50px;
+    color: #ca004c;
+    font-family: 'Fredoka-Bold';
+}
+
+.listing-header-subscript {
+    font-size: 15px;
+    color: #000000;
+    /* margin-left: ; */
+}
+
+
+.listing-image-container {
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+}
+
+.listing-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

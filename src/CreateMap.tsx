@@ -1,8 +1,5 @@
-import React from 'react'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import mapboxgl, { LngLatLike, Map } from 'mapbox-gl'
-import Carousel from './Popup'
-import { createRoot } from 'react-dom/client'
+import mapboxgl, { LngLatLike, Map, MapMouseEvent } from 'mapbox-gl'
 
 const DEFAULT_CENTER: LngLatLike = [-221.634321, 37.272892]
 
@@ -18,22 +15,13 @@ const newMap = (): Map => {
     })
 }
 
-interface FeatureProperties {
-    price_yen: number
-    price_usd: number
-    prefecture: string
-    year: number
-    url: string
-    image_urls: string
-    address: string
-}
-
 const setupMap = (
     priceUsdLower: number, 
     priceUsdUpper: number,
     yearLower: number,
     yearUpper: number,
-    map: Map
+    map: Map,
+    onFeatureClick: (event: MapMouseEvent, map: Map) => void
 ): Map => {
     map.on('load', () => {
         map.addSource('listings', {
@@ -64,22 +52,9 @@ const setupMap = (
     })
 
   map.on('click', (e) => {
-    const features = map.queryRenderedFeatures(e.point, { layers: ['markers'] }) as GeoJSON.Feature<GeoJSON.Point>[]
-    if (features.length > 0) {
-        const feature = features[0]
-        const popupContainer = document.createElement('div')
-        popupContainer.className = 'bong';
-
-        createRoot(popupContainer).render(<Carousel {...feature.properties as FeatureProperties}/>)
-        
-        const lngLat = feature.geometry.coordinates as [number, number]
-        new mapboxgl.Popup({ offset: [0, -15] })
-            .setLngLat(lngLat)
-            .setDOMContent(popupContainer)
-            .addTo(map)
-    }
+    onFeatureClick(e, map)
   })
-  
+
   // Change the cursor to a pointer when the mouse is over the 'balloon-markers' layer
   map.on('mouseenter', 'markers', () => {
       map.getCanvas().style.cursor = 'pointer'
