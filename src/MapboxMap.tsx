@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Map } from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { newMap, setupMap, filterMap } from './createMap'
+import { newMap, setupMap, filterMap, setSource } from './createMap'
 import Listing, { ListingProps } from './Listing'
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
 
 interface MapboxMapProps {
+  isPaidTier: boolean
   priceUsdLower: number
   priceUsdUpper: number
   yearLower: number
   yearUpper: number
 }
 
-const MapboxMap = ({ 
+const MapboxMap = ({
+  isPaidTier,
   priceUsdLower,
   priceUsdUpper,
   yearLower,
@@ -76,6 +78,13 @@ const MapboxMap = ({
     if (!map) return
     filterMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, map)
   }, [priceUsdLower, priceUsdUpper, yearLower, yearUpper])
+
+  useEffect(() => {
+    if (!map) return
+    // filterMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, map)
+    console.log("RUNNING", isPaidTier)
+    setSource(isPaidTier, map)
+  }, [isPaidTier])
 
 
   return (

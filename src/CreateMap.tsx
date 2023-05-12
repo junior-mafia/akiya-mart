@@ -24,10 +24,17 @@ const setupMap = (
     onFeatureClick: (event: MapMouseEvent, map: Map) => void
 ): Map => {
     map.on('load', () => {
-        map.addSource('listings', {
+
+        map.addSource('listings-free', {
             type: 'geojson',
-            data: 'listings.geojson'
+            data: 'listings_free.geojson'
         })
+
+        // map.addSource('listings', {
+        //     type: 'geojson',
+        //     data: 'listings.geojson'
+        // })
+        
         map.loadImage('mapbox-marker-icon-20px-pink2.png', (error, image) => {
             if (image === undefined) throw error
             else 
@@ -35,7 +42,7 @@ const setupMap = (
                 map.addLayer({
                     id: 'markers',
                     type: 'symbol',
-                    source: 'listings',
+                    source: 'listings-free',
                     layout: {
                         'icon-image': 'green-marker',
                         'icon-size': 1,
@@ -84,8 +91,40 @@ const filterMap = (
     ]);
 }
 
+const setSource = (
+    isPaidTier: boolean,
+    map: Map
+) => {
+
+    console.log("Logged in", isPaidTier)
+
+    if (isPaidTier) {
+        map.removeLayer('markers');
+        map.removeSource('listings-free');
+
+        map.addSource('listings', {
+            type: 'geojson',
+            data: 'listings.geojson',
+        });
+
+        map.addLayer({
+            id: 'markers',
+            type: 'symbol',
+            source: 'listings',
+            layout: {
+                'icon-image': 'green-marker',
+                'icon-size': 1,
+                'icon-allow-overlap': true,
+                'text-offset': [0, 0.9],
+                'text-anchor': 'top'
+            }
+        })
+    }
+}
+
 export {
     newMap,
     setupMap,
     filterMap,
+    setSource,
 }
