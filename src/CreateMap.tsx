@@ -6,7 +6,8 @@ const DEFAULT_CENTER: LngLatLike = [-221.634321, 37.272892]
 const DEFAULT_ZOOM = 4.4
 
 const newMap = (): Map => {
-    mapboxgl.accessToken = mapboxgl.accessToken = 'pk.eyJ1Ijoiam9lc3RveCIsImEiOiJjbGd6a3A0enkwazVnM3NtcGZvN2h3MWp2In0.T7zApwiAP3P0DI49LATdwA'
+    // Only works if request comes from https://www.akiya-mart.com
+    mapboxgl.accessToken = mapboxgl.accessToken = 'pk.eyJ1Ijoiam9lc3RveCIsImEiOiJjbGhtaTYwb2QwaXI0M2pudThvc3Y0Z2k2In0.lRkdpgF-Mj548Wjc_dBzgg'
     return new mapboxgl.Map({
         container: 'container',
         style: 'mapbox://styles/mapbox/streets-v12',
