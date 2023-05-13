@@ -74,6 +74,9 @@ const Filters = ({
         display: isMinimized ? 'none' : 'block'
     }
 
+    // maybe use react boolean insead to bypass display block/flex
+
+
     return (
         <div className="filters-container" style={containerHideItStyle}>
             
@@ -109,38 +112,41 @@ const Filters = ({
                 />
             </div>
 
-            { !isPaidTier && <div className="filter-flex-item" style={hideItStyle}>
-                <label htmlFor="filter" className="filter-input-label">
-                Unlock to discover all 80,000+ listings!
-                </label>
-                <TextField
-                    label="password"
-                    variant="outlined"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                />
-                <Button 
-                    onClick={handleButtonClick} 
-                    variant="contained" 
-                    color="primary" 
-                    className="filter-show-hide" 
-                    size="small"
-                    sx={{
-                        backgroundColor: '#ffabeb',
-                        fontFamily: 'Fredoka',
-                        color: '#ffffff',
-                        textTransform: "none",
-                        '&:hover': {
-                            backgroundColor: '#fc80de',
-                        },
-                    }}
-                >
-                    unlock
-                </Button>
-                <div>showing 100 / 80,000+ listings</div>
-            </div> }
+            { !isPaidTier && (
+                <div className="filter-unlock" style={hideItStyle}>
+                    
+                    <div className="filter-unlock-item">
+                        <p className="filters-unlock-message">subscribe and unlock over 100k listings!</p>
+                    </div>
+                    <div className="filter-unlock-item">
+                        <TextField
+                            label="password"
+                            variant="outlined"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                        />
+                        <Button 
+                            onClick={handleButtonClick} 
+                            variant="contained" 
+                            color="primary" 
+                            className="filter-show-hide" 
+                            sx={{
+                                backgroundColor: '#ffabeb',
+                                fontFamily: 'Fredoka',
+                                color: '#ffffff',
+                                textTransform: "none",
+                                '&:hover': {
+                                    backgroundColor: '#fc80de',
+                                },
+                            }}
+                        >
+                            unlock
+                        </Button>
+                    </div>
+                </div>
+            )}
 
-            <div className="filter-flex-item">
+            {/* <div className="filter-flex-item">
                 <Button 
                     variant="contained" 
                     color="primary" 
@@ -159,7 +165,7 @@ const Filters = ({
                 >
                     {isMinimized ? 'show' : 'hide'}
                 </Button>
-            </div>
+            </div> */}
 
             
 

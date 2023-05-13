@@ -52,8 +52,7 @@ p {
     padding: 2%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    font-family: 'Fredoka-Bold';
+    font-family: 'Fredoka';
 }
 
 .filters-header {
@@ -64,9 +63,9 @@ p {
 }
 
 .filter-flex-item {
-    width: auto;
-    display: flex;
-    justify-content: right;
+    /* width: auto; */
+    /* display: flex; */
+    /* justify-content: right; */
 }
 
 .filter-input-label {
@@ -77,6 +76,17 @@ p {
     width: 400px;
     margin: 0;
 }
+
+.filter-unlock {
+    background-color: rgba(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+}
+
+.filters-unlock-item {
+    padding: 10px;
+}
+
 
 
 
@@ -96,7 +106,7 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    font-family: 'Fredoka-Bold';
+    font-family: 'Fredoka';
 }
 
 .listing {

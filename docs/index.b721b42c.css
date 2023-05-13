@@ -40,10 +40,9 @@ p {
   z-index: 1;
   background-color: #ffffff80;
   flex-direction: column;
-  justify-content: flex-start;
   margin: 2%;
   padding: 2%;
-  font-family: Fredoka-Bold;
+  font-family: Fredoka;
   display: flex;
   position: absolute;
   top: 0;
@@ -57,12 +56,6 @@ p {
   font-size: 100px;
 }
 
-.filter-flex-item {
-  width: auto;
-  justify-content: right;
-  display: flex;
-}
-
 .filter-input-label {
   color: #000;
 }
@@ -72,6 +65,16 @@ p {
   margin: 0;
 }
 
+.filter-unlock {
+  background-color: #fff;
+  flex-direction: column;
+  display: flex;
+}
+
+.filters-unlock-item {
+  padding: 10px;
+}
+
 .listings-container {
   width: auto;
   height: auto;
@@ -79,7 +82,7 @@ p {
   background-color: #fff;
   flex-direction: column;
   justify-content: flex-start;
-  font-family: Fredoka-Bold;
+  font-family: Fredoka;
   display: flex;
   position: absolute;
   top: 50%;
