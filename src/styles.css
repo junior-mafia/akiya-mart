@@ -70,7 +70,7 @@ button {
     font-family: 'YuseiMagic';
     color: #dcdbdc;
     border-radius: 1%;
-    min-width: 200px;
+    min-width: 300px;
     max-width: 400px;
 }
 
@@ -120,11 +120,12 @@ button {
 .price-slider {
     width: 100%;
     margin: 0;
+    min-width: 300px;
 }
 
 .sidebar-unlock-message {
     margin-top: 5%;
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .sidebar-unlock-inputs {
