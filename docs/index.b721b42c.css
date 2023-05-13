@@ -13,6 +13,11 @@
   src: url("Fredoka-SemiBold.02d67dbb.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: YuseiMagic;
+  src: url("YuseiMagic-Regular.8b8c9c2e.ttf") format("truetype");
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -20,6 +25,16 @@ body {
 
 p {
   margin: 0;
+}
+
+button {
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 #container {
@@ -34,42 +49,80 @@ p {
   max-width: 100% !important;
 }
 
-.filters-container {
+.sidebar-container {
   width: auto;
   height: auto;
   z-index: 1;
-  background-color: #ffffff80;
+  color: #dcdbdc;
+  min-width: 200px;
+  max-width: 400px;
+  background-color: #3d3d3d;
+  border-radius: 1%;
   flex-direction: column;
-  justify-content: flex-start;
   margin: 2%;
-  padding: 2%;
-  font-family: Fredoka-Bold;
+  padding: 20px;
+  font-family: YuseiMagic;
   display: flex;
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.filters-header {
-  color: #ca004c;
-  margin: 0;
-  font-family: daruma;
-  font-size: 100px;
-}
-
-.filter-flex-item {
-  width: auto;
-  justify-content: right;
+.sidebar-header-container {
+  color: #dcdbdc;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: YuseiMagic;
   display: flex;
 }
 
-.filter-input-label {
-  color: #000;
+.sidebar-header {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+}
+
+.sidebar-header-logo {
+  width: 50px;
+  border: 1px solid #dcdbdc;
+  border-radius: 100%;
+}
+
+.sidebar-header-title {
+  margin-left: 10px;
+  font-size: 1.75rem;
+}
+
+.sidebar-header-menu {
+  color: #dcbbcd;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: 2.5rem;
+}
+
+.sidebar-filter {
+  margin-top: 5%;
 }
 
 .price-slider {
-  width: 400px;
+  width: 100%;
   margin: 0;
+}
+
+.sidebar-unlock-message {
+  margin-top: 5%;
+  font-size: 1.25rem;
+}
+
+.sidebar-unlock-inputs {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5%;
+  display: flex;
 }
 
 .listings-container {
@@ -79,7 +132,7 @@ p {
   background-color: #fff;
   flex-direction: column;
   justify-content: flex-start;
-  font-family: Fredoka-Bold;
+  font-family: Fredoka;
   display: flex;
   position: absolute;
   top: 50%;
