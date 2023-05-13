@@ -13,6 +13,11 @@
     src: url("../static/Fredoka-SemiBold.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "YuseiMagic";
+    src: url("../static/YuseiMagic-Regular.ttf") format("truetype");
+}
+
 body {
     margin: 0; 
     padding: 0;
@@ -20,6 +25,16 @@ body {
 
 p {
     margin: 0;
+}
+
+button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }
 
 #container { 
@@ -39,7 +54,7 @@ p {
 
 
 
-.filters-container {
+.sidebar-container {
     position: absolute;
     padding: 0px;
     top: 0;
@@ -47,45 +62,82 @@ p {
     width: auto;
     height: auto;
     z-index: 1;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: #3d3d3d; /*rgba(255, 255, 255, 0.5);*/
     margin: 2%;
-    padding: 2%;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    font-family: 'Fredoka';
+    font-family: 'YuseiMagic';
+    color: #dcdbdc;
+    border-radius: 1%;
+    min-width: 200px;
+    max-width: 400px;
 }
 
-.filters-header {
+.sidebar-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: #dcdbdc;
+    font-family: 'YuseiMagic';
+}
+
+.sidebar-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sidebar-header-logo {
+    width: 50px;
+    border-radius: 100%;
+    border: solid 1px #dcdbdc;
+}
+
+.sidebar-header-title {
+    margin-left: 10px;
+    font-size: 1.75rem;
+}
+
+.sidebar-header-menu {
+    font-size: 2.5rem;
+    padding: 0;
     margin: 0;
-    font-size: 100px;
-    color: #ca004c;
-    font-family: 'daruma';
+    border: none;
+    color: #dcbbcd;
 }
 
-.filter-flex-item {
-    /* width: auto; */
-    /* display: flex; */
-    /* justify-content: right; */
-}
 
-.filter-input-label {
-    color: #000000;
+
+
+
+.sidebar-filter {
+    margin-top: 5%;
 }
 
 .price-slider {
-    width: 400px;
+    width: 100%;
     margin: 0;
 }
 
-.filter-unlock {
-    background-color: rgba(255, 255, 255);
-    display: flex;
-    flex-direction: column;
+.sidebar-unlock-message {
+    margin-top: 5%;
+    font-size: 1.25rem;
 }
 
-.filters-unlock-item {
-    padding: 10px;
+.sidebar-unlock-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5%;
 }
+
+
+
+
 
 
 

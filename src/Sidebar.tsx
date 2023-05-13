@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import RangeSlider from './Slider'
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import RangeSlider from './RangeSlider'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
 import { createHash } from 'crypto'
 
-const secret = '6da814e354ade364b0b167119a0922a58bf9bf479454e1cdf07af9f34676f146'
+const secret = 'b44fef9656c878d2b80eb43df0e3e4f874eedc659075f967e0974c324f2e523d'
 
 function hashSHA256(value: string): string {
     const hash = createHash('sha256');
@@ -46,128 +46,131 @@ const Filters = ({
     onYearUpperChange,
 }: FiltersProps) => {
     const [inputValue, setInputValue] = useState('');
-
     const [isMinimized, setIsMinimized] = useState(false);
 
-    const handleClick = () => {
+    const minimizeIt = () => {
         setIsMinimized(!isMinimized);
     };
 
     const handleButtonClick = () => {
-        console.log(hashSHA256(inputValue), secret)
         if (hashSHA256(inputValue) === secret) {
+            console.log("UNLOCKED")
             setIsPaidTier(true)
         } else {
             setIsPaidTier(false)
         }
     };
 
-    const handleInputChange = (e) => {
+    const handlePasswordInputChange = (e) => {
         setInputValue(e.target.value);
     };
 
-    const containerHideItStyle = {
-        padding: isMinimized ? '0px' : '2%'
-    }
 
-    const hideItStyle = {
-        display: isMinimized ? 'none' : 'block'
-    }
-
-    // maybe use react boolean insead to bypass display block/flex
-
+    // already a member?
+    // https://akiyamart.substack.com/ */}
 
     return (
-        <div className="filters-container" style={containerHideItStyle}>
+        <div className="sidebar-container">
             
-            <div className="filter-flex-item" style={hideItStyle}>
-                <p className="filters-header">あきやマート</p>
-            </div>
-            
-            <div className="filter-flex-item" style={hideItStyle}>
-                <label htmlFor="filter" className="filter-input-label">
-                    price (usd)
-                </label>
-                <RangeSlider
-                    min={priceUsdMin}
-                    max={priceUsdMax}
-                    lower={priceUsdLower}
-                    upper={priceUsdUpper}
-                    onLowerChange={onPriceUsdLowerChange} 
-                    onUpperChange={onPriceUsdUpperChange}
-                />
-            </div>
-
-            <div className="filter-flex-item" style={hideItStyle}>
-                <label htmlFor="filter" className="filter-input-label">
-                    year built
-                </label>
-                <RangeSlider
-                    min={yearMin}
-                    max={yearMax}
-                    lower={yearLower}
-                    upper={yearUpper}
-                    onLowerChange={onYearLowerChange} 
-                    onUpperChange={onYearUpperChange}
-                />
-            </div>
-
-            { !isPaidTier && (
-                <div className="filter-unlock" style={hideItStyle}>
-                    
-                    <div className="filter-unlock-item">
-                        <p className="filters-unlock-message">subscribe and unlock over 100k listings!</p>
-                    </div>
-                    <div className="filter-unlock-item">
-                        <TextField
-                            label="password"
-                            variant="outlined"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                        />
-                        <Button 
-                            onClick={handleButtonClick} 
-                            variant="contained" 
-                            color="primary" 
-                            className="filter-show-hide" 
-                            sx={{
-                                backgroundColor: '#ffabeb',
-                                fontFamily: 'Fredoka',
-                                color: '#ffffff',
-                                textTransform: "none",
-                                '&:hover': {
-                                    backgroundColor: '#fc80de',
-                                },
-                            }}
-                        >
-                            unlock
-                        </Button>
-                    </div>
+            <div className="sidebar-item sidebar-header-container">
+                <div className="sidebar-item sidebar-header">
+                    <img className="sidebar-header-logo" src="dalle.png" alt="logo" />
+                    <div className="sidebar-header-title">あきやマート</div>
                 </div>
-            )}
-
-            {/* <div className="filter-flex-item">
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    className="filter-show-hide" 
-                    onClick={handleClick}
-                    size="small"
-                    sx={{
-                        backgroundColor: '#ffabeb',
-                        fontFamily: 'Fredoka',
-                        color: '#ffffff',
-                        textTransform: "none",
-                        '&:hover': {
-                            backgroundColor: '#fc80de',
-                        },
-                    }}
-                >
-                    {isMinimized ? 'show' : 'hide'}
-                </Button>
-            </div> */}
-
+                <button onClick={minimizeIt} className="sidebar-header-menu">
+                    <i className="bx bx-menu" />
+                </button>
+            </div>
             
+            { !isMinimized &&
+                <>
+                    <div className="sidebar-item sidebar-filter">
+                        <div className="sidebar-label">
+                            Price (USD)
+                        </div>
+                        <RangeSlider
+                            min={priceUsdMin}
+                            max={priceUsdMax}
+                            lower={priceUsdLower}
+                            upper={priceUsdUpper}
+                            onLowerChange={onPriceUsdLowerChange} 
+                            onUpperChange={onPriceUsdUpperChange}
+                        />
+                    </div>
+                    <div className="sidebar-item sidebar-filter">
+                        <label htmlFor="filter" className="filter-input-label">
+                            Year Built
+                        </label>
+                        <RangeSlider
+                            min={yearMin}
+                            max={yearMax}
+                            lower={yearLower}
+                            upper={yearUpper}
+                            onLowerChange={onYearLowerChange} 
+                            onUpperChange={onYearUpperChange}
+                        />
+                    </div>
+                </>
+            }
+
+
+
+            { !isPaidTier && 
+                <>
+                    <div className="sidebar-item sidebar-unlock-message">
+                        Subscribe to unlock over 100k listings!
+                    </div>
+
+                    <div className="sidebar-item sidebar-unlock-inputs">
+                            <TextField
+                                label="Password"
+                                variant="outlined"
+                                value={inputValue}
+                                onChange={handlePasswordInputChange}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                      '& fieldset': {
+                                        borderColor: '#dcdbdc', // Change the border color here
+                                      },
+                                      '&:hover fieldset': {
+                                        borderColor: '#dcdbdc', // Change the border color when hovered here
+                                      },
+                                      '&.Mui-focused fieldset': {
+                                        borderColor: '#dcdbdc', // Change the border color when focused here
+                                      },
+                                    },
+                                    '& .MuiInputBase-input': {
+                                      color: '#dcdbdc', // Change the text color here
+                                    },
+                                    '& .MuiFormLabel-root': {
+                                        color: '#dcdbdc', // Change the label color here
+                                    },
+                                    '& .MuiFormLabel-root.Mui-focused': {
+                                    color: '#dcdbdc', // Change the label color when focused here
+                                    },
+                                  }}
+                            />
+                            <Button 
+                                onClick={handleButtonClick} 
+                                variant="contained" 
+                                color="primary" 
+                                className="sidebar-show-hide" 
+                                sx={{
+                                    backgroundColor: '#ffabeb',
+                                    fontFamily: 'Fredoka',
+                                    color: '#ffffff',
+                                    textTransform: "none",
+                                    '&:hover': {
+                                        backgroundColor: '#fc80de',
+                                    },
+                                    padding: '16.5px 30px',
+                                }}
+                            >
+                                Unlock
+                            </Button>
+                    </div>
+                </>
+            }
 
         </div>
     )
