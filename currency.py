@@ -1,7 +1,6 @@
 import locale
 import requests
 
-API_KEY = '34d7a6fdcbef45ff84680cfdd5c16e91'
 URL = 'https://openexchangerates.org/api/latest.json'
 
 def yen_to_usd(amount_yen, yen_per_usd):
