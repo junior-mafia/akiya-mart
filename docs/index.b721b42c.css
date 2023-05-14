@@ -1,19 +1,4 @@
 @font-face {
-  font-family: daruma;
-  src: url("DarumadropOne-Regular.7c4bff78.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: Fredoka;
-  src: url("Fredoka-Regular.75e4cd84.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: Fredoka-Bold;
-  src: url("Fredoka-SemiBold.02d67dbb.ttf") format("truetype");
-}
-
-@font-face {
   font-family: YuseiMagic;
   src: url("YuseiMagic-Regular.8b8c9c2e.ttf") format("truetype");
 }
@@ -50,17 +35,10 @@ button {
 }
 
 .sidebar-container {
-  width: auto;
-  height: auto;
   z-index: 1;
   color: #dcdbdc;
-  min-width: 300px;
-  max-width: 400px;
   background-color: #3d3d3d;
-  border-radius: 1%;
   flex-direction: column;
-  margin: 2%;
-  padding: 20px;
   font-family: YuseiMagic;
   display: flex;
   position: absolute;
@@ -68,11 +46,146 @@ button {
   left: 0;
 }
 
+.sidebar-header-title {
+  margin-left: 10px;
+}
+
+.sidebar-header-logo {
+  border: 1px solid #dcdbdc;
+  border-radius: 100%;
+}
+
+.sidebar-expand-collapse-icon {
+  border-radius: 100%;
+  padding: 5px;
+}
+
+.sidebar-expand-collapse-icon:hover {
+  background-color: #ffffff4d;
+}
+
+@media (width <= 767px) {
+  .sidebar-container {
+    width: calc(100% - 40px);
+    padding: 20px;
+  }
+
+  .sidebar-header-logo {
+    width: 40px;
+  }
+
+  .sidebar-header-title {
+    font-size: 1.5rem;
+  }
+
+  .sidebar-expand-collapse-icon {
+    font-size: 2rem;
+  }
+
+  .sidebar-filter {
+    margin-top: 10px;
+  }
+
+  .footer-container {
+    width: calc(100% - 40px);
+    padding: 20px;
+  }
+
+  .footer-subscribe-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-subscribe-button {
+    width: 100%;
+    margin-top: 10px !important;
+  }
+
+  .footer-unlock-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .footer-unlock-input-container {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .footer-unlock-input {
+    width: 60%;
+  }
+
+  .footer-unlock-button {
+    width: 40%;
+  }
+}
+
+@media (width >= 768px) {
+  .sidebar-container {
+    width: 350px;
+    margin: 1%;
+    padding: 20px;
+  }
+
+  .sidebar-header-logo {
+    width: 50px;
+  }
+
+  .sidebar-header-title {
+    font-size: 1.75rem;
+  }
+
+  .sidebar-expand-collapse-icon {
+    font-size: 2rem;
+  }
+
+  .sidebar-filter {
+    margin-top: 5%;
+  }
+
+  .footer-container {
+    width: calc(100% - 40px);
+    padding: 20px;
+  }
+
+  .footer-subscribe-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-subscribe-button {
+    min-width: 200px !important;
+    margin-left: 20px !important;
+  }
+
+  .footer-unlock-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-unlock-input-container {
+    margin-top: 0;
+  }
+
+  .footer-unlock-input {
+    min-width: 200px !important;
+    margin-left: 10px !important;
+  }
+
+  .footer-unlock-button {
+    min-width: 200px !important;
+  }
+}
+
 .sidebar-header-container {
   color: #dcdbdc;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   font-family: YuseiMagic;
   display: flex;
 }
@@ -84,46 +197,45 @@ button {
   display: flex;
 }
 
-.sidebar-header-logo {
-  width: 50px;
-  border: 1px solid #dcdbdc;
-  border-radius: 100%;
+.footer-container {
+  z-index: 1;
+  color: #dcdbdc;
+  background-color: #3d3d3d;
+  flex-direction: column;
+  font-family: YuseiMagic;
+  display: flex;
+  position: absolute;
+  bottom: 0;
 }
 
-.sidebar-header-title {
-  margin-left: 10px;
-  font-size: 1.75rem;
+.footer-subscribe-container {
+  display: flex;
 }
 
-.sidebar-header-menu {
-  color: #dcbbcd;
-  border: none;
-  margin: 0;
-  padding: 0;
-  font-size: 2.5rem;
-}
-
-.sidebar-filter {
-  margin-top: 5%;
-}
-
-.price-slider {
-  width: 100%;
-  min-width: 300px;
-  margin: 0;
-}
-
-.sidebar-unlock-message {
-  margin-top: 5%;
+.footer-subscribe-message {
   font-size: 1rem;
 }
 
-.sidebar-unlock-inputs {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 5%;
+.footer-subscribe-button {
+  padding: 15px !important;
+  font-family: YuseiMagic !important;
+}
+
+.footer-unlock-container {
+  width: 100%;
+  margin-top: 10px;
   display: flex;
+}
+
+.footer-unlock-input-container {
+  flex-direction: row;
+  justify-content: flex-start;
+  display: flex;
+  font-family: YuseiMagic !important;
+}
+
+.footer-unlock-button {
+  margin-left: 10px !important;
 }
 
 .listings-container {

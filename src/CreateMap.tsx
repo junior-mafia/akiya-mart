@@ -3,10 +3,10 @@ import mapboxgl, { LngLatLike, Map, MapMouseEvent } from 'mapbox-gl'
 
 const DEFAULT_CENTER: LngLatLike = [-221.634321, 37.272892]
 
-const DEFAULT_ZOOM = 4.4
+const DEFAULT_ZOOM = 6 // 4 and 5 don't work for some reason on small screens
 
 const newMap = (): Map => {
-    // Only works if request comes from https://www.akiya-mart.com
+    // Only works if the request comes from https://www.akiya-mart.com
     mapboxgl.accessToken = mapboxgl.accessToken = 'pk.eyJ1Ijoiam9lc3RveCIsImEiOiJjbGhtaTYwb2QwaXI0M2pudThvc3Y0Z2k2In0.lRkdpgF-Mj548Wjc_dBzgg'
     return new mapboxgl.Map({
         container: 'container',
@@ -30,11 +30,6 @@ const setupMap = (
             type: 'geojson',
             data: 'listings_free.geojson'
         })
-
-        // map.addSource('listings', {
-        //     type: 'geojson',
-        //     data: 'listings.geojson'
-        // })
         
         map.loadImage('mapbox-marker-icon-20px-pink2.png', (error, image) => {
             if (image === undefined) throw error
@@ -54,9 +49,6 @@ const setupMap = (
                 })
                 filterMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, map)
         })
-
-        
-
     })
 
   map.on('click', (e) => {

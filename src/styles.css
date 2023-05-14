@@ -1,19 +1,4 @@
 @font-face {
-    font-family: "daruma";
-    src: url("../static/DarumadropOne-Regular.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Fredoka";
-    src: url("../static/Fredoka-Regular.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Fredoka-Bold";
-    src: url("../static/Fredoka-SemiBold.ttf") format("truetype");
-}
-
-@font-face {
     font-family: "YuseiMagic";
     src: url("../static/YuseiMagic-Regular.ttf") format("truetype");
 }
@@ -56,29 +41,162 @@ button {
 
 .sidebar-container {
     position: absolute;
-    padding: 0px;
     top: 0;
     left: 0;
-    width: auto;
-    height: auto;
     z-index: 1;
     background-color: #3d3d3d; /*rgba(255, 255, 255, 0.5);*/
-    margin: 2%;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     font-family: 'YuseiMagic';
     color: #dcdbdc;
-    border-radius: 1%;
-    min-width: 300px;
-    max-width: 400px;
+}
+
+.sidebar-header-title {
+    margin-left: 10px;    
+}
+
+.sidebar-header-logo {
+    border-radius: 100%;
+    border: solid 1px #dcdbdc;
+}
+
+.sidebar-expand-collapse-icon {
+    border-radius: 100%;
+    padding: 5px;
+}
+
+.sidebar-expand-collapse-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+/* cellphone-sized screens */
+@media (max-width: 767px) {
+    .sidebar-container {
+        width: calc(100% - 20px - 20px);
+        padding: 20px;
+    }
+
+    .sidebar-header-logo {
+        width: 40px;
+    }
+
+    .sidebar-header-title {
+        font-size: 1.5rem;
+    }
+
+    .sidebar-expand-collapse-icon {
+        font-size: 2.0rem;
+    }
+
+    .sidebar-filter {
+        margin-top: 10px;
+    }
+
+    .footer-container {
+        width: calc(100% - 20px - 20px);
+        padding: 20px;
+    }
+
+    .footer-subscribe-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-subscribe-button {
+        margin-top: 10px !important;
+        width: 100%;
+    }
+
+    .footer-unlock-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .footer-unlock-input-container {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .footer-unlock-input {
+        width: 60%;
+    }
+    
+    .footer-unlock-button {
+        width: 40%;
+    }
+}
+
+/* Laptop-sized screens */
+@media (min-width: 768px) {
+    .sidebar-container {
+        margin: 1%;
+        padding: 20px;
+        width: 350px;
+    }
+
+    .sidebar-header-logo {
+        width: 50px;
+    }
+
+    .sidebar-header-title {
+        font-size: 1.75rem;
+    }
+
+    .sidebar-expand-collapse-icon {
+        font-size: 2rem;
+    }
+
+    .sidebar-filter {
+        margin-top: 5%;
+    }
+
+    .footer-container {
+        width: calc(100% - 20px - 20px);
+        padding: 20px;
+    }
+
+    .footer-subscribe-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-subscribe-button {
+        margin-left: 20px !important;
+        min-width: 200px !important;
+    }
+
+    .footer-unlock-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-unlock-input-container {
+        margin-top: 0px;
+    }
+
+    .footer-unlock-input {
+        margin-left: 10px !important;  
+    }
+
+    .footer-unlock-input {
+        min-width: 200px !important;
+    }
+
+    .footer-unlock-button {
+        min-width: 200px !important;
+    }
 }
 
 .sidebar-header-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     color: #dcdbdc;
     font-family: 'YuseiMagic';
 }
@@ -90,58 +208,51 @@ button {
     align-items: center;
 }
 
-.sidebar-header-logo {
-    width: 50px;
-    border-radius: 100%;
-    border: solid 1px #dcdbdc;
+
+
+
+
+
+.footer-container {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    background-color: #3d3d3d;
+    display: flex;
+    flex-direction: column;
+    font-family: 'YuseiMagic';
+    color: #dcdbdc;
 }
 
-.sidebar-header-title {
-    margin-left: 10px;
-    font-size: 1.75rem;
+.footer-subscribe-container {
+    display: flex;
 }
 
-.sidebar-header-menu {
-    font-size: 2.5rem;
-    padding: 0;
-    margin: 0;
-    border: none;
-    color: #dcbbcd;
-}
-
-
-
-
-
-.sidebar-filter {
-    margin-top: 5%;
-}
-
-.price-slider {
-    width: 100%;
-    margin: 0;
-    min-width: 300px;
-}
-
-.sidebar-unlock-message {
-    margin-top: 5%;
+.footer-subscribe-message {
     font-size: 1rem;
 }
 
-.sidebar-unlock-inputs {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5%;
+.footer-subscribe-button {
+    font-family: 'YuseiMagic' !important;
+    padding: 15px !important;
 }
 
+.footer-unlock-container {
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+}
 
+.footer-unlock-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-family: 'YuseiMagic' !important;
+}
 
-
-
-
-
+.footer-unlock-button {
+    margin-left: 10px !important;  
+}
 
 
 
@@ -188,7 +299,6 @@ button {
 .listing-header-subscript {
     font-size: 15px;
     color: #000000;
-    /* margin-left: ; */
 }
 
 
@@ -203,3 +313,4 @@ button {
     height: 100%;
     object-fit: cover;
 }
+
