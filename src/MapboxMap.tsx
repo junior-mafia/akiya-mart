@@ -20,7 +20,7 @@ const MapboxMap = ({
   yearLower,
   yearUpper,
 }: MapboxMapProps) => {
-  const ignore = useRef(false)
+  const ignore = useRef(false) // Used with React Strict Mode
   const [map, setMap] = useState<Map | undefined>(undefined)
   const [showListings, setShowListings] = useState(false)
   const [listings, setListings] = useState<ReactJSXElement[]>([])
@@ -48,10 +48,6 @@ const MapboxMap = ({
       })
 
     if (listings.length > 0) {
-        // const firstFeature = features[0]
-        // const props = firstFeature.properties as ListingProps
-        // const listing = <Listing key={props.url} {...props}/>
-
         setListings(listings)
         setShowListings(true)
     } else {
@@ -60,9 +56,6 @@ const MapboxMap = ({
       setCurrentListingIndex(0)
     }
   }
-
-
-
 
   // Run once - idempotent under React Strict Mode
   useEffect(() => {
@@ -81,8 +74,6 @@ const MapboxMap = ({
 
   useEffect(() => {
     if (!map) return
-    // filterMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, map)
-    console.log("RUNNING", isPaidTier)
     setSource(isPaidTier, map)
   }, [isPaidTier])
 
