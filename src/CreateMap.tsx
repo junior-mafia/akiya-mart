@@ -1,13 +1,13 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 import mapboxgl, { LngLatLike, Map, MapMouseEvent } from 'mapbox-gl'
 
+
 const DEFAULT_CENTER: LngLatLike = [-221.634321, 37.272892]
 
 const DEFAULT_ZOOM = 6 // 4 and 5 don't work for some reason on small screens
 
 const newMap = (): Map => {
-    // Only works if the request comes from https://www.akiya-mart.com
-    mapboxgl.accessToken = mapboxgl.accessToken = 'pk.eyJ1Ijoiam9lc3RveCIsImEiOiJjbGhtaTYwb2QwaXI0M2pudThvc3Y0Z2k2In0.lRkdpgF-Mj548Wjc_dBzgg'
+    mapboxgl.accessToken = process.env.MAPBOX_API_KEY as string
     return new mapboxgl.Map({
         container: 'container',
         style: 'mapbox://styles/mapbox/streets-v12',
