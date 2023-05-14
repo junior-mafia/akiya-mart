@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "npx parcel index.html --dist-dir docs"
+    "start": "npx parcel index.html"
   },
   "dependencies": {
     "crypto-browserify": "^3.12.0",
