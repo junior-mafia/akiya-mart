@@ -1,5 +1,8 @@
 import locale
 import requests
+import os
+
+OPEN_EXCHANGE_RATES_API_KEY = os.getenv("OPEN_EXCHANGE_RATES_API_KEY")
 
 URL = 'https://openexchangerates.org/api/latest.json'
 
@@ -45,7 +48,7 @@ def price_yen_to_usd_display(price_yen: int, exchange_rate):
 def get_yen_per_usd():
     base_currency = 'JPY'
     params = {
-        'app_id': API_KEY,
+        'app_id': OPEN_EXCHANGE_RATES_API_KEY,
         'symbols': base_currency
     }
     response = requests.get(URL, params=params)
