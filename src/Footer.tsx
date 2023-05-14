@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import RangeSlider from './RangeSlider'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { createHash } from 'crypto'
