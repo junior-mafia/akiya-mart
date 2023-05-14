@@ -12,12 +12,20 @@ const App = () => {
     const defaultUsdPriceMax = 130000
     const [priceUsdLower, setPriceUsdLower] = useState<number>(defaultUsdPriceMin)
     const [priceUsdUpper, setPriceUsdUpper] = useState<number>(defaultUsdPriceMax)
+    
     const yearMin = 1800
     const yearMax = 2023
     const defaultYearMin = 1900
     const defaultYearMax = 2000
     const [yearLower, setYearLower] = useState<number>(defaultYearMin)
     const [yearUpper, setYearUpper] = useState<number>(defaultYearMax)
+
+    const underXDaysOnMarketMin = 0
+    const underXDaysOnMarketMax = 30
+    const defaultUnderXDaysOnMarketMin = 0
+    const defaultUnderXDaysOnMarketMax = 10
+    const [underXDaysOnMarketLower, setUnderXDaysOnMarketLower] = useState<number>(defaultUnderXDaysOnMarketMin)
+    const [underXDaysOnMarketUpper, setUnderXDaysOnMarketUpper] = useState<number>(defaultUnderXDaysOnMarketMax)
     
 
     return (
@@ -35,6 +43,12 @@ const App = () => {
                 yearUpper={yearUpper}
                 onYearLowerChange={setYearLower} 
                 onYearUpperChange={setYearUpper}
+                underXDaysOnMarketMin={underXDaysOnMarketMin}
+                underXDaysOnMarketMax={underXDaysOnMarketMax}
+                underXDaysOnMarketLower={underXDaysOnMarketLower}
+                underXDaysOnMarketUpper={underXDaysOnMarketUpper}
+                setUnderXDaysOnMarketLower={setUnderXDaysOnMarketLower}
+                setUnderXDaysOnMarketUpper={setUnderXDaysOnMarketUpper}
             />
 
             <Footer
@@ -49,6 +63,8 @@ const App = () => {
                     priceUsdUpper={priceUsdUpper} 
                     yearLower={yearLower}
                     yearUpper={yearUpper}
+                    underXDaysOnMarketLower={underXDaysOnMarketLower}
+                    underXDaysOnMarketUpper={underXDaysOnMarketUpper}
                 />
             </div>
         </div>

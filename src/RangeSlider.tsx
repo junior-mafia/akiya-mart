@@ -20,8 +20,6 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, lower, upper, onLow
     onUpperChange(_upper)
   }
 
-  const color = '#dcdbdc'
-  const pink = '#ffabeb'
   const otherPink = '#dcbbcd'
 
   return (
