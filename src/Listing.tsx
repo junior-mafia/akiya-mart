@@ -38,7 +38,6 @@ const Listing = (props: ListingProps) => {
 
     const image_urls: string[] = JSON.parse(props.image_urls)
     const countImages = image_urls.length
-    const translatedUrl = `https://translate.google.com/translate?sl=ja&tl=en&u=${props.url}`
     const unix_timestamp = props.seen_at
     const date = new Date(unix_timestamp * 1000)
     const year = date.getFullYear()
@@ -98,7 +97,7 @@ const Listing = (props: ListingProps) => {
                     className="listing-button"
                     variant="contained"
                     color="primary"
-                    onClick={() => window.open(translatedUrl, '_blank')}
+                    onClick={() => window.open(props.url, '_blank')}
                     sx={{
                         backgroundColor: '#ffabeb',
                         fontFamily: 'YuseiMagic',
