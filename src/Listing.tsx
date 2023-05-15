@@ -132,6 +132,7 @@ const Listing = (props: ListingProps) => {
                 </Button>
 
 
+                <div>Built in {props.year}</div>
                 <div>On the market since {formattedTime}</div>
 
             </div> )
