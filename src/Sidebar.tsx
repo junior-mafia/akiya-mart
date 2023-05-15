@@ -14,6 +14,12 @@ interface SidebarProps {
     yearUpper: number
     onYearLowerChange: (priceUsdLower: number) => void
     onYearUpperChange: (priceUsdUpper: number) => void   
+    underXDaysOnMarketMin: number
+    underXDaysOnMarketMax: number
+    underXDaysOnMarketLower: number
+    underXDaysOnMarketUpper: number
+    setUnderXDaysOnMarketLower: (underXDaysOnMarketLower: number) => void
+    setUnderXDaysOnMarketUpper: (underXDaysOnMarketUpper: number) => void
 }
 
 const Sidebar = ({
@@ -29,12 +35,14 @@ const Sidebar = ({
     yearUpper,
     onYearLowerChange,
     onYearUpperChange,
+    underXDaysOnMarketMin,
+    underXDaysOnMarketMax,
+    underXDaysOnMarketLower,
+    underXDaysOnMarketUpper,
+    setUnderXDaysOnMarketLower,
+    setUnderXDaysOnMarketUpper,
 }: SidebarProps) => {
     const [isMinimized, setIsMinimized] = useState(true)
-
-    // const minimizeIt = () => {
-    //     setIsMinimized(true)
-    // }
 
     const minOrMaxIt = () => {
         setIsMinimized(!isMinimized)
@@ -81,11 +89,23 @@ const Sidebar = ({
                             onUpperChange={onYearUpperChange}
                         />
                     </div>
+                    <div className="sidebar-filter">
+                        <div>
+                            Days on Market
+                        </div>
+                        <RangeSlider
+                            min={underXDaysOnMarketMin}
+                            max={underXDaysOnMarketMax}
+                            lower={underXDaysOnMarketLower}
+                            upper={underXDaysOnMarketUpper}
+                            onLowerChange={setUnderXDaysOnMarketLower}
+                            onUpperChange={setUnderXDaysOnMarketUpper} 
+                        />
+                    </div>
                 </>
             }
         </div>
     )
 }
-
 
 export default Sidebar
