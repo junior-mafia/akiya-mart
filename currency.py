@@ -10,22 +10,6 @@ def yen_to_usd(amount_yen, yen_per_usd):
 def usd_to_yen(amount_usd, yen_per_usd):
     return amount_usd * yen_per_usd
 
-# Assumes format like: 20万円
-def undisplay_yen(amount: str):
-    if '〜' in amount:
-        amount = amount.split('〜')[1]
-    
-    if '※権利金含む' in amount:
-        amount = amount.split('※権利金含む')[1]
-
-    amount = amount.replace("万", "").replace("円", "").replace(",", "")
-    try:
-        amount = int(float(amount)) * 10000
-    except:
-        print(amount)
-        raise "hiiii"
-    return amount
-
 def display_yen(amount: int):
     locale.setlocale(locale.LC_ALL, 'ja_JP.UTF-8')
     return locale.currency(amount, grouping=True)
