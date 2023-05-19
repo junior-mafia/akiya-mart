@@ -7,7 +7,7 @@ const App = () => {
     const [isPaidTier, setIsPaidTier] = useState(false)
 
     const priceUsdMin = 0
-    const priceUsdMax = 20000000 // 200000
+    const priceUsdMax = 200000
     const defaultUsdPriceMin = 25000
     const defaultUsdPriceMax = 130000
     const [priceUsdLower, setPriceUsdLower] = useState<number>(defaultUsdPriceMin)
