@@ -7,11 +7,12 @@ interface RangeSliderProps {
   max: number
   lower: number,
   upper: number,
+  step: number,
   onLowerChange: (lower: number) => void
   onUpperChange: (upper: number) => void   
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, lower, upper, onLowerChange, onUpperChange }) => {
+const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, lower, upper, step, onLowerChange, onUpperChange }) => {
   const theme = useTheme()
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
@@ -30,6 +31,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, lower, upper, onLow
           valueLabelDisplay="auto"
           min={min}
           max={max}
+          step={step}
           sx={{
             '& .MuiSlider-thumb': {
               borderColor: theme.palette.primary?.main || otherPink,

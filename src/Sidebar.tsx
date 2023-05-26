@@ -74,6 +74,7 @@ const Sidebar = ({
                             upper={priceUsdUpper}
                             onLowerChange={onPriceUsdLowerChange} 
                             onUpperChange={onPriceUsdUpperChange}
+                            step={10000}
                         />
                     </div>
                     <div className="sidebar-filter">
@@ -87,6 +88,7 @@ const Sidebar = ({
                             upper={yearUpper}
                             onLowerChange={onYearLowerChange} 
                             onUpperChange={onYearUpperChange}
+                            step={1}
                         />
                     </div>
                     <div className="sidebar-filter">
@@ -99,7 +101,8 @@ const Sidebar = ({
                             lower={underXDaysOnMarketLower}
                             upper={underXDaysOnMarketUpper}
                             onLowerChange={setUnderXDaysOnMarketLower}
-                            onUpperChange={setUnderXDaysOnMarketUpper} 
+                            onUpperChange={setUnderXDaysOnMarketUpper}
+                            step={1}
                         />
                     </div>
                 </>
