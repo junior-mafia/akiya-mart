@@ -23,7 +23,7 @@ const App = () => {
     const underXDaysOnMarketMin = 0
     const underXDaysOnMarketMax = 30
     const defaultUnderXDaysOnMarketMin = 0
-    const defaultUnderXDaysOnMarketMax = 10
+    const defaultUnderXDaysOnMarketMax = 30
     const [underXDaysOnMarketLower, setUnderXDaysOnMarketLower] = useState<number>(defaultUnderXDaysOnMarketMin)
     const [underXDaysOnMarketUpper, setUnderXDaysOnMarketUpper] = useState<number>(defaultUnderXDaysOnMarketMax)
     
