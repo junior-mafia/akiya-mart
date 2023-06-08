@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Map } from 'mapbox-gl'
-import 'mapbox-gl/dist/mapbox-gl.css'
-import { newMap, setupMap, filterMap, setSource } from './createMap'
-import Listing, { ListingProps } from './Listing'
+import React, { useEffect, useRef, useState } from "react"
+import { Map } from "mapbox-gl"
+import "mapbox-gl/dist/mapbox-gl.css"
+import { newMap, setupMap, filterMap, setSource } from "./createMap"
+import Listing, { ListingProps } from "./Listing"
 
 interface MapboxMapProps {
   isPaidTier: boolean
@@ -32,19 +32,19 @@ const MapboxMap = ({
     setExitedUrl(url)
   }
 
-  const onFeatureClick = (e, map) =>  {
+  const onFeatureClick = (e, map) => {
     const listings = map
-      .queryRenderedFeatures(e.point, { layers: ['markers'] })
-      .map(feature => {
-          const props = feature.properties as ListingProps
-          const { coordinates } = feature.geometry;
-          const longitude = coordinates[0];
-          const latitude = coordinates[1];
-          const fullProps = {...props, latitude, longitude}
-          return fullProps
+      .queryRenderedFeatures(e.point, { layers: ["markers"] })
+      .map((feature) => {
+        const props = feature.properties as ListingProps
+        const { coordinates } = feature.geometry
+        const longitude = coordinates[0]
+        const latitude = coordinates[1]
+        const fullProps = { ...props, latitude, longitude }
+        return fullProps
       })
     if (listings.length > 0) {
-        setListings(listings)
+      setListings(listings)
     } else {
       setListings([])
     }
@@ -54,7 +54,16 @@ const MapboxMap = ({
   useEffect(() => {
     if (ignore.current) return
     const blankMap = newMap()
-    const map = setupMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, underXDaysOnMarketLower, underXDaysOnMarketUpper, blankMap, onFeatureClick)
+    const map = setupMap(
+      priceUsdLower,
+      priceUsdUpper,
+      yearLower,
+      yearUpper,
+      underXDaysOnMarketLower,
+      underXDaysOnMarketUpper,
+      blankMap,
+      onFeatureClick
+    )
     setMap(map)
     ignore.current = true
   }, [])
@@ -62,8 +71,23 @@ const MapboxMap = ({
   // Run when map or filter changes
   useEffect(() => {
     if (!map) return
-    filterMap(priceUsdLower, priceUsdUpper, yearLower, yearUpper, underXDaysOnMarketLower, underXDaysOnMarketUpper, map)
-  }, [priceUsdLower, priceUsdUpper, yearLower, yearUpper, underXDaysOnMarketLower, underXDaysOnMarketUpper])
+    filterMap(
+      priceUsdLower,
+      priceUsdUpper,
+      yearLower,
+      yearUpper,
+      underXDaysOnMarketLower,
+      underXDaysOnMarketUpper,
+      map
+    )
+  }, [
+    priceUsdLower,
+    priceUsdUpper,
+    yearLower,
+    yearUpper,
+    underXDaysOnMarketLower,
+    underXDaysOnMarketUpper,
+  ])
 
   useEffect(() => {
     if (!map) return
@@ -71,24 +95,30 @@ const MapboxMap = ({
   }, [isPaidTier])
 
   if (exitedUrl) {
-    setListings(listings.filter(listing => listing.url !== exitedUrl))
+    setListings(listings.filter((listing) => listing.url !== exitedUrl))
     setExitedUrl(undefined)
   }
 
   const listing = listings[0]
-  return (<>
-    { (listings.length > 0) && 
-      <div className="listing-background" onClick={() => setListings([])}>
-        <div className="listing-container" onClick={e => e.stopPropagation()}>
-          <Listing key={listing.url} {...listing} countListings={listings.length} appendExitedUrl={appendExitedUrl} />
+  return (
+    <>
+      {listings.length > 0 && (
+        <div className="listing-background" onClick={() => setListings([])}>
+          <div
+            className="listing-container"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Listing
+              key={listing.url}
+              {...listing}
+              countListings={listings.length}
+              appendExitedUrl={appendExitedUrl}
+            />
+          </div>
         </div>
-      </div>
-    }
-  </>)
+      )}
+    </>
+  )
 }
-
-
-
-
 
 export default MapboxMap
