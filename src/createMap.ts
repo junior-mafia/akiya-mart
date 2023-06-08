@@ -27,12 +27,14 @@ const setupMap = (
     onFeatureClick: (event: MapMouseEvent, map: Map) => void
 ): Map => {
     map.on('load', () => {
-
+        const now = new Date()
+        now.setHours(Math.floor(now.getHours() / 3) * 3, 0, 0, 0) // Round to 3 hour intervals
+        const timestamp = now.getTime()
         map.addSource('listings-free', {
             type: 'geojson',
-            data: 'listings_free.geojson'
+            data: `https://akiya-mart-tasks.b-cdn.net/listings-free.geojson?v=${timestamp}`,
         })
-        
+
         map.loadImage('mapbox-marker-icon-20px-pink2.png', (error, image) => {
             if (image === undefined) throw error
             else 
@@ -53,21 +55,22 @@ const setupMap = (
         })
     })
 
-  map.on('click', (e) => {
-    onFeatureClick(e, map)
-  })
 
-  // Change the cursor to a pointer when the mouse is over the 'balloon-markers' layer
-  map.on('mouseenter', 'markers', () => {
-      map.getCanvas().style.cursor = 'pointer'
-  })
-  
-  // Change the cursor back to the default when the mouse leaves the 'balloon-markers' layer
-  map.on('mouseleave', 'markers', () => {
-      map.getCanvas().style.cursor = ''
-  })
+    map.on('click', (e) => {
+        onFeatureClick(e, map)
+    })
 
-  return map
+    // Change the cursor to a pointer when the mouse is over the 'balloon-markers' layer
+    map.on('mouseenter', 'markers', () => {
+        map.getCanvas().style.cursor = 'pointer'
+    })
+
+    // Change the cursor back to the default when the mouse leaves the 'balloon-markers' layer
+    map.on('mouseleave', 'markers', () => {
+        map.getCanvas().style.cursor = ''
+    })
+
+    return map
 }
 
 const filterMap = (
@@ -79,16 +82,16 @@ const filterMap = (
     underXDaysOnMarketUpper: number,
     map: Map
 ) => {
-    const timestamp = Math.floor(Date.now() / 1000)
+    const now = Math.floor(Date.now() / 1000)
     const oneDaySeconds = 24 * 60 * 60
     map.setFilter('markers', [
         'all',
         ['>=', ['to-number', ['get', 'price_usd']], priceUsdLower],
         ['<=', ['to-number', ['get', 'price_usd']], priceUsdUpper],
-        ['>=', ['to-number', ['get', 'year']], yearLower],
-        ['<=', ['to-number', ['get', 'year']], yearUpper],
-        ['>=', ['to-number', ['get', 'seen_at']], timestamp - (underXDaysOnMarketUpper * oneDaySeconds)],
-        ['<=', ['to-number', ['get', 'seen_at']], timestamp - (underXDaysOnMarketLower * oneDaySeconds)],
+        ['>=', ['to-number', ['get', 'construction_year']], yearLower],
+        ['<=', ['to-number', ['get', 'construction_year']], yearUpper],
+        ['>=', ['to-number', ['get', 'first_seen_at']], now - (underXDaysOnMarketUpper * oneDaySeconds)],
+        ['<=', ['to-number', ['get', 'first_seen_at']], now - (underXDaysOnMarketLower * oneDaySeconds)],
     ]);
 }
 
@@ -101,9 +104,12 @@ const setSource = (
         map.removeLayer('markers');
         map.removeSource('listings-free');
 
+        const now = new Date()
+        now.setHours(Math.floor(now.getHours() / 3) * 3, 0, 0, 0) // Round to 3 hour intervals
+        const timestamp = now.getTime()
         map.addSource('listings', {
             type: 'geojson',
-            data: 'listings.geojson',
+            data: `https://akiya-mart-tasks.b-cdn.net/listings.geojson?v=${timestamp}`,
         });
 
         map.addLayer({

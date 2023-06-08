@@ -41,8 +41,8 @@
 }
 
 .listing-image-progress-bar {
-  height: 5px;
-  margin: 0 5px;
+  height: 7px;
+  margin: 0 3px;
 }
 
 .active {
@@ -62,6 +62,10 @@
 
 .listing-header {
   font-size: 3rem;
+}
+
+.listing-subtitle {
+  font-size: .75rem;
 }
 
 .listing-exit-icon {

@@ -3,7 +3,8 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { createHash } from 'crypto'
 
-const secret = 'b44fef9656c878d2b80eb43df0e3e4f874eedc659075f967e0974c324f2e523d'
+const secret = 'be44c83ac5041f3ac351e6e6b5f1609c7b9287116874d8ae3dbaa279376f387b'
+const adminSecret = 'fb936bdf2d61aa2795770ba1f006cfe088d05d601c126ef616fe61a9cb6d0ea2'
 
 function hashSHA256(value: string): string {
     const hash = createHash('sha256')
@@ -23,8 +24,7 @@ const Footer = ({
     const [inputValue, setInputValue] = useState('')
 
     const handleButtonClick = () => {
-        if (hashSHA256(inputValue) === secret) {
-            console.log("UNLOCKED")
+        if (hashSHA256(inputValue) === secret || hashSHA256(inputValue) === adminSecret) {
             setIsPaidTier(true)
         } else {
             setIsPaidTier(false)
