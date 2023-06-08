@@ -65,7 +65,7 @@
 }
 
 .listing-subtitle {
-  font-size: 0.75rem;
+  font-size: .75rem;
 }
 
 .listing-exit-icon {
@@ -157,6 +157,10 @@
   .listing-button {
     margin-top: 10px !important;
   }
+}
+
+.blur-effect {
+  filter: blur(10px);
 }
 
 /*# sourceMappingURL=index.0a55629f.css.map */

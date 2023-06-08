@@ -40,6 +40,7 @@ const display_usd = (amount: number): string => usd_formatter.format(amount)
 
 const Listing = (props: ListingProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   // const description: string[] = JSON.parse(props.description)
   const image_urls: string[] = JSON.parse(props.image_urls)
@@ -63,10 +64,12 @@ const Listing = (props: ListingProps) => {
   }
 
   const onLeftClick = () => {
+    setLoading(true)
     prevImage()
   }
 
   const onRightClick = () => {
+    setLoading(true)
     nextImage()
   }
 
@@ -90,9 +93,13 @@ const Listing = (props: ListingProps) => {
 
       <div className="listing-image-container">
         <img
-          className="listing-image"
+          className={`listing-image ${loading ? "blur-effect" : ""}`}
           src={image_urls[currentImageIndex]}
-        ></img>
+          onLoad={() => {
+            setLoading(false)
+          }}
+        />
+
         <div
           className="listing-interactive-image-div left"
           onClick={onLeftClick}

@@ -167,11 +167,11 @@
     /* transform: translate(-50%, -50%); */
   }
 
-  .listing-exit-icon {
-    /* font-size: 1rem; */
-  }
-
   .listing-button {
     margin-top: 10px !important;
   }
+}
+
+.blur-effect {
+  filter: blur(10px);
 }
