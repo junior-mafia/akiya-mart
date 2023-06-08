@@ -1,18 +1,26 @@
-import React from 'react'
-import { Slider } from '@mui/material'
-import { useTheme } from '@mui/system'
+import React from "react"
+import { Slider } from "@mui/material"
+import { useTheme } from "@mui/system"
 
 interface RangeSliderProps {
   min: number
   max: number
-  lower: number,
-  upper: number,
-  step: number,
+  lower: number
+  upper: number
+  step: number
   onLowerChange: (lower: number) => void
-  onUpperChange: (upper: number) => void   
+  onUpperChange: (upper: number) => void
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, lower, upper, step, onLowerChange, onUpperChange }) => {
+const RangeSlider: React.FC<RangeSliderProps> = ({
+  min,
+  max,
+  lower,
+  upper,
+  step,
+  onLowerChange,
+  onUpperChange,
+}) => {
   const theme = useTheme()
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
@@ -21,35 +29,34 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, lower, upper, step,
     onUpperChange(_upper)
   }
 
-  const otherPink = '#dcbbcd'
+  const otherPink = "#dcbbcd"
 
   return (
-      <div className="price-slider">
-        <Slider
-          value={[lower, upper]}
-          onChange={handleSliderChange}
-          valueLabelDisplay="auto"
-          min={min}
-          max={max}
-          step={step}
-          sx={{
-            '& .MuiSlider-thumb': {
-              borderColor: theme.palette.primary?.main || otherPink,
-              backgroundColor: theme.palette.primary?.main || otherPink,
-              
-            },
-            '& .MuiSlider-track': {
-              borderColor: theme.palette.primary?.main || otherPink,
-              background: theme.palette.primary?.main || otherPink,
-            },
-            '& .MuiSlider-rail': {
-              opacity: 0.5,
-              borderColor: theme.palette.primary?.main || otherPink,
-              background: theme.palette.primary?.main || otherPink,
-            },
-          }}
-        />
-      </div>
+    <div className="price-slider">
+      <Slider
+        value={[lower, upper]}
+        onChange={handleSliderChange}
+        valueLabelDisplay="auto"
+        min={min}
+        max={max}
+        step={step}
+        sx={{
+          "& .MuiSlider-thumb": {
+            borderColor: theme.palette.primary?.main || otherPink,
+            backgroundColor: theme.palette.primary?.main || otherPink,
+          },
+          "& .MuiSlider-track": {
+            borderColor: theme.palette.primary?.main || otherPink,
+            background: theme.palette.primary?.main || otherPink,
+          },
+          "& .MuiSlider-rail": {
+            opacity: 0.5,
+            borderColor: theme.palette.primary?.main || otherPink,
+            background: theme.palette.primary?.main || otherPink,
+          },
+        }}
+      />
+    </div>
   )
 }
 
