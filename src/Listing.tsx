@@ -130,25 +130,6 @@ const Listing = (props: ListingProps) => {
         className="listing-button"
         variant="contained"
         color="primary"
-        onClick={() => window.open(props.url, "_blank")}
-        sx={{
-          backgroundColor: "#ffabeb",
-          fontFamily: "YuseiMagic",
-          fontSize: "1.0rem",
-          color: "#ffffff",
-          textTransform: "none",
-          "&:hover": {
-            backgroundColor: "#fc80de",
-          },
-        }}
-      >
-        See more images here
-      </Button>
-
-      <Button
-        className="listing-button"
-        variant="contained"
-        color="primary"
         onClick={() => window.open(mapsURL, "_blank")}
         sx={{
           backgroundColor: "#ffabeb",
@@ -161,8 +142,29 @@ const Listing = (props: ListingProps) => {
           },
         }}
       >
-        Google maps view {props.is_geocoded && "(approximate)"}
+        Google Maps {props.is_geocoded && "(approximate)"}
       </Button>
+
+      <Button
+        className="listing-button"
+        variant="contained"
+        color="primary"
+        onClick={() => window.open(props.url, "_blank")}
+        sx={{
+          backgroundColor: "#ffabeb",
+          fontFamily: "YuseiMagic",
+          fontSize: "1.0rem",
+          color: "#ffffff",
+          textTransform: "none",
+          "&:hover": {
+            backgroundColor: "#fc80de",
+          },
+        }}
+      >
+        Real estate website
+      </Button>
+
+      
 
       <div className="listing-subtitle">
         On the market since {formattedTime}
