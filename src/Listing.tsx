@@ -164,8 +164,6 @@ const Listing = (props: ListingProps) => {
         Real estate website
       </Button>
 
-      
-
       <div className="listing-subtitle">
         On the market since {formattedTime}
       </div>

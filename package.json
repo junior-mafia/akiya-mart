@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npx parcel index.html --dist-dir docs",
+    "startV2": "npx parcel indexV2.html --dist-dir app/static",
     "format": "npx prettier --write .",
     "lint": "npx eslint . --ext .ts,.tsx --fix"
   },
