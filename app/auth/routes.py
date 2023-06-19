@@ -4,7 +4,13 @@ from app.auth.register import handle_register
 from app.auth.login import handle_login
 from app.auth.logout import handle_logout
 from flask import request, jsonify
-from flask_login import login_required
+from flask_login import login_required, current_user
+
+
+@bp.route('/is_logged_in', methods=['GET'])
+def is_logged_in():
+    return jsonify({"is_logged_in": current_user.is_authenticated}), 200
+
 
 @bp.route("/register", methods=["POST"])
 def register():

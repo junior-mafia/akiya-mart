@@ -1,0 +1,119 @@
+.footer-container {
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  background-color: #3d3d3d;
+  display: flex;
+  flex-direction: column;
+  font-family: "YuseiMagic";
+  color: #dcdbdc;
+}
+
+.footer-subscribe-container {
+  display: flex;
+}
+
+.footer-subscribe-message {
+  font-size: 1rem;
+}
+
+.footer-subscribe-button {
+  font-family: "YuseiMagic" !important;
+  padding: 15px !important;
+}
+
+.footer-unlock-container {
+  display: flex;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.footer-unlock-input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-family: "YuseiMagic" !important;
+}
+
+.footer-unlock-button {
+  margin-left: 10px !important;
+}
+
+/* cellphone-sized screens */
+@media (max-width: 767px) {
+  .footer-container {
+    width: calc(100% - 20px - 20px);
+    padding: 20px;
+  }
+
+  .footer-subscribe-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-subscribe-button {
+    margin-top: 10px !important;
+    width: 100%;
+  }
+
+  .footer-unlock-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .footer-unlock-input-container {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .footer-unlock-input {
+    width: 60%;
+  }
+
+  .footer-unlock-button {
+    width: 40%;
+  }
+}
+
+/* Laptop-sized screens */
+@media (min-width: 768px) {
+  .footer-container {
+    width: calc(100% - 20px - 20px);
+    padding: 20px;
+  }
+
+  .footer-subscribe-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-subscribe-button {
+    margin-left: 20px !important;
+    min-width: 200px !important;
+  }
+
+  .footer-unlock-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-unlock-input-container {
+    margin-top: 0px;
+  }
+
+  .footer-unlock-input {
+    margin-left: 10px !important;
+  }
+
+  .footer-unlock-input {
+    min-width: 200px !important;
+  }
+
+  .footer-unlock-button {
+    min-width: 200px !important;
+  }
+}

@@ -7,7 +7,7 @@ def handle_login(email, password_candidate):
     if error:
         return None, error
     if user is None:
-        return None, "User not found"
+        return None, "Email not found"
 
     if not bcrypt.check_password_hash(user.hashed_password, password_candidate):
         return None, "Incorrect password"

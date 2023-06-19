@@ -30,5 +30,4 @@ def create_app(config_class=Config):
 def load_user(user_id):
     # This is for flask-login so we are forced to ignore errors
     user, _ = fetch_user_by_id(user_id)
-    print("USER LOADER", user)
     return user
