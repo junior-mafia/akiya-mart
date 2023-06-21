@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npx parcel index.html --dist-dir docs",
-    "startV2": "npx parcel indexV2.html --dist-dir app/static --no-hmr",
+    "startV2": "npx parcel indexV2.html --dist-dir app/build --no-hmr",
     "format": "npx prettier --write .",
     "lint": "npx eslint . --ext .ts,.tsx --fix"
   },
@@ -18,7 +18,8 @@
     "mapbox-gl": "^2.14.1",
     "parcel": "^2.8.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.13.0"
   },
   "devDependencies": {
     "@types/mapbox-gl": "^2.7.10",

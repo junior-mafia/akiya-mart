@@ -2,6 +2,7 @@ from app.auth.repo import fetch_user_by_email
 from app.extensions import bcrypt
 from flask_login import login_user
 
+
 def handle_login(email, password_candidate):
     user, error = fetch_user_by_email(email)
     if error:

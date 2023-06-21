@@ -4,8 +4,9 @@ from app.extensions import db, bcrypt, login_manager
 from app.extensions import login_manager
 from app.auth.repo import fetch_user_by_id
 
+
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="build")
     app.config.from_object(config_class)
 
     # Initialize Flask extensions here
@@ -25,6 +26,7 @@ def create_app(config_class=Config):
     app.register_blueprint(bp_auth, url_prefix="/auth")
 
     return app
+
 
 @login_manager.user_loader
 def load_user(user_id):

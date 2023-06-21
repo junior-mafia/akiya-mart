@@ -14,8 +14,7 @@ interface IsLoggedInResponse {
   is_logged_in: boolean
 }
 
-const isLoggedIn = async (
-): Promise<IsLoggedInResponse> => {
+const isLoggedIn = async (): Promise<IsLoggedInResponse> => {
   const response = await fetch("/auth/is_logged_in", {
     method: "GET",
     headers: {
@@ -25,7 +24,7 @@ const isLoggedIn = async (
 
   const data = await response.json()
   if (!response.ok) {
-    const message = `An error has occurred: ${data.message}`
+    const message = `${data.message}`
     throw new Error(message)
   }
 
@@ -46,7 +45,7 @@ const register = async (
 
   const data = await response.json()
   if (!response.ok) {
-    const message = `An error has occurred: ${data.message}`
+    const message = `${data.message}`
     throw new Error(message)
   }
 
@@ -67,7 +66,7 @@ const login = async (
 
   const data = await response.json()
   if (!response.ok) {
-    const message = `An error has occurred: ${data.message}`
+    const message = `${data.message}`
     throw new Error(message)
   }
 
@@ -84,7 +83,7 @@ const logout = async (): Promise<LogoutResponse> => {
 
   const data = await response.json()
   if (!response.ok) {
-    const message = `An error has occurred: ${data.message}`
+    const message = `${data.message}`
     throw new Error(message)
   }
 

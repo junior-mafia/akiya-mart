@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import Button from "@mui/material/Button"
-import './styles/listing.css';
+import "./styles/listing.css"
 
 interface ListingProps {
   price_yen: number

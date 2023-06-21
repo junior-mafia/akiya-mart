@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 import { createHash } from "crypto"
-import './styles/footer.css';
+import "./styles/footer.css"
 
 const secret =
   "be44c83ac5041f3ac351e6e6b5f1609c7b9287116874d8ae3dbaa279376f387b"

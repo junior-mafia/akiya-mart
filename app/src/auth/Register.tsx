@@ -1,14 +1,11 @@
 import React, { useState } from "react"
 import { register } from "./auth"
-import './Register.css';
+import "./styles/authenticator.css"
+import { useNavigate } from "react-router-dom";
 
-interface RegisterProps {
-    setLoginIsVisible: (value: boolean) => void
-    setRegistrationIsVisible: (value: boolean) => void
-    setLogoutIsVisible: (value: boolean) => void
-}
+const Register = () => {
+  const navigate = useNavigate()
 
-const Register = (props: RegisterProps) => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [error, setError] = useState<string>("")
@@ -16,52 +13,55 @@ const Register = (props: RegisterProps) => {
 
   const handleRegister = async () => {
     try {
-        setLoading(true)
-        setError("")
-        await register(email, password)
-        props.setLoginIsVisible(true)
-        props.setRegistrationIsVisible(false)
+      setLoading(true)
+      setError("")
+      await register(email, password)
+      navigate("/")
     } catch (err) {
-        setError(err.message)
+      setError(err.message)
     } finally {
-        setLoading(false)
+      setLoading(false)
     }
   }
 
   return (
-    <div className="form-container">
-        <h1 className="header">New Account</h1>
+    <>
+      <div className="auth-input-field">
+        <label className="auth-input-label" htmlFor="email">
+          Email
+        </label>
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          id="email"
+          className="auth-input"
+          placeholder="Enter email"
+        />
+      </div>
 
-        <div className="input-field">
-            <label className="label" htmlFor="email">Email</label>
-            <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email" 
-                id="email"
-                className="input"
-            />
-        </div>
+      <div className="auth-input-field">
+        <label className="auth-input-label" htmlFor="password">
+          Password
+        </label>
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          type="password"
+          id="password"
+          className="auth-input"
+          placeholder="Create password"
+        />
+      </div>
 
-        <div className="input-field">
-            <label className="label" htmlFor="password">Password</label>
-            <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                id="password"
-                className="input"
-            />
-        </div>
+      {error && <div className="auth-error-message">{error}</div>}
 
-        {error && <div className="error-message">{error}</div>}
-        
-        <div className="input-field">
-            <button onClick={handleRegister} className="submit-button">
-                {loading ? "Registering..." : "Submit"}
-            </button>
-        </div>
-    </div>
+      <div className="auth-input-field">
+        <button onClick={handleRegister} className="auth-submit-button">
+          {loading ? "Registering..." : "Submit"}
+        </button>
+      </div>
+    </>
   )
 }
 

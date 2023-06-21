@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import RangeSlider from "./RangeSlider"
-import './styles/sidebar.css';
+import "./styles/sidebar.css"
 
 interface SidebarProps {
   priceUsdMin: number

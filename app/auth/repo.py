@@ -2,6 +2,7 @@ from app.extensions import db
 from sqlalchemy.exc import IntegrityError
 from app.auth.models.user import unsafe_from_dict
 
+
 def insert_user(user):
     users = db.metadata.tables["users"]
     stmt = users.insert().values(
@@ -32,6 +33,7 @@ def fetch_user_by_email(email):
         user_dict = result._asdict()
         user = unsafe_from_dict(user_dict)
         return user, None
+
 
 def fetch_user_by_id(user_id):
     users = db.metadata.tables["users"]

@@ -20,10 +20,11 @@ class User:
     def get_id(self):
         return str(self.id)
 
+
 def unsafe_from_dict(user_dict):
     return User(
         user_id=user_dict["user_id"],
         email=user_dict["email"],
         hashed_password=user_dict["hashed_password"],
-        active=True, # Forced to have this field by flask-login
+        active=True,  # Forced to have this field by flask-login
     )

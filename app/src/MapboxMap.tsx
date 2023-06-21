@@ -66,6 +66,10 @@ const MapboxMap = ({
     )
     setMap(map)
     ignore.current = true
+
+    return () => {
+      map.remove()
+    }
   }, [])
 
   // Run when map or filter changes
