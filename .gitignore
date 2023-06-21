@@ -16,3 +16,4 @@ __pycache__/
 info.md
 dump.rdb
 app/build/
+.metals/

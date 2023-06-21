@@ -7,7 +7,8 @@ import "../styles/navbar.css"
 import { Link } from "react-router-dom"
 
 const Authenticator = () => {
-  const [registrationIsVisible, setRegistrationIsVisible] = useState<boolean>(false)
+  const [registrationIsVisible, setRegistrationIsVisible] =
+    useState<boolean>(false)
   const [loginIsVisible, setLoginIsVisible] = useState<boolean>(false)
 
   const checkIfLoggedIn = async () => {
@@ -50,7 +51,10 @@ const Authenticator = () => {
       <div className="auth-page-container">
         <div className="navbar-container">
           <div className="navbar-left">
-            <div id="navbar-item-title" className="navbar-item navbar-clickable">
+            <div
+              id="navbar-item-title"
+              className="navbar-item navbar-clickable"
+            >
               <Link to="/">AkiyaMart</Link>
             </div>
           </div>
@@ -62,29 +66,27 @@ const Authenticator = () => {
           <div className="auth-toggle-container">
             <div
               id="auth-toggle-login"
-              className={`auth-toggle-item ${loginIsVisible ? "auth-toggle-item-active" : ""}`}
+              className={`auth-toggle-item ${
+                loginIsVisible ? "auth-toggle-item-active" : ""
+              }`}
               onClick={loginClicked}
             >
               Sign in
             </div>
             <div
               id="auth-toggle-register"
-              className={`auth-toggle-item ${registrationIsVisible ? "auth-toggle-item-active" : ""}`}
+              className={`auth-toggle-item ${
+                registrationIsVisible ? "auth-toggle-item-active" : ""
+              }`}
               onClick={registerClicked}
             >
               New account
             </div>
           </div>
 
-          {loginIsVisible && (
-            <Login
-            />
-          )}
+          {loginIsVisible && <Login />}
 
-          {registrationIsVisible && (
-            <Register
-            />
-          )}
+          {registrationIsVisible && <Register />}
         </div>
       </div>
     </>

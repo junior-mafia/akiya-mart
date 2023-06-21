@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import "./styles/NavBar.css"
 import { Link } from "react-router-dom"
 import { isLoggedIn, logout } from "./auth/auth"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 const NavBar = () => {
   const navigate = useNavigate()
@@ -30,7 +30,7 @@ const NavBar = () => {
   useEffect(() => {
     checkIfLoggedIn()
   }, [])
-  
+
   return (
     <div className="navbar-container transparent-until-hover">
       <div className="navbar-left">
@@ -42,18 +42,21 @@ const NavBar = () => {
         <div id="navbar-item-settings" className="navbar-item navbar-clickable">
           Filters
         </div>
-        
-        {!isSignedIn && 
+
+        {!isSignedIn && (
           <div id="navbar-item-login" className="navbar-item navbar-clickable">
             <Link to="/auth">Sign in</Link>
           </div>
-        }
-        {isSignedIn && 
-          <div id="navbar-item-logout" className="navbar-item navbar-clickable" onClick={handleLogout}>
+        )}
+        {isSignedIn && (
+          <div
+            id="navbar-item-logout"
+            className="navbar-item navbar-clickable"
+            onClick={handleLogout}
+          >
             Sign out
           </div>
-        }
-
+        )}
       </div>
     </div>
   )

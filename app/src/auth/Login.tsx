@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { login } from "./auth"
 import "./styles/authenticator.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
   const navigate = useNavigate()
