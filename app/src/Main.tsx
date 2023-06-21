@@ -30,11 +30,13 @@ const Main = () => {
   const [underXDaysOnMarketUpper, setUnderXDaysOnMarketUpper] =
     useState<number>(defaultUnderXDaysOnMarketMax)
 
+
   return (
     <>
+    <div className="main-container">
       <NavBar />
 
-      {/* <Sidebar
+      <Sidebar
         priceUsdMin={priceUsdMin}
         priceUsdMax={priceUsdMax}
         priceUsdLower={priceUsdLower}
@@ -53,7 +55,7 @@ const Main = () => {
         underXDaysOnMarketUpper={underXDaysOnMarketUpper}
         setUnderXDaysOnMarketLower={setUnderXDaysOnMarketLower}
         setUnderXDaysOnMarketUpper={setUnderXDaysOnMarketUpper}
-      /> */}
+      />
 
       {/* <Footer isPaidTier={isPaidTier} setIsPaidTier={setIsPaidTier} /> */}
 
@@ -68,6 +70,9 @@ const Main = () => {
           underXDaysOnMarketUpper={underXDaysOnMarketUpper}
         />
       </div>
+    </div>
+
+    <div id="container"></div>
     </>
   )
 }

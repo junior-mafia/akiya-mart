@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import RangeSlider from "./RangeSlider"
 import "./styles/sidebar.css"
+import "./styles/main.css"
 
 interface SidebarProps {
   priceUsdMin: number
@@ -51,17 +52,11 @@ const Sidebar = ({
 
   return (
     <div className="sidebar-container">
-      <div className="sidebar-header-container">
-        <div className="sidebar-header">
-          <img className="sidebar-header-logo" src="profile.png" alt="logo" />
-          <div className="sidebar-header-title">あきやマート</div>
-        </div>
-        <button onClick={minOrMaxIt}>
-          <i className="bx bx-slider sidebar-expand-collapse-icon" />
-        </button>
+      <div className="sidebar-item transparent-until-hover" onClick={minOrMaxIt}>
+          Filters
       </div>
 
-      {!isMinimized && (
+      {/* {!isMinimized && (
         <>
           <div className="sidebar-filter">
             <div>Price (USD)</div>
@@ -100,7 +95,7 @@ const Sidebar = ({
             />
           </div>
         </>
-      )}
+      )} */}
     </div>
   )
 }

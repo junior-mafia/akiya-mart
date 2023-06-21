@@ -3,10 +3,19 @@
   src: url("../../../fonts/DINPro-Medium_13936.ttf") format("truetype");
 }
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: "DinProMedium";
+  height: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 p {
@@ -33,4 +42,21 @@ button {
 
 .mapboxgl-popup {
   max-width: 100% !important;
+}
+
+.main-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.transparent-until-hover:hover {
+  opacity: 1;
+}
+
+.transparent-until-hover {
+  opacity: 0.25;
 }

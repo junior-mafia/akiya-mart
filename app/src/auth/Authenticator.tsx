@@ -47,22 +47,24 @@ const Authenticator = () => {
   }, [])
 
   return (
-    <>
-      <div className="auth-page-container">
-        <div className="navbar-container">
+    <div className="auth-page-container">
+      <div className="navbar-container">
           <div className="navbar-left">
-            <div
-              id="navbar-item-title"
-              className="navbar-item navbar-clickable"
-            >
-              <Link to="/">AkiyaMart</Link>
-            </div>
+            <Link to="/">
+              <div
+                id="navbar-item-title"
+                className="navbar-item navbar-clickable"
+              >
+                AkiyaMart
+              </div>
+            </Link>
           </div>
         </div>
 
+      <div className="auth-container">
+
         <div className="auth-item">
           <h3 className="header">Welcome to AkiyaMart</h3>
-
           <div className="auth-toggle-container">
             <div
               id="auth-toggle-login"
@@ -89,7 +91,7 @@ const Authenticator = () => {
           {registrationIsVisible && <Register />}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

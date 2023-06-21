@@ -1,17 +1,20 @@
 .auth-page-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  height: auto;
-  min-height: 100%;
+  align-items: center;
+  justify-content: start;
+  height: 100%;
   width: 100%;
   background-color: #f0ebe9;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
 .auth-item {
@@ -94,4 +97,8 @@ input::placeholder {
 
 .auth-toggle-item-active {
   color: #0069ff;
+}
+
+input:-webkit-autofill {
+  font-family: "DinProMedium" !important;
 }

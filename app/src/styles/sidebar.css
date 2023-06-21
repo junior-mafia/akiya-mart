@@ -1,14 +1,24 @@
 .sidebar-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  background-color: #3d3d3d;
   display: flex;
   flex-direction: column;
-  font-family: "YuseiMagic";
-  color: #dcdbdc;
 }
+
+.sidebar-item {
+  background-color: #f0ebe9;
+  padding: 20px;
+  margin: 20px;
+  width: fit-content;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+
+
+
+
+
+/* 
+
 
 .sidebar-header-title {
   margin-left: 10px;
@@ -44,7 +54,6 @@
   align-items: center;
 }
 
-/* cellphone-sized screens */
 @media (max-width: 767px) {
   .sidebar-container {
     width: calc(100% - 20px - 20px);
@@ -68,7 +77,6 @@
   }
 }
 
-/* Laptop-sized screens */
 @media (min-width: 768px) {
   .sidebar-container {
     margin: 1%;
@@ -91,4 +99,5 @@
   .sidebar-filter {
     margin-top: 5%;
   }
-}
+} 
+*/

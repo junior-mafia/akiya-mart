@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
-import "./styles/NavBar.css"
+import "./styles/main.css"
+import "./styles/navbar.css"
 import { Link } from "react-router-dom"
 import { isLoggedIn, logout } from "./auth/auth"
 import { useNavigate } from "react-router-dom"
@@ -34,19 +35,19 @@ const NavBar = () => {
   return (
     <div className="navbar-container transparent-until-hover">
       <div className="navbar-left">
-        <div id="navbar-item-title" className="navbar-item navbar-clickable">
-          <Link to="/">AkiyaMart</Link>
-        </div>
+        <Link to="/">
+          <div id="navbar-item-title" className="navbar-item navbar-clickable">
+            AkiyaMart
+          </div>
+        </Link>
       </div>
       <div className="navbar-right">
-        <div id="navbar-item-settings" className="navbar-item navbar-clickable">
-          Filters
-        </div>
-
         {!isSignedIn && (
-          <div id="navbar-item-login" className="navbar-item navbar-clickable">
-            <Link to="/auth">Sign in</Link>
-          </div>
+          <Link to="/auth">
+            <div id="navbar-item-login" className="navbar-item navbar-clickable">
+              Sign in
+            </div>
+          </Link>
         )}
         {isSignedIn && (
           <div
