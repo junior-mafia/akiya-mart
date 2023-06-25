@@ -20,7 +20,7 @@ def handle_register(email, password):
         return None, error
     if user is None:
         return None, "Email not found"
-    
+
     login_user(user)
 
     return None, None

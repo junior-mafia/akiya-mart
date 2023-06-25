@@ -52,8 +52,11 @@ const Sidebar = ({
 
   return (
     <div className="sidebar-container">
-      <div className="sidebar-item transparent-until-hover" onClick={minOrMaxIt}>
-          Filters
+      <div
+        className="sidebar-item transparent-until-hover"
+        onClick={minOrMaxIt}
+      >
+        Filters
       </div>
 
       {/* {!isMinimized && (

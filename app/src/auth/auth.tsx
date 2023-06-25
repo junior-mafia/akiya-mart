@@ -14,8 +14,12 @@ interface IsLoggedInResponse {
   is_logged_in: boolean
 }
 
+interface UnlockResponse {
+  message: string
+}
+
 const isLoggedIn = async (): Promise<IsLoggedInResponse> => {
-  const response = await fetch("/auth/is_logged_in", {
+  const response = await fetch("/auth/is-logged-in", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

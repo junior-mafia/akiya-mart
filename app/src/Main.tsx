@@ -30,49 +30,48 @@ const Main = () => {
   const [underXDaysOnMarketUpper, setUnderXDaysOnMarketUpper] =
     useState<number>(defaultUnderXDaysOnMarketMax)
 
-
   return (
     <>
-    <div className="main-container">
-      <NavBar />
+      <div className="main-container">
+        <NavBar />
 
-      <Sidebar
-        priceUsdMin={priceUsdMin}
-        priceUsdMax={priceUsdMax}
-        priceUsdLower={priceUsdLower}
-        priceUsdUpper={priceUsdUpper}
-        onPriceUsdLowerChange={setPriceUsdLower}
-        onPriceUsdUpperChange={setPriceUsdUpper}
-        yearMin={yearMin}
-        yearMax={yearMax}
-        yearLower={yearLower}
-        yearUpper={yearUpper}
-        onYearLowerChange={setYearLower}
-        onYearUpperChange={setYearUpper}
-        underXDaysOnMarketMin={underXDaysOnMarketMin}
-        underXDaysOnMarketMax={underXDaysOnMarketMax}
-        underXDaysOnMarketLower={underXDaysOnMarketLower}
-        underXDaysOnMarketUpper={underXDaysOnMarketUpper}
-        setUnderXDaysOnMarketLower={setUnderXDaysOnMarketLower}
-        setUnderXDaysOnMarketUpper={setUnderXDaysOnMarketUpper}
-      />
-
-      {/* <Footer isPaidTier={isPaidTier} setIsPaidTier={setIsPaidTier} /> */}
-
-      <div style={{ width: "100%", height: "70vh" }}>
-        <MapboxMap
-          isPaidTier={isPaidTier}
+        <Sidebar
+          priceUsdMin={priceUsdMin}
+          priceUsdMax={priceUsdMax}
           priceUsdLower={priceUsdLower}
           priceUsdUpper={priceUsdUpper}
+          onPriceUsdLowerChange={setPriceUsdLower}
+          onPriceUsdUpperChange={setPriceUsdUpper}
+          yearMin={yearMin}
+          yearMax={yearMax}
           yearLower={yearLower}
           yearUpper={yearUpper}
+          onYearLowerChange={setYearLower}
+          onYearUpperChange={setYearUpper}
+          underXDaysOnMarketMin={underXDaysOnMarketMin}
+          underXDaysOnMarketMax={underXDaysOnMarketMax}
           underXDaysOnMarketLower={underXDaysOnMarketLower}
           underXDaysOnMarketUpper={underXDaysOnMarketUpper}
+          setUnderXDaysOnMarketLower={setUnderXDaysOnMarketLower}
+          setUnderXDaysOnMarketUpper={setUnderXDaysOnMarketUpper}
         />
-      </div>
-    </div>
 
-    <div id="container"></div>
+        {/* <Footer isPaidTier={isPaidTier} setIsPaidTier={setIsPaidTier} /> */}
+
+        <div style={{ width: "100%", height: "70vh" }}>
+          <MapboxMap
+            isPaidTier={isPaidTier}
+            priceUsdLower={priceUsdLower}
+            priceUsdUpper={priceUsdUpper}
+            yearLower={yearLower}
+            yearUpper={yearUpper}
+            underXDaysOnMarketLower={underXDaysOnMarketLower}
+            underXDaysOnMarketUpper={underXDaysOnMarketUpper}
+          />
+        </div>
+      </div>
+
+      <div id="container"></div>
     </>
   )
 }

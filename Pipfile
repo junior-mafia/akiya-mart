@@ -11,6 +11,7 @@ psycopg2 = "*"
 flask-bcrypt = "*"
 gunicorn = "*"
 flask-login = "*"
+stripe = "*"
 
 [dev-packages]
 

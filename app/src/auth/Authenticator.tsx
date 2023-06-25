@@ -4,6 +4,7 @@ import Login from "./Login"
 import { isLoggedIn } from "./auth"
 import "./styles/authenticator.css"
 import "../styles/navbar.css"
+import "../styles/splash-page.css"
 import { Link } from "react-router-dom"
 
 const Authenticator = () => {
@@ -13,22 +14,14 @@ const Authenticator = () => {
 
   const checkIfLoggedIn = async () => {
     try {
-      // setLoading(true)
-      // setError("")
       const result = await isLoggedIn()
       if (result.is_logged_in) {
-        // setLoginIsVisible(false)
-        // setRegistrationIsVisible(false)
-        // setLogoutIsVisible(true)
-        console.log("LOGGED IN")
       } else {
         setLoginIsVisible(true)
         setRegistrationIsVisible(false)
       }
     } catch (err) {
-      // setError(err.message)
-    } finally {
-      // setLoading(false)
+      console.log(err.message)
     }
   }
 
@@ -47,44 +40,46 @@ const Authenticator = () => {
   }, [])
 
   return (
-    <div className="auth-page-container">
+    <div className="splash-page-container">
       <div className="navbar-container">
-          <div className="navbar-left">
-            <Link to="/">
-              <div
-                id="navbar-item-title"
-                className="navbar-item navbar-clickable"
-              >
-                AkiyaMart
-              </div>
-            </Link>
-          </div>
+        <div className="navbar-left">
+          <Link to="/">
+            <div
+              id="navbar-item-title"
+              className="navbar-item navbar-clickable"
+            >
+              AkiyaMart
+            </div>
+          </Link>
         </div>
+      </div>
 
-      <div className="auth-container">
-
-        <div className="auth-item">
+      <div className="splash-container">
+        <div className="splash-item">
           <h3 className="header">Welcome to AkiyaMart</h3>
-          <div className="auth-toggle-container">
-            <div
-              id="auth-toggle-login"
-              className={`auth-toggle-item ${
-                loginIsVisible ? "auth-toggle-item-active" : ""
-              }`}
-              onClick={loginClicked}
-            >
-              Sign in
+
+          {(loginIsVisible || registrationIsVisible) && (
+            <div className="auth-toggle-container">
+              <div
+                id="auth-toggle-login"
+                className={`auth-toggle-item ${
+                  loginIsVisible ? "auth-toggle-item-active" : ""
+                }`}
+                onClick={loginClicked}
+              >
+                Sign in
+              </div>
+              <div
+                id="auth-toggle-register"
+                className={`auth-toggle-item ${
+                  registrationIsVisible ? "auth-toggle-item-active" : ""
+                }`}
+                onClick={registerClicked}
+              >
+                New account
+              </div>
             </div>
-            <div
-              id="auth-toggle-register"
-              className={`auth-toggle-item ${
-                registrationIsVisible ? "auth-toggle-item-active" : ""
-              }`}
-              onClick={registerClicked}
-            >
-              New account
-            </div>
-          </div>
+          )}
 
           {loginIsVisible && <Login />}
 

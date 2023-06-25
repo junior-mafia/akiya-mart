@@ -7,7 +7,7 @@ from flask import request, jsonify
 from flask_login import login_required, current_user
 
 
-@bp.route("/is_logged_in", methods=["GET"])
+@bp.route("/is-logged-in", methods=["GET"])
 def is_logged_in():
     return jsonify({"is_logged_in": current_user.is_authenticated}), 200
 
