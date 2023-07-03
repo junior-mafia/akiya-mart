@@ -21,9 +21,7 @@ def register_user(email, password):
 
     user = fetch_user_by_email(email)
     if user is None:
-        raise Exception(
-            f"User not found by email during registration attempt: {email}"
-        )
+        raise Exception(f"User not found by email during registration attempt: {email}")
 
     login_user(user)
     update_last_logged_in_at(user.id)

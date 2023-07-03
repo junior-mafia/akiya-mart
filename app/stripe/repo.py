@@ -1,6 +1,7 @@
 from app.extensions import db
 from sqlalchemy import select
 
+
 def fetch_stripe_event_by_id(event_id):
     stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
     stmt = stripe_webhook_events.select().where(
@@ -22,9 +23,9 @@ def insert_product(product_record):
         now = db.func.now()
         products = db.metadata.tables["products"]
         stmt = products.insert().values(
-            product_id=product_record['product_id'],
-            name=product_record['name'],
-            description=product_record['description'],
+            product_id=product_record["product_id"],
+            name=product_record["name"],
+            description=product_record["description"],
             created_at=now,
             updated_at=now,
         )
@@ -40,11 +41,11 @@ def update_product(product_record):
         products = db.metadata.tables["products"]
         now = db.func.now()
         stmt = (
-            products.update().
-            where(products.c.product_id == product_record['product_id']).
-            values(
-                name=product_record['name'],
-                description=product_record['description'],
+            products.update()
+            .where(products.c.product_id == product_record["product_id"])
+            .values(
+                name=product_record["name"],
+                description=product_record["description"],
                 updated_at=now,
             )
         )
@@ -71,11 +72,11 @@ def insert_price(price_record):
         now = db.func.now()
         prices = db.metadata.tables["prices"]
         stmt = prices.insert().values(
-            price_id=price_record['price_id'],
-            product_id=price_record['product_id'],
-            unit_amount=price_record['unit_amount'],
-            recurring_interval=price_record['recurring_interval'],
-            currency=price_record['currency'],
+            price_id=price_record["price_id"],
+            product_id=price_record["product_id"],
+            unit_amount=price_record["unit_amount"],
+            recurring_interval=price_record["recurring_interval"],
+            currency=price_record["currency"],
             created_at=now,
             updated_at=now,
         )
@@ -91,13 +92,13 @@ def update_price(price_record):
         prices = db.metadata.tables["prices"]
         now = db.func.now()
         stmt = (
-            prices.update().
-            where(prices.c.price_id == price_record['price_id']).
-            values(
-                currency=price_record['currency'],
-                unit_amount=price_record['unit_amount'],
-                recurring_interval=price_record['recurring_interval'],
-                product_id=price_record['product_id'],
+            prices.update()
+            .where(prices.c.price_id == price_record["price_id"])
+            .values(
+                currency=price_record["currency"],
+                unit_amount=price_record["unit_amount"],
+                recurring_interval=price_record["recurring_interval"],
+                product_id=price_record["product_id"],
                 updated_at=now,
             )
         )
@@ -125,7 +126,7 @@ def create_subscription(event, subscriptions_records, subscription_items_records
             subscriptions = db.metadata.tables["subscriptions"]
             subscription_items = db.metadata.tables["subscription_items"]
             stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
-            
+
             stmt1 = (
                 subscriptions.insert()
                 .values(subscriptions_records)
@@ -159,10 +160,9 @@ def create_subscription(event, subscriptions_records, subscription_items_records
 def fetch_all_items():
     products = db.metadata.tables["products"]
     prices = db.metadata.tables["prices"]
-    stmt = (
-        select(prices.c.price_id, prices.c.unit_amount, products.c.name, products.c.description)
-        .select_from(products.join(prices, products.c.product_id == prices.c.product_id))
-    )
+    stmt = select(
+        prices.c.price_id, prices.c.unit_amount, products.c.name, products.c.description
+    ).select_from(products.join(prices, products.c.product_id == prices.c.product_id))
     result = db.session.execute(stmt).fetchall()
     return [row._asdict() for row in result]
 
@@ -200,6 +200,3 @@ def fetch_all_items():
 #         db.session.rollback()
 #         error = f"Failed to deactivate subscription: {str(e)}"
 #         raise InsertSubscriptionError(error)
-
-
-

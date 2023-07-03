@@ -1,7 +1,15 @@
 from app.auth import bp
-from app.auth.validators import validate_registration, validate_login, ValidationException
+from app.auth.validators import (
+    validate_registration,
+    validate_login,
+    ValidationException,
+)
 from app.auth.register import register_user
-from app.auth.login import log_in_user, IncorrectPasswordException, EmailNotFoundException
+from app.auth.login import (
+    log_in_user,
+    IncorrectPasswordException,
+    EmailNotFoundException,
+)
 from app.auth.logout import handle_logout
 from flask import request, jsonify, current_app as app
 from flask_login import login_required, current_user

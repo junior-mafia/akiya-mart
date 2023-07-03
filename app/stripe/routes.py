@@ -13,7 +13,7 @@ from app.stripe.repo import (
     update_price,
     delete_product,
     delete_price,
-    fetch_all_items
+    fetch_all_items,
 )
 from app.user.repo import fetch_user_by_id, fetch_user_by_stripe_customer_id
 import traceback
@@ -22,7 +22,6 @@ import traceback
 SERVER_URL = os.environ.get("SERVER_URL")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
-
 
 
 def validate_price_ids(price_ids):
@@ -56,12 +55,12 @@ def create_checkout_session():
         data = request.get_json()
         price_ids = data.get("priceIds")
         validate_price_ids(price_ids)
-        line_items = [{'price': price_id, 'quantity': 1} for price_id in price_ids]
+        line_items = [{"price": price_id, "quantity": 1} for price_id in price_ids]
 
         user = fetch_user_by_id(current_user.id)
         if user is None:
             raise Exception(f"User not found with id: {current_user.id}")
-        
+
         url = create_stripe_checkout_session(line_items)
         result = {"url": url}
         return jsonify({"success": True, "result": result}), 200
@@ -72,34 +71,13 @@ def create_checkout_session():
         return jsonify({"success": False, "message": user_message}), 500
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # # The purpose of this method is just to create a subscription record
 # # If the subscription record already exists, do nothing as some other process has already created it
 # def handle_customer_subscription_created(event):
-    # subscription = event["data"]["object"]
-    # subscription_id = subscription["id"]
-    # # We assume only 1 item per subscription
-    # price_ids = [item["price"]["id"] for item in subscription["items"]["data"]]
+# subscription = event["data"]["object"]
+# subscription_id = subscription["id"]
+# # We assume only 1 item per subscription
+# price_ids = [item["price"]["id"] for item in subscription["items"]["data"]]
 
 
 #     customer_email = subscription["customer_email"]
@@ -114,29 +92,31 @@ def create_checkout_session():
 
 
 def handle_invoice_payment_succeeded(event):
-    invoice_object = event['data']['object']
-    customer_id = invoice_object['customer']
+    invoice_object = event["data"]["object"]
+    customer_id = invoice_object["customer"]
     user = fetch_user_by_stripe_customer_id(customer_id)
-    line_items = invoice_object['lines']['data']
-    
+    line_items = invoice_object["lines"]["data"]
+
     subscription_records = set()
     subscription_item_records = []
     for line_item in line_items:
-        if 'subscription' in line_item: # Could be items in the invoice that are NOT part of a subscription
-            subscription_id = line_item['subscription']
+        if (
+            "subscription" in line_item
+        ):  # Could be items in the invoice that are NOT part of a subscription
+            subscription_id = line_item["subscription"]
             subscription_record = {
                 "subscription_id": subscription_id,
                 "user_id": user.id,
             }
             subscription_records.add(subscription_record)
 
-            price_id = line_item['price']['id']
+            price_id = line_item["price"]["id"]
             subscription_item_record = {
                 "subscription_id": subscription_id,
                 "price_id": price_id,
             }
             subscription_item_records.append(subscription_item_record)
-    
+
     create_subscription(event, subscription_records, subscription_item_records)
 
 
@@ -157,12 +137,6 @@ def handle_customer_subscription_deleted(event):
     pass
 
 
-
-
-
-
-
-
 def handle_product_created(event):
     product_data = event["data"]["object"]
     product_record = {
@@ -171,6 +145,7 @@ def handle_product_created(event):
         "description": product_data["description"],
     }
     insert_product(product_record)
+
 
 def handle_product_updated(event):
     product_data = event["data"]["object"]
@@ -181,39 +156,44 @@ def handle_product_updated(event):
     }
     update_product(product_record)
 
+
 def handle_product_deleted(event):
     product_data = event["data"]["object"]
     product_id = product_data["id"]
     delete_product(product_id)
 
+
 def handle_price_created(event):
     price_data = event["data"]["object"]
-    recurring = price_data.get('recurring', {})
+    recurring = price_data.get("recurring", {})
     price_record = {
         "price_id": price_data["id"],
         "product_id": price_data["product"],
         "currency": price_data["currency"],
         "unit_amount": price_data["unit_amount"],
-        "recurring_interval": recurring.get('interval') if recurring else None,
+        "recurring_interval": recurring.get("interval") if recurring else None,
     }
     insert_price(price_record)
 
+
 def handle_price_updated(event):
     price_data = event["data"]["object"]
-    recurring = price_data.get('recurring', {})
+    recurring = price_data.get("recurring", {})
     price_record = {
         "price_id": price_data["id"],
         "product_id": price_data["product"],
         "currency": price_data["currency"],
         "unit_amount": price_data["unit_amount"],
-        "recurring_interval": recurring.get('interval') if recurring else None,
+        "recurring_interval": recurring.get("interval") if recurring else None,
     }
     update_price(price_record)
+
 
 def handle_price_deleted(event):
     price_data = event["data"]["object"]
     price_id = price_data["id"]
     delete_price(price_id)
+
 
 def process_event(event):
     event_type = event["type"]
@@ -251,10 +231,15 @@ def webhook():
         db_event = fetch_stripe_event_by_id(event["id"])
         if not db_event:
             env = os.environ.get("ENVIRONMENT")
-            ok_to_process_event = (event['livemode'] and env == 'PROD') or (not event['livemode'] and env == 'DEV')
+            ok_to_process_event = (event["livemode"] and env == "PROD") or (
+                not event["livemode"] and env == "DEV"
+            )
             if ok_to_process_event:
                 process_event(event)
-        return jsonify({"success": True}), 200 # Stripe just needs to see a 2xx status code
+        return (
+            jsonify({"success": True}),
+            200,
+        )  # Stripe just needs to see a 2xx status code
     except Exception as e:
         try:
             error = f"Exception during Stripe webhook: {str(e)} {event}"
@@ -263,7 +248,7 @@ def webhook():
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500
-        
+
 
 @bp.route("/products", methods=["GET"])
 def products():

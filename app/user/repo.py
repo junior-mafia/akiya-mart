@@ -41,9 +41,7 @@ def fetch_user_by_id(user_id):
 
 def fetch_user_by_stripe_customer_id(stripe_customer_id):
     users = db.metadata.tables["users"]
-    stmt = users.select().where(
-        users.c.stripe_customer_id == stripe_customer_id
-    )
+    stmt = users.select().where(users.c.stripe_customer_id == stripe_customer_id)
     result = db.session.execute(stmt).fetchone()
     if result is None:
         return None
