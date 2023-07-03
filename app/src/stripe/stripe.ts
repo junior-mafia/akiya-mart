@@ -1,23 +1,45 @@
-interface UnlockResponse {
-  message: string
+interface CreateCheckoutSessionResponse {
   url: string
 }
 
-const unlock = async (productId: string): Promise<UnlockResponse> => {
+interface Products {
+  price_id: string
+  unit_amount: number
+  name: string
+  description: string
+}
+
+const createCheckoutSession = async (priceIds: string[]): Promise<CreateCheckoutSessionResponse> => {
   const response = await fetch("/stripe/create-checkout-session", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ productId }),
+    body: JSON.stringify({ priceIds }),
   })
   const data = await response.json()
   if (!response.ok) {
-    const message = `${data.message} ${data.details}`
+    const message = `${data.message}`
     throw new Error(message)
+  } else {
+    return data.result
   }
-
-  return data
 }
 
-export { unlock }
+const fetchProducts = async (): Promise<Products[]> => {
+  const response = await fetch("/stripe/products", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  } else {
+    return data
+  }
+}
+
+export { createCheckoutSession, fetchProducts }

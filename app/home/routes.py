@@ -1,4 +1,4 @@
-from app.main import bp
+from app.home import bp
 from flask import send_from_directory, current_app
 
 

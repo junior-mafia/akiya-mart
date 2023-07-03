@@ -1,9 +1,10 @@
 class User:
-    def __init__(self, user_id, email, hashed_password, active):
+    def __init__(self, user_id, email, hashed_password, stripe_customer_id, active):
         self.id = user_id
         self.email = email
         self.hashed_password = hashed_password
         self.active = active
+        self.stripe_customer_id = stripe_customer_id
 
     @property
     def is_authenticated(self):
@@ -21,10 +22,11 @@ class User:
         return str(self.id)
 
 
-def unsafe_from_dict(user_dict):
+def from_dict(user_dict):
     return User(
         user_id=user_dict["user_id"],
         email=user_dict["email"],
         hashed_password=user_dict["hashed_password"],
+        stripe_customer_id=user_dict["stripe_customer_id"],
         active=True,  # Forced to have this field by flask-login
     )

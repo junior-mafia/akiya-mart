@@ -2,7 +2,7 @@ from flask import Flask
 from config import Config
 from app.extensions import db, bcrypt, login_manager
 from app.extensions import login_manager
-from app.auth.repo import fetch_user_by_id
+from app.user.repo import fetch_user_by_id
 
 
 def create_app(config_class=Config):
@@ -17,9 +17,9 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
 
     # Register blueprints here
-    from app.main import bp as bp_main
+    from app.home import bp as bp_home
 
-    app.register_blueprint(bp_main)
+    app.register_blueprint(bp_home)
 
     from app.auth import bp as bp_auth
 
@@ -35,5 +35,5 @@ def create_app(config_class=Config):
 @login_manager.user_loader
 def load_user(user_id):
     # This is for flask-login so we are forced to ignore errors
-    user, _ = fetch_user_by_id(user_id)
+    user = fetch_user_by_id(user_id)
     return user

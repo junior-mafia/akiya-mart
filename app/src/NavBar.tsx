@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import "./styles/main.css"
 import "./styles/navbar.css"
 import { Link } from "react-router-dom"
-import { isLoggedIn, logout } from "./auth/auth"
-import { unlock } from "./stripe/stripe"
+import { checkIfIsLoggedIn, logout } from "./auth/auth"
+import { createCheckoutSession, fetchProducts } from "./stripe/stripe"
 import { useNavigate } from "react-router-dom"
 
 const NavBar = () => {
@@ -12,8 +12,8 @@ const NavBar = () => {
 
   const checkIfLoggedIn = async () => {
     try {
-      const result = await isLoggedIn()
-      setIsSignedIn(result.is_logged_in)
+      const isLoggedIn = await checkIfIsLoggedIn()
+      setIsSignedIn(isLoggedIn)
     } catch (err) {
       console.log(err.message)
     }
@@ -32,8 +32,9 @@ const NavBar = () => {
   const handleUnlock = async () => {
     try {
       if (isSignedIn) {
-        const productId = "PREMIUM"
-        const result = await unlock(productId)
+        const products = await fetchProducts()      
+        const selectedPriceIds = [products[0].price_id]
+        const result = await createCheckoutSession(selectedPriceIds)
         //@ts-ignore
         window.location = result.url
       } else {

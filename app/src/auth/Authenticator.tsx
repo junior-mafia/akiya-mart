@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Register from "./Register"
 import Login from "./Login"
-import { isLoggedIn } from "./auth"
+import { checkIfIsLoggedIn } from "./auth"
 import "./styles/authenticator.css"
 import "../styles/navbar.css"
 import "../styles/splash-page.css"
@@ -14,8 +14,8 @@ const Authenticator = () => {
 
   const checkIfLoggedIn = async () => {
     try {
-      const result = await isLoggedIn()
-      if (result.is_logged_in) {
+      const isLoggedIn = await checkIfIsLoggedIn()
+      if (isLoggedIn) {
       } else {
         setLoginIsVisible(true)
         setRegistrationIsVisible(false)

@@ -10,29 +10,20 @@ interface LogoutResponse {
   message: string
 }
 
-interface IsLoggedInResponse {
-  is_logged_in: boolean
-}
-
-interface UnlockResponse {
-  message: string
-}
-
-const isLoggedIn = async (): Promise<IsLoggedInResponse> => {
+const checkIfIsLoggedIn = async (): Promise<boolean> => {
   const response = await fetch("/auth/is-logged-in", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   })
-
   const data = await response.json()
   if (!response.ok) {
     const message = `${data.message}`
     throw new Error(message)
   }
 
-  return data
+  return data.result.is_logged_in
 }
 
 const register = async (
@@ -94,4 +85,4 @@ const logout = async (): Promise<LogoutResponse> => {
   return data
 }
 
-export { register, login, logout, isLoggedIn }
+export { register, login, logout, checkIfIsLoggedIn }

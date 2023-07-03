@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { login } from "./auth"
+import "../styles/splash-page.css"
 import "./styles/authenticator.css"
 import { useNavigate } from "react-router-dom"
 
@@ -26,7 +27,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="auth-input-field">
+      <div className="splash-input-field">
         <label className="auth-input-label" htmlFor="email">
           Email
         </label>
@@ -40,7 +41,7 @@ const Login = () => {
         />
       </div>
 
-      <div className="auth-input-field">
+      <div className="splash-input-field">
         <label className="auth-input-label" htmlFor="password">
           Password
         </label>
@@ -56,8 +57,8 @@ const Login = () => {
 
       {error && <div className="auth-error-message">{error}</div>}
 
-      <div className="auth-input-field">
-        <button onClick={handleLogin} className="auth-submit-button">
+      <div className="splash-input-field">
+        <button onClick={handleLogin} className="splash-submit-button">
           {loading ? "Logging In..." : "Sign In"}
         </button>
       </div>
