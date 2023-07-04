@@ -13,6 +13,7 @@ from app.auth.login import (
 from app.auth.logout import handle_logout
 from flask import request, jsonify, current_app as app
 from flask_login import login_required, current_user
+import traceback
 
 
 @bp.route("/is-logged-in", methods=["GET"])
@@ -25,7 +26,8 @@ def is_logged_in():
             200,
         )
     except Exception as e:
-        error = f"Exception during check to see if a user is logged in: {str(e)}"
+        stack_trace = traceback.format_exc()
+        error = f"Exception during check to see if a user is logged in: {str(e)}\n{stack_trace}"
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500
@@ -46,7 +48,8 @@ def register():
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 400
     except Exception as e:
-        error = f"Exception during user registration: {str(e)}"
+        stack_trace = traceback.format_exc()
+        error = f"Exception during user registration: {str(e)}\n{stack_trace}"
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500
@@ -77,7 +80,8 @@ def login():
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 400
     except Exception as e:
-        error = f"Exception during user login: {str(e)}"
+        stack_trace = traceback.format_exc()
+        error = f"Exception during user login: {str(e)}\n{stack_trace}"
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500
@@ -90,7 +94,8 @@ def logout():
         handle_logout()
         return jsonify({"success": True}), 200
     except Exception as e:
-        error = f"Exception during user logout: {str(e)}"
+        stack_trace = traceback.format_exc()
+        error = f"Exception during user logout: {str(e)}\n{stack_trace}"
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500

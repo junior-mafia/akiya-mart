@@ -12,7 +12,7 @@ CREATE TABLE users (
 
 CREATE TABLE stripe_webhook_events (
     event_id VARCHAR(255) PRIMARY KEY,
-    type VARCHAR(255) NOT NULL, 
+    type VARCHAR(255) NOT NULL,
     received_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -20,8 +20,8 @@ CREATE TABLE products (
     product_id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
 );
 
 CREATE TABLE prices (
@@ -30,50 +30,32 @@ CREATE TABLE prices (
     unit_amount INT NOT NULL, -- cents for USD
     recurring_interval VARCHAR(255),
     product_id VARCHAR(255) NOT NULL REFERENCES products(product_id),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
 );
-
-
-
-
-
-
 
 CREATE TABLE subscriptions (
     subscription_id VARCHAR(255) PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(user_id),
-    invoice_activated_at TIMESTAMP,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    cancelled_at TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL , 
+    updated_at TIMESTAMP NOT NULL,
+    cancelled_at TIMESTAMP
 );
 
 CREATE TABLE subscription_items (
     id SERIAL PRIMARY KEY,
     subscription_id VARCHAR(255) REFERENCES subscriptions(subscription_id),
     price_id VARCHAR(255) NOT NULL REFERENCES prices(price_id),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    cancelled_at TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
 );
-
-
-
-
-
-
-
-
-
-
 
 CREATE TABLE invoices (
     invoice_id VARCHAR(255) PRIMARY KEY,
-    subscription_id VARCHAR(255) NOT NULL REFERENCES subscriptions(subscription_id),
+    subscription_id VARCHAR(255) NOT NULL,
     currency VARCHAR(3) NOT NULL,
     amount_due INT NOT NULL, -- cents for USD
-    paid_amount INT, -- cents for USD, might be NULL if the payment failed
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    amount_paid INT, -- cents for USD, might be NULL if the payment failed
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
 );

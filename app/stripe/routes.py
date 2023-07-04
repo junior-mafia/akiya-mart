@@ -6,6 +6,7 @@ from flask_login import login_required, current_user
 from app.stripe.repo import (
     fetch_stripe_event_by_id,
     create_subscription,
+    insert_or_update_invoice,
     fetch_prices_by_ids,
     insert_product,
     insert_price,
@@ -17,6 +18,7 @@ from app.stripe.repo import (
 )
 from app.user.repo import fetch_user_by_id, fetch_user_by_stripe_customer_id
 import traceback
+from datetime import datetime
 
 
 SERVER_URL = os.environ.get("SERVER_URL")
@@ -71,66 +73,88 @@ def create_checkout_session():
         return jsonify({"success": False, "message": user_message}), 500
 
 
-# # The purpose of this method is just to create a subscription record
-# # If the subscription record already exists, do nothing as some other process has already created it
-# def handle_customer_subscription_created(event):
-# subscription = event["data"]["object"]
-# subscription_id = subscription["id"]
-# # We assume only 1 item per subscription
-# price_ids = [item["price"]["id"] for item in subscription["items"]["data"]]
 
 
-#     customer_email = subscription["customer_email"]
-#     user = fetch_user_by_email(customer_email)
-#     subscription_record = {
-#         "subscription_id": subscription_id,
-#         "user_id": user.id,
-#         "price_id": price_id,
-#         "is_active": False,
-#     }
-#     create_subscription(subscription_record)
+
+
+
+
+
+
+
+def handle_customer_subscription_created(event):
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
+    subscription = event["data"]["object"]
+    subscription_id = subscription["id"]
+    customer_id = subscription["customer"]
+    user = fetch_user_by_stripe_customer_id(customer_id)
+    subscription_record = {
+        "subscription_id": subscription_id,
+        "user_id": user.id,
+        "created_at": event_timestamp,
+        "updated_at": event_timestamp,
+    }
+
+    line_items = subscription["items"]["data"]
+    subscription_item_records = []
+    for line_item in line_items:
+        price_id = line_item["price"]["id"]
+        subscription_item_record = {
+            "subscription_id": subscription_id,
+            "price_id": price_id,
+            "created_at": event_timestamp,
+            "updated_at": event_timestamp,
+        }
+        subscription_item_records.append(subscription_item_record)
+
+    create_subscription(event, subscription_record, subscription_item_records)
 
 
 def handle_invoice_payment_succeeded(event):
-    invoice_object = event["data"]["object"]
-    customer_id = invoice_object["customer"]
-    user = fetch_user_by_stripe_customer_id(customer_id)
-    line_items = invoice_object["lines"]["data"]
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
+    invoice = event["data"]["object"]
+    invoice_id = invoice["id"]
+    subscription_id = invoice["subscription"]
+    currency = invoice["currency"]
+    amount_due = invoice["amount_due"]
+    amount_paid = invoice["amount_paid"]
+    invoice_record = {
+        "invoice_id": invoice_id,
+        "subscription_id": subscription_id,
+        "currency": currency,
+        "amount_due": amount_due,
+        "amount_paid": amount_paid,
+        "created_at": event_timestamp,
+        "updated_at": event_timestamp,
+    }
 
-    subscription_records = set()
-    subscription_item_records = []
-    for line_item in line_items:
-        if (
-            "subscription" in line_item
-        ):  # Could be items in the invoice that are NOT part of a subscription
-            subscription_id = line_item["subscription"]
-            subscription_record = {
-                "subscription_id": subscription_id,
-                "user_id": user.id,
-            }
-            subscription_records.add(subscription_record)
+    insert_or_update_invoice(invoice_record)
 
-            price_id = line_item["price"]["id"]
-            subscription_item_record = {
-                "subscription_id": subscription_id,
-                "price_id": price_id,
-            }
-            subscription_item_records.append(subscription_item_record)
-
-    create_subscription(event, subscription_records, subscription_item_records)
 
 
 def handle_invoice_payment_failed(event):
-    # Requires a subscription record
-    # # Create if not exists
-    # # # is_active=False
-    # # # ON CONFLICT UPDATE is_active = False
-    # Insert this (failed) invoice record
-    # Transactional!
-    pass
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
+    invoice = event["data"]["object"]
+    invoice_id = invoice["id"]
+    subscription_id = invoice["subscription"]
+    currency = invoice["currency"]
+    amount_due = invoice["amount_due"]
+    amount_paid = invoice["amount_paid"]
+    invoice_record = {
+        "invoice_id": invoice_id,
+        "subscription_id": subscription_id,
+        "currency": currency,
+        "amount_due": amount_due,
+        "amount_paid": amount_paid,
+        "created_at": event_timestamp,
+        "updated_at": event_timestamp,
+    }
+
+    insert_or_update_invoice(invoice_record)
 
 
 def handle_customer_subscription_deleted(event):
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
     # subscription = event["data"]["object"]
     # subscription_id = subscription["id"]
     # deactivate_subscription(subscription_id)
@@ -138,21 +162,25 @@ def handle_customer_subscription_deleted(event):
 
 
 def handle_product_created(event):
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
     product_data = event["data"]["object"]
     product_record = {
         "product_id": product_data["id"],
         "name": product_data["name"],
         "description": product_data["description"],
+        "now": event_timestamp,
     }
     insert_product(product_record)
 
 
 def handle_product_updated(event):
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
     product_data = event["data"]["object"]
     product_record = {
         "product_id": product_data["id"],
         "name": product_data["name"],
         "description": product_data["description"],
+        "now": event_timestamp,
     }
     update_product(product_record)
 
@@ -164,6 +192,7 @@ def handle_product_deleted(event):
 
 
 def handle_price_created(event):
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
     price_data = event["data"]["object"]
     recurring = price_data.get("recurring", {})
     price_record = {
@@ -172,11 +201,13 @@ def handle_price_created(event):
         "currency": price_data["currency"],
         "unit_amount": price_data["unit_amount"],
         "recurring_interval": recurring.get("interval") if recurring else None,
+        "now": event_timestamp,
     }
     insert_price(price_record)
 
 
 def handle_price_updated(event):
+    event_timestamp = datetime.utcfromtimestamp(event["created"])
     price_data = event["data"]["object"]
     recurring = price_data.get("recurring", {})
     price_record = {
@@ -185,6 +216,7 @@ def handle_price_updated(event):
         "currency": price_data["currency"],
         "unit_amount": price_data["unit_amount"],
         "recurring_interval": recurring.get("interval") if recurring else None,
+        "now": event_timestamp,
     }
     update_price(price_record)
 
@@ -197,12 +229,14 @@ def handle_price_deleted(event):
 
 def process_event(event):
     event_type = event["type"]
-    if event_type == "invoice.payment_succeeded":
+    if event_type == "customer.subscription.created":
+        handle_customer_subscription_created(event)
+    elif event_type == "customer.subscription.deleted":
+        handle_customer_subscription_deleted(event)
+    elif event_type == "invoice.payment_succeeded":
         handle_invoice_payment_succeeded(event)
     elif event_type == "invoice.payment_failed":
         handle_invoice_payment_failed(event)
-    elif event_type == "customer.subscription.deleted":
-        handle_customer_subscription_deleted(event)
     elif event_type == "product.created":
         handle_product_created(event)
     elif event_type == "product.updated":
@@ -241,10 +275,11 @@ def webhook():
             200,
         )  # Stripe just needs to see a 2xx status code
     except Exception as e:
+        stack_trace = traceback.format_exc()
         try:
-            error = f"Exception during Stripe webhook: {str(e)} {event}"
+            error = f"Exception during Stripe webhook: {str(e)} {event}\n{stack_trace}"
         except:
-            error = f"Exception during Stripe webhook: {str(e)} "
+            error = f"Exception during Stripe webhook: {str(e)}\n{stack_trace}"
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500
