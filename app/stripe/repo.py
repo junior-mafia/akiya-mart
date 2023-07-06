@@ -180,6 +180,7 @@ def fetch_items_by_internal_name(internal_name):
                 products.join(prices, products.c.product_id == prices.c.product_id)
             )
             .where(products.c.internal_name == internal_name)
+            .order_by(prices.c.unit_amount)
         )
         results = db.session.execute(stmt).fetchall()
         return [result._asdict() for result in results]
