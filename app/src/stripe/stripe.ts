@@ -2,14 +2,18 @@ interface CreateCheckoutSessionResponse {
   url: string
 }
 
-interface Products {
+interface Price {
   price_id: string
+  currency: string
   unit_amount: number
+  recurring_interval: string
   name: string
   description: string
 }
 
-const createCheckoutSession = async (priceIds: string[]): Promise<CreateCheckoutSessionResponse> => {
+const createCheckoutSession = async (
+  priceIds: string[]
+): Promise<CreateCheckoutSessionResponse> => {
   const response = await fetch("/stripe/create-checkout-session", {
     method: "POST",
     headers: {
@@ -26,8 +30,8 @@ const createCheckoutSession = async (priceIds: string[]): Promise<CreateCheckout
   }
 }
 
-const fetchProducts = async (): Promise<Products[]> => {
-  const response = await fetch("/stripe/products", {
+const fetchMapPrices = async (): Promise<Price[]> => {
+  const response = await fetch("/stripe/products/map", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -42,4 +46,4 @@ const fetchProducts = async (): Promise<Products[]> => {
   }
 }
 
-export { createCheckoutSession, fetchProducts }
+export { createCheckoutSession, fetchMapPrices, Price }

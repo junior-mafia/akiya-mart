@@ -1,0 +1,99 @@
+.price-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  max-width: 300px;
+  text-align: center;
+}
+
+.price-name {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.price-description {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.price-unit-amount {
+  font-size: 36px;
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.price-recurring-interval {
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.price-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.pricing-interval-toggle-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.pricing-interval-toggle-item {
+  color: #3d3d3d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-width: 125px;
+}
+
+.pricing-interval-toggle-item:hover {
+  color: #0069ff;
+  cursor: pointer;
+}
+
+.pricing-interval-toggle-item-active {
+  color: #0069ff;
+}
+
+.pricing-hero {
+  margin-bottom: 66px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.pricing-header {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#pricing-header-subtitle {
+  color: #c4c4c4;
+}
+
+.pricing-cards-container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}

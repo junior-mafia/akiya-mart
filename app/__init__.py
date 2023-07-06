@@ -29,6 +29,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(bp_stripe, url_prefix="/stripe")
 
+    from app.user import bp as bp_user
+
+    app.register_blueprint(bp_user, url_prefix="/user")
+
     return app
 
 

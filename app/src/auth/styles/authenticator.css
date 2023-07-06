@@ -40,12 +40,12 @@
   cursor: pointer;
 }
 
-input::placeholder {
-  font-family: inherit;
-}
-
 .auth-toggle-item-active {
   color: #0069ff;
+}
+
+input::placeholder {
+  font-family: inherit;
 }
 
 input:-webkit-autofill {

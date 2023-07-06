@@ -1,15 +1,13 @@
 import React from "react"
 import "../styles/splash-page.css"
 import "../styles/navbar.css"
-import { useNavigate,  Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 const Success = () => {
   const navigate = useNavigate()
 
   const message = `
   Thank you for your subscription!
-  You will gain access to all 100k+ listings once we receive confirmation of your payment.
-  This generally only takes a few seconds.
   `
 
   const handleViewMap = () => {

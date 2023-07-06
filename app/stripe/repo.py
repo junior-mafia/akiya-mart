@@ -1,181 +1,159 @@
 from app.extensions import db
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 
 
 def fetch_stripe_event_by_id(event_id):
-    stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
-    stmt = stripe_webhook_events.select().where(
-        stripe_webhook_events.c.event_id == event_id
-    )
-    result = db.session.execute(stmt).fetchone()
-    return result
+    with db.session.begin():
+        stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
+        stmt = stripe_webhook_events.select().where(
+            stripe_webhook_events.c.event_id == event_id
+        )
+        result = db.session.execute(stmt).fetchone()
+        return result
 
 
 def fetch_prices_by_ids(price_ids):
-    prices = db.metadata.tables["prices"]
-    stmt = prices.select().where(prices.c.price_id.in_(price_ids))
-    result = db.session.execute(stmt).fetchall()
-    return result
+    with db.session.begin():
+        prices = db.metadata.tables["prices"]
+        stmt = prices.select().where(prices.c.price_id.in_(price_ids))
+        result = db.session.execute(stmt).fetchall()
+        return result
 
 
-def insert_product(product_record):
+def insert_or_update_product(event, product_record):
     try:
-        products = db.metadata.tables["products"]
-        stmt = products.insert().values(
-            product_id=product_record["product_id"],
-            name=product_record["name"],
-            description=product_record["description"],
-            created_at=product_record["now"],
-            updated_at=product_record["now"],
-        )
-        db.session.execute(stmt)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise e
+        with db.session.begin():
+            products = db.metadata.tables["products"]
+            stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
 
-
-def update_product(product_record):
-    try:
-        products = db.metadata.tables["products"]
-        stmt = (
-            products.update()
-            .where(products.c.product_id == product_record["product_id"])
-            .values(
-                name=product_record["name"],
-                description=product_record["description"],
-                updated_at=product_record["now"],
+            # Fetch existing subscription record
+            existing_product_stmt = select(products.c.updated_at).where(
+                products.c.product_id == product_record["product_id"]
             )
-        )
-        db.session.execute(stmt)
-        db.session.commit()
+            existing_product_result = db.session.execute(
+                existing_product_stmt
+            ).fetchone()
+
+            # Compare updated_at timestamp and proceed if the incoming data is fresher
+            if (
+                not existing_product_result
+                or existing_product_result.updated_at < product_record["updated_at"]
+            ):
+                stmt1 = (
+                    insert(products)
+                    .values(product_record)
+                    .on_conflict_do_update(
+                        index_elements=["product_id"],
+                        set_=dict(
+                            internal_name=insert(products).excluded.internal_name,
+                            name=insert(products).excluded.name,
+                            description=insert(products).excluded.description,
+                            active=insert(products).excluded.active,
+                            updated_at=insert(products).excluded.updated_at,
+                        ),
+                    )
+                )
+                db.session.execute(stmt1)
+
+            stmt2 = stripe_webhook_events.insert().values(
+                event_id=event["id"],
+                event_type=event["type"],
+            )  # Raise on duplicate event
+            db.session.execute(stmt2)
+
+            db.session.commit()
     except Exception as e:
         db.session.rollback()
         raise e
 
 
-def delete_product(product_id):
+def insert_or_update_price(event, price_record):
     try:
-        products = db.metadata.tables["products"]
-        stmt = products.delete().where(products.c.product_id == product_id)
-        db.session.execute(stmt)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise e
+        with db.session.begin():
+            prices = db.metadata.tables["prices"]
+            stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
 
-
-def insert_price(price_record):
-    try:
-        prices = db.metadata.tables["prices"]
-        stmt = prices.insert().values(
-            price_id=price_record["price_id"],
-            product_id=price_record["product_id"],
-            unit_amount=price_record["unit_amount"],
-            recurring_interval=price_record["recurring_interval"],
-            currency=price_record["currency"],
-            created_at=price_record["now"],
-            updated_at=price_record["now"],
-        )
-        db.session.execute(stmt)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise e
-
-
-def update_price(price_record):
-    try:
-        prices = db.metadata.tables["prices"]
-        stmt = (
-            prices.update()
-            .where(prices.c.price_id == price_record["price_id"])
-            .values(
-                currency=price_record["currency"],
-                unit_amount=price_record["unit_amount"],
-                recurring_interval=price_record["recurring_interval"],
-                product_id=price_record["product_id"],
-                updated_at=price_record["now"],
+            # Fetch existing subscription record
+            existing_price_stmt = select(prices.c.updated_at).where(
+                prices.c.price_id == price_record["price_id"]
             )
-        )
-        db.session.execute(stmt)
-        db.session.commit()
+            existing_price_result = db.session.execute(existing_price_stmt).fetchone()
+
+            # Compare updated_at timestamp and proceed if the incoming data is fresher
+            if (
+                not existing_price_result
+                or existing_price_result.updated_at < price_record["updated_at"]
+            ):
+                stmt1 = (
+                    insert(prices)
+                    .values(price_record)
+                    .on_conflict_do_update(
+                        index_elements=["price_id"],
+                        set_=dict(
+                            currency=insert(prices).excluded.currency,
+                            unit_amount=insert(prices).excluded.unit_amount,
+                            recurring_interval=insert(
+                                prices
+                            ).excluded.recurring_interval,
+                            product_id=insert(prices).excluded.product_id,
+                            active=insert(prices).excluded.active,
+                            updated_at=insert(prices).excluded.updated_at,
+                        ),
+                    )
+                )
+                db.session.execute(stmt1)
+
+            stmt2 = stripe_webhook_events.insert().values(
+                event_id=event["id"],
+                event_type=event["type"],
+            )  # Raise on duplicate event
+            db.session.execute(stmt2)
+
+            db.session.commit()
     except Exception as e:
         db.session.rollback()
         raise e
 
 
-def delete_price(price_id):
-    try:
-        prices = db.metadata.tables["prices"]
-        stmt = prices.delete().where(prices.c.price_id == price_id)
-        db.session.execute(stmt)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise e
-
-
-def create_subscription(event, subscriptions_records, subscription_items_records):
+def insert_or_update_subscription(event, subscription_record):
     try:
         with db.session.begin():
             subscriptions = db.metadata.tables["subscriptions"]
-            subscription_items = db.metadata.tables["subscription_items"]
             stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
 
-            stmt1 = (
-                subscriptions.insert()
-                .values(subscriptions_records)
+            # Fetch existing subscription record
+            existing_subscription_stmt = select(subscriptions.c.updated_at).where(
+                subscriptions.c.subscription_id
+                == subscription_record["subscription_id"]
             )
-            db.session.execute(stmt1)
+            existing_subscription_result = db.session.execute(
+                existing_subscription_stmt
+            ).fetchone()
 
-            stmt2 = (
-                subscription_items.insert()
-                .values(subscription_items_records)
-            )
-            db.session.execute(stmt2)
-
-            stmt3 = (
-                stripe_webhook_events.insert()
-                .values(
-                    event_id=event["id"],
-                    event_type=event["type"],
+            # Compare updated_at timestamp and proceed if the incoming data is fresher
+            if (
+                not existing_subscription_result
+                or existing_subscription_result.updated_at
+                < subscription_record["updated_at"]
+            ):
+                stmt1 = (
+                    insert(subscriptions)
+                    .values(subscription_record)
+                    .on_conflict_do_update(
+                        index_elements=["subscription_id"],
+                        set_=dict(
+                            status=insert(subscriptions).excluded.status,
+                            updated_at=insert(subscriptions).excluded.updated_at,
+                        ),
+                    )
                 )
-            )
-            db.session.execute(stmt3)
+                db.session.execute(stmt1)
 
-            db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise e
-
-
-def insert_or_update_invoice(event, invoice_record):
-    try:
-        with db.session.begin():
-            invoices = db.metadata.tables["invoices"]
-            stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
-
-            stmt1 = invoices.insert().values(invoice_record)
-            stmt1 = stmt1.on_conflict_do_update(
-                index_elements=['invoice_id'],
-                condition=(
-                    invoices.c.updated_at < invoice_record['updated_at']
-                ),
-                set_=dict(
-                    amount_paid=stmt1.excluded.amount_paid,
-                    updated_at=db.func.now()
-                )
-            )
-            db.session.execute(stmt1)
-
-            stmt2 = (
-                stripe_webhook_events.insert()
-                .values(
-                    event_id=event["id"],
-                    event_type=event["type"],
-                )
-            )
+            stmt2 = stripe_webhook_events.insert().values(
+                event_id=event["id"],
+                event_type=event["type"],
+            )  # Raise on duplicate event
             db.session.execute(stmt2)
 
             db.session.commit()
@@ -184,46 +162,24 @@ def insert_or_update_invoice(event, invoice_record):
         raise e
 
 
-def fetch_all_items():
-    products = db.metadata.tables["products"]
-    prices = db.metadata.tables["prices"]
-    stmt = select(
-        prices.c.price_id, prices.c.unit_amount, products.c.name, products.c.description
-    ).select_from(products.join(prices, products.c.product_id == prices.c.product_id))
-    result = db.session.execute(stmt).fetchall()
-    return [row._asdict() for row in result]
-
-
-# def deactivate_subscription(event, subscription_id):
-#     try:
-#         with db.session.begin():
-#             now = db.func.now()
-#             stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
-#             stmt1 = (
-#                 stripe_webhook_events.insert()
-#                 .values(
-#                     event_id=event["id"],
-#                     event_type=event["type"],
-#                     created_at=now,
-#                 )
-#                 .on_conflict_do_nothing()
-#             )
-#             db.session.execute(stmt1)
-
-#             subscriptions = db.metadata.tables["subscriptions"]
-#             now = db.func.now()
-#             stmt2 = (
-#                 subscriptions.update()
-#                 .where(subscriptions.c.subscription_id == subscription_id)
-#                 .values(
-#                     is_active=False,
-#                     cancelled_at=now,
-#                     updated_at=now,
-#                 )
-#             )
-#             db.session.execute(stmt2)
-#             db.session.commit()
-#     except Exception as e:
-#         db.session.rollback()
-#         error = f"Failed to deactivate subscription: {str(e)}"
-#         raise InsertSubscriptionError(error)
+def fetch_items_by_internal_name(internal_name):
+    # Could be more than one if there are multiple prices
+    with db.session.begin():
+        products = db.metadata.tables["products"]
+        prices = db.metadata.tables["prices"]
+        stmt = (
+            select(
+                prices.c.price_id,
+                prices.c.currency,
+                prices.c.unit_amount,
+                prices.c.recurring_interval,
+                products.c.name,
+                products.c.description,
+            )
+            .select_from(
+                products.join(prices, products.c.product_id == prices.c.product_id)
+            )
+            .where(products.c.internal_name == internal_name)
+        )
+        results = db.session.execute(stmt).fetchall()
+        return [result._asdict() for result in results]

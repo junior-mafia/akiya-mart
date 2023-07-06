@@ -3,7 +3,6 @@ import "./styles/main.css"
 import "./styles/navbar.css"
 import { Link } from "react-router-dom"
 import { checkIfIsLoggedIn, logout } from "./auth/auth"
-import { createCheckoutSession, fetchProducts } from "./stripe/stripe"
 import { useNavigate } from "react-router-dom"
 
 const NavBar = () => {
@@ -19,30 +18,16 @@ const NavBar = () => {
     }
   }
 
-  const handleLogout = async () => {
+  const handleDashboard = async () => {
     try {
-      await logout()
-      setIsSignedIn(false)
-      navigate("/auth")
+      navigate("/dashboard")
     } catch (err) {
       console.log(err.message)
     }
   }
 
   const handleUnlock = async () => {
-    try {
-      if (isSignedIn) {
-        const products = await fetchProducts()      
-        const selectedPriceIds = [products[0].price_id]
-        const result = await createCheckoutSession(selectedPriceIds)
-        //@ts-ignore
-        window.location = result.url
-      } else {
-        navigate("/auth")
-      }
-    } catch (err) {
-      console.log(err.message)
-    }
+    navigate("/buy")
   }
 
   useEffect(() => {
@@ -64,7 +49,7 @@ const NavBar = () => {
           className="navbar-item navbar-clickable"
           onClick={handleUnlock}
         >
-          Unlock
+          Buy
         </div>
         {!isSignedIn && (
           <Link to="/auth">
@@ -80,9 +65,9 @@ const NavBar = () => {
           <div
             id="navbar-item-logout"
             className="navbar-item navbar-clickable"
-            onClick={handleLogout}
+            onClick={handleDashboard}
           >
-            Sign out
+            Account
           </div>
         )}
       </div>
@@ -91,3 +76,13 @@ const NavBar = () => {
 }
 
 export default NavBar
+
+// {isSignedIn && (
+//   <div
+//     id="navbar-item-logout"
+//     className="navbar-item navbar-clickable"
+//     onClick={handleLogout}
+//   >
+//     Sign out
+//   </div>
+// )}

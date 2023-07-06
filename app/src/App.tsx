@@ -5,6 +5,8 @@ import Main from "./Main"
 import Authenticator from "./auth/Authenticator"
 import Success from "./stripe/Success"
 import Cancel from "./stripe/Cancel"
+import Buy from "./stripe/Buy"
+import Dash from "./dashboard/Dash"
 
 const App = () => {
   return (
@@ -14,6 +16,8 @@ const App = () => {
         <Route path="/auth" element={<Authenticator />} />
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} />
+        <Route path="/buy" element={<Buy />} />
+        <Route path="/dashboard" element={<Dash />} />
       </Routes>
     </HashRouter>
   )
