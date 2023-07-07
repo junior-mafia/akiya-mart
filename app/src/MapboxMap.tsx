@@ -1,8 +1,15 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Map } from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { newMap, setupMap, filterMap, setSource } from "./createMap"
+import {
+  createMap,
+  setupMap,
+  swapMapSource,
+  MapSource,
+  BALLOON_LAYER,
+} from "./map"
 import Listing, { ListingProps } from "./Listing"
+import { fetchActiveSubscription } from "./stripe/stripe"
 
 interface MapboxMapProps {
   isPaidTier: boolean
@@ -14,6 +21,53 @@ interface MapboxMapProps {
   underXDaysOnMarketUpper: number
 }
 
+interface LiteListingFeatures {
+  source: string
+  bukken_id: string
+  price_usd: number
+}
+
+interface FullListingFeatures {
+  source: string
+  bukken_id: string
+  price_usd: number
+}
+
+const freeMapSource: MapSource = {
+  name: "listings-free",
+  url: "https://akiya-mart-tasks.b-cdn.net/lite-listings-free.geojson",
+}
+
+const paidMapSource: MapSource = {
+  name: "listings",
+  url: "https://akiya-mart-tasks.b-cdn.net/lite-listings.geojson",
+}
+
+const fetchListingDetails = async (
+  source: string,
+  bukken_id: string
+): Promise<FullListingFeatures> => {
+  const response = await fetch(`/listings/${source}/${bukken_id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  }
+
+  return data.results
+}
+
+const handleFetchListingDetails = async (source: string, bukken_id: string) => {
+  const result = await fetchListingDetails(source, bukken_id)
+  console.log(result)
+}
+
 const MapboxMap = ({
   isPaidTier,
   priceUsdLower,
@@ -23,10 +77,10 @@ const MapboxMap = ({
   underXDaysOnMarketLower,
   underXDaysOnMarketUpper,
 }: MapboxMapProps) => {
-  const ignore = useRef(false) // Used with React Strict Mode
   const [map, setMap] = useState<Map | undefined>(undefined)
   const [exitedUrl, setExitedUrl] = useState<string | undefined>(undefined)
   const [listings, setListings] = useState<ListingProps[]>([])
+  const [mapSource, setMapSource] = useState<MapSource>(freeMapSource)
 
   const appendExitedUrl = (url) => {
     setExitedUrl(url)
@@ -34,69 +88,70 @@ const MapboxMap = ({
 
   const onFeatureClick = (e, map) => {
     const listings = map
-      .queryRenderedFeatures(e.point, { layers: ["markers"] })
+      .queryRenderedFeatures(e.point, { layers: [BALLOON_LAYER] })
       .map((feature) => {
-        const props = feature.properties as ListingProps
-        const { coordinates } = feature.geometry
-        const longitude = coordinates[0]
-        const latitude = coordinates[1]
-        const fullProps = { ...props, latitude, longitude }
-        return fullProps
+        const { source, bukken_id, price_usd } =
+          feature.properties as LiteListingFeatures
+        console.log(source, bukken_id)
+        handleFetchListingDetails(source, bukken_id)
+
+        // const { coordinates } = feature.geometry
+        // const longitude = coordinates[0]
+        // const latitude = coordinates[1]
+        // const fullProps = { ...props, latitude, longitude }
+        // return fullProps
       })
-    if (listings.length > 0) {
-      setListings(listings)
-    } else {
-      setListings([])
-    }
+    // if (listings.length > 0) {
+    //   setListings(listings)
+    // } else {
+    //   setListings([])
+    // }
   }
 
-  // Run once - idempotent under React Strict Mode
-  useEffect(() => {
-    if (ignore.current) return
-    const blankMap = newMap()
-    const map = setupMap(
-      priceUsdLower,
-      priceUsdUpper,
-      yearLower,
-      yearUpper,
-      underXDaysOnMarketLower,
-      underXDaysOnMarketUpper,
-      blankMap,
-      onFeatureClick
-    )
+  const handleFetchActiveSubscription = async (map: Map) => {
+    const subscriptionId = await fetchActiveSubscription()
+    const mapSource = subscriptionId ? paidMapSource : freeMapSource
+    setupMap(map, mapSource, onFeatureClick)
     setMap(map)
-    ignore.current = true
+  }
 
+  useEffect(() => {
+    const blankMap = createMap()
+    blankMap.on("load", () => {
+      handleFetchActiveSubscription(blankMap)
+    })
+
+    // Clean up on unmount
     return () => {
-      map.remove()
+      blankMap.remove()
     }
   }, [])
 
-  // Run when map or filter changes
-  useEffect(() => {
-    if (!map) return
-    filterMap(
-      priceUsdLower,
-      priceUsdUpper,
-      yearLower,
-      yearUpper,
-      underXDaysOnMarketLower,
-      underXDaysOnMarketUpper,
-      map
-    )
-  }, [
-    priceUsdLower,
-    priceUsdUpper,
-    yearLower,
-    yearUpper,
-    underXDaysOnMarketLower,
-    underXDaysOnMarketUpper,
-  ])
+  // // Run when map or filter changes
+  // useEffect(() => {
+  //   if (!map) return
+  //   filterMap(
+  //     priceUsdLower,
+  //     priceUsdUpper,
+  //     yearLower,
+  //     yearUpper,
+  //     underXDaysOnMarketLower,
+  //     underXDaysOnMarketUpper,
+  //     map
+  //   )
+  // }, [
+  //   priceUsdLower,
+  //   priceUsdUpper,
+  //   yearLower,
+  //   yearUpper,
+  //   underXDaysOnMarketLower,
+  //   underXDaysOnMarketUpper,
+  // ])
 
-  useEffect(() => {
-    if (!map) return
-    setSource(isPaidTier, map)
-  }, [isPaidTier])
+  // useEffect(() => {
+  //   if (!map) return
+  //   setSource(isPaidTier, map)
+  // }, [isPaidTier])
 
   if (exitedUrl) {
     setListings(listings.filter((listing) => listing.url !== exitedUrl))

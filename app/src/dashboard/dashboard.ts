@@ -20,7 +20,7 @@ const fetchDashboardData = async (): Promise<DashboardData> => {
     const message = `${data.message}`
     throw new Error(message)
   } else {
-    return data.result
+    return data.results
   }
 }
 

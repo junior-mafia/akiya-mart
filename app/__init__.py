@@ -33,6 +33,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(bp_user, url_prefix="/user")
 
+    from app.listings import bp as bp_listings
+
+    app.register_blueprint(bp_listings, url_prefix="/listings")
+
     return app
 
 

@@ -2,6 +2,12 @@ interface CreateCheckoutSessionResponse {
   url: string
 }
 
+interface CancelSubscriptionResponse {}
+
+interface FetchActiveSubscriptionResponse {
+  subscription_id: string
+}
+
 interface Price {
   price_id: string
   currency: string
@@ -46,7 +52,7 @@ const fetchMapPrices = async (): Promise<Price[]> => {
   }
 }
 
-const cancelSubscription = async (): Promise<any> => {
+const cancelSubscription = async (): Promise<CancelSubscriptionResponse> => {
   const response = await fetch("/stripe/cancel", {
     method: "POST",
     headers: {
@@ -63,4 +69,28 @@ const cancelSubscription = async (): Promise<any> => {
   return data
 }
 
-export { createCheckoutSession, fetchMapPrices, Price, cancelSubscription }
+const fetchActiveSubscription =
+  async (): Promise<FetchActiveSubscriptionResponse> => {
+    const response = await fetch("/stripe/active-subscription", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      const message = `${data.message}`
+      throw new Error(message)
+    }
+
+    return data.results.subscription_id
+  }
+
+export {
+  createCheckoutSession,
+  fetchMapPrices,
+  Price,
+  cancelSubscription,
+  fetchActiveSubscription,
+}

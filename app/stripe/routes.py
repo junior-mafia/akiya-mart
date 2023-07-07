@@ -6,6 +6,7 @@ from app.stripe.repo import (
     fetch_stripe_event_by_id,
     fetch_items_by_internal_name,
     fetch_non_cancelled_subscription,
+    fetch_active_subscription,
 )
 from app.user.repo import fetch_user_by_id
 import traceback
@@ -102,6 +103,7 @@ def products(internal_name):
 
 
 @bp.route("/cancel", methods=["POST"])
+@login_required
 def cancel():
     try:
         subscription = fetch_non_cancelled_subscription(current_user.id)
@@ -114,6 +116,24 @@ def cancel():
     except Exception as e:
         stack_trace = traceback.format_exc()
         error = f"Exception during cancelling subscription: {str(e)}\n{stack_trace}"
+        user_message = "Oops something went wrong"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 500
+
+
+@bp.route("/active-subscription", methods=["GET"])
+def active_subscription():
+    try:
+        if current_user.is_authenticated:
+            results = fetch_active_subscription(current_user.id)
+        else:
+            results = {"subscription_id": None}
+        return jsonify({"success": True, "results": results}), 200
+    except Exception as e:
+        stack_trace = traceback.format_exc()
+        error = (
+            f"Exception during fetching active subscription: {str(e)}\n{stack_trace}"
+        )
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500

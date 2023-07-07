@@ -19,6 +19,8 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 
 
 def handle_customer_subscription_created(event):
+    print(event)
+
     event_timestamp = datetime.utcfromtimestamp(event["created"])
     subscription = event["data"]["object"]
     subscription_id = subscription["id"]

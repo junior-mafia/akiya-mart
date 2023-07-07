@@ -103,6 +103,7 @@ def fetch_dashboard_data(user_id):
                 .join(products, products.c.product_id == prices.c.product_id)
             )
             .where(users.c.user_id == user_id)
+            .order_by(subscriptions.c.created_at.desc())
         )
 
         result = db.session.execute(stmt).fetchone()
@@ -110,34 +111,3 @@ def fetch_dashboard_data(user_id):
             return None
         else:
             return result._asdict()
-
-
-# def fetch_dashboard_data(user_id):
-#     with db.session.begin():
-#         users = db.metadata.tables["users"]
-#         subscriptions = db.metadata.tables["subscriptions"]
-#         stmt = (
-#             select(
-#                 users.c.email,
-#                 case(
-#                     (subscriptions.c.subscription_id == null(), "free"),
-#                     else_="subscribed",
-#                 ).label("subscription_type"),
-#                 case(
-#                     (subscriptions.c.subscription_id == null(), "active"),
-#                     else_=subscriptions.c.status,
-#                 ).label("subscription_status"),
-#             )
-#             .select_from(
-#                 users.outerjoin(
-#                     subscriptions, users.c.user_id == subscriptions.c.user_id
-#                 )
-#             )
-#             .where(users.c.user_id == user_id)
-#             .order_by(subscriptions.c.updated_at.desc())
-#         )
-#         result = db.session.execute(stmt).fetchone()
-#         if result is None:
-#             return None
-#         else:
-#             return result._asdict()
