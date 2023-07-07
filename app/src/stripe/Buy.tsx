@@ -29,9 +29,11 @@ const PriceCard = (props: PriceCardProps) => {
 
   return (
     <div className="price-card">
-      {props.name === "Pro" && <div className="pricing-best-value">
-        <div>BEST VALUE</div>
-      </div>}
+      {props.name === "Pro" && (
+        <div className="pricing-best-value">
+          <div>BEST VALUE</div>
+        </div>
+      )}
       <h2 className="price-name">{props.name}</h2>
       <p className="price-description">{props.description}</p>
       <div className="price-unit-amount">${props.unit_amount / 100}</div>

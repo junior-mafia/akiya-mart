@@ -46,7 +46,6 @@ const fetchMapPrices = async (): Promise<Price[]> => {
   }
 }
 
-
 const cancelSubscription = async (): Promise<any> => {
   const response = await fetch("/stripe/cancel", {
     method: "POST",

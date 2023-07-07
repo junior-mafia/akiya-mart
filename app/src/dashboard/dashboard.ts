@@ -1,7 +1,11 @@
 interface DashboardData {
   email: string
-  subscription_type: string
-  subscription_status: string
+  subscription_id: string | undefined
+  product_name: string | undefined
+  status: string | undefined
+  currency: string | undefined
+  unit_amount: number | undefined
+  recurring_interval: string | undefined
 }
 
 const fetchDashboardData = async (): Promise<DashboardData> => {

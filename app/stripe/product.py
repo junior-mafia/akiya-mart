@@ -18,7 +18,6 @@ def handle_product_created(event):
 
 
 def handle_product_updated(event):
-    print(event)
     event_timestamp = datetime.utcfromtimestamp(event["created"])
     product_data = event["data"]["object"]
     product_record = {

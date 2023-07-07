@@ -116,10 +116,13 @@ def insert_or_update_price(event, price_record):
         raise e
 
 
-def insert_or_update_subscription(event, subscription_record):
+def insert_or_update_subscription(
+    event, subscription_record, subscription_item_records=None
+):
     try:
         with db.session.begin():
             subscriptions = db.metadata.tables["subscriptions"]
+            subscription_items = db.metadata.tables["subscription_items"]
             stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
 
             # Fetch existing subscription record
@@ -150,11 +153,19 @@ def insert_or_update_subscription(event, subscription_record):
                 )
                 db.session.execute(stmt1)
 
-            stmt2 = stripe_webhook_events.insert().values(
+            if subscription_item_records:
+                stmt2 = (
+                    insert(subscription_items)
+                    .values(subscription_item_records)
+                    .on_conflict_do_nothing()
+                )
+                db.session.execute(stmt2)
+
+            stmt3 = stripe_webhook_events.insert().values(
                 event_id=event["id"],
                 event_type=event["type"],
             )  # Raise on duplicate event
-            db.session.execute(stmt2)
+            db.session.execute(stmt3)
 
             db.session.commit()
     except Exception as e:
@@ -180,6 +191,7 @@ def fetch_items_by_internal_name(internal_name):
                 products.join(prices, products.c.product_id == prices.c.product_id)
             )
             .where(products.c.internal_name == internal_name)
+            .where(products.c.active == True)
             .order_by(prices.c.unit_amount)
         )
         results = db.session.execute(stmt).fetchall()
@@ -192,7 +204,7 @@ def fetch_non_cancelled_subscription(user_id):
         stmt = (
             select(subscriptions.c.subscription_id)
             .where(subscriptions.c.user_id == user_id)
-            .where(subscriptions.c.status != 'canceled')
+            .where(subscriptions.c.status != "canceled")
         )
         result = db.session.execute(stmt).fetchone()
         if result is None:

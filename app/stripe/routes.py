@@ -32,7 +32,9 @@ def create_checkout_session():
     try:
         subscription_id = fetch_non_cancelled_subscription(current_user.id)
         if subscription_id:
-            raise Exception(f"User already has a non-cancelled subscription. user: {current_user.id} {subscription_id}")
+            raise Exception(
+                f"User already has a non-cancelled subscription. user: {current_user.id} {subscription_id}"
+            )
 
         data = request.get_json()
         price_ids = data.get("priceIds")
@@ -104,7 +106,9 @@ def cancel():
     try:
         subscription = fetch_non_cancelled_subscription(current_user.id)
         if not subscription:
-            raise Exception(f"User does not have a non-cancelled subscription. user: {current_user.id} {subscription['subscription_id']}")
+            raise Exception(
+                f"User does not have a non-cancelled subscription. user: {current_user.id} {subscription['subscription_id']}"
+            )
         cancel_subscription(subscription["subscription_id"])
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -113,6 +117,3 @@ def cancel():
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500
-
-
-

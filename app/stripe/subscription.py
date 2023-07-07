@@ -13,6 +13,11 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 # If the subscription status is past_due, unpaid, canceled, or incomplete, then you can deny access.
 
 
+# if subscription['discount'] is not None:
+#     coupon = subscription['discount']['coupon']
+# promotion_code = subscription['discount']['promotion_code']
+
+
 def handle_customer_subscription_created(event):
     event_timestamp = datetime.utcfromtimestamp(event["created"])
     subscription = event["data"]["object"]
@@ -27,21 +32,23 @@ def handle_customer_subscription_created(event):
         "created_at": event_timestamp,  # Will only get inserted on insert not on update
         "updated_at": event_timestamp,
     }
-    insert_or_update_subscription(event, subscription_record)
 
-    # line_items = subscription["items"]["data"]
-    # subscription_item_records = []
-    # for line_item in line_items:
-    #     price_id = line_item["price"]["id"]
-    #     subscription_item_record = {
-    #         "subscription_id": subscription_id,
-    #         "price_id": price_id,
-    #         "created_at": event_timestamp,
-    #         "updated_at": event_timestamp,
-    #     }
-    #     subscription_item_records.append(subscription_item_record)
+    # At the moment there is only one item per subscription
+    line_items = subscription["items"]["data"]
+    subscription_item_records = []
+    for line_item in line_items:
+        price_id = line_item["price"]["id"]
+        subscription_item_record = {
+            "subscription_item_id": line_item["id"],
+            "subscription_id": subscription_id,
+            "price_id": price_id,
+            "created_at": event_timestamp,
+            "updated_at": event_timestamp,
+            "deleted_at": None,
+        }
+        subscription_item_records.append(subscription_item_record)
 
-    # create_subscription(event, subscription_record, subscription_item_records)
+    insert_or_update_subscription(event, subscription_record, subscription_item_records)
 
 
 def handle_customer_subscription_updated(event):

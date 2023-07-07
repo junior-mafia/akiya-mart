@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import "./styles/main.css"
 import "./styles/navbar.css"
 import { Link } from "react-router-dom"
-import { checkIfIsLoggedIn, logout } from "./auth/auth"
+import { checkIfIsLoggedIn } from "./auth/auth"
 import { useNavigate } from "react-router-dom"
 
 const NavBar = () => {
