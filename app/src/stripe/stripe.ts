@@ -42,8 +42,26 @@ const fetchMapPrices = async (): Promise<Price[]> => {
     const message = `${data.message}`
     throw new Error(message)
   } else {
-    return data
+    return data.result.items
   }
 }
 
-export { createCheckoutSession, fetchMapPrices, Price }
+
+const cancelSubscription = async (): Promise<any> => {
+  const response = await fetch("/stripe/cancel", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  }
+
+  return data
+}
+
+export { createCheckoutSession, fetchMapPrices, Price, cancelSubscription }

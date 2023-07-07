@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 from app.stripe.repo import (
     fetch_stripe_event_by_id,
     fetch_items_by_internal_name,
+    fetch_non_cancelled_subscription,
 )
 from app.user.repo import fetch_user_by_id
 import traceback
@@ -16,6 +17,9 @@ from app.stripe.webhook import (
     process_event,
     validate_stripe_event,
 )
+from app.stripe.subscription import (
+    cancel_subscription,
+)
 
 
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
@@ -26,6 +30,10 @@ STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 @login_required
 def create_checkout_session():
     try:
+        subscription_id = fetch_non_cancelled_subscription(current_user.id)
+        if subscription_id:
+            raise Exception(f"User already has a non-cancelled subscription. user: {current_user.id} {subscription_id}")
+
         data = request.get_json()
         price_ids = data.get("priceIds")
         validate_price_ids(price_ids)
@@ -81,10 +89,30 @@ def products(internal_name):
         items = fetch_items_by_internal_name(internal_name)
         if not items:
             raise Exception(f"Zero items found with internal name: {internal_name}")
-        return jsonify(items), 200
+        result = {"items": items}
+        return jsonify({"success": True, "result": result}), 200
     except Exception as e:
         stack_trace = traceback.format_exc()
         error = f"Exception during fetching products: {str(e)}\n{stack_trace}"
         user_message = "Oops something went wrong"
         app.logger.error(error)
         return jsonify({"success": False, "message": user_message}), 500
+
+
+@bp.route("/cancel", methods=["POST"])
+def cancel():
+    try:
+        subscription = fetch_non_cancelled_subscription(current_user.id)
+        if not subscription:
+            raise Exception(f"User does not have a non-cancelled subscription. user: {current_user.id} {subscription['subscription_id']}")
+        cancel_subscription(subscription["subscription_id"])
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        stack_trace = traceback.format_exc()
+        error = f"Exception during cancelling subscription: {str(e)}\n{stack_trace}"
+        user_message = "Oops something went wrong"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 500
+
+
+

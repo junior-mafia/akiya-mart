@@ -3,7 +3,7 @@ import "../styles/splash-page.css"
 import "../styles/navbar.css"
 import { Link } from "react-router-dom"
 
-const Success = () => {
+const CancelPayment = () => {
   return (
     <div className="splash-page-container">
       <div className="navbar-container">
@@ -28,4 +28,4 @@ const Success = () => {
   )
 }
 
-export default Success
+export default CancelPayment

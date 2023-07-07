@@ -184,3 +184,18 @@ def fetch_items_by_internal_name(internal_name):
         )
         results = db.session.execute(stmt).fetchall()
         return [result._asdict() for result in results]
+
+
+def fetch_non_cancelled_subscription(user_id):
+    with db.session.begin():
+        subscriptions = db.metadata.tables["subscriptions"]
+        stmt = (
+            select(subscriptions.c.subscription_id)
+            .where(subscriptions.c.user_id == user_id)
+            .where(subscriptions.c.status != 'canceled')
+        )
+        result = db.session.execute(stmt).fetchone()
+        if result is None:
+            return None
+        else:
+            return result._asdict()

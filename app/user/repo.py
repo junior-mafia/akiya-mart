@@ -94,6 +94,11 @@ def fetch_dashboard_data(user_id):
                 )
             )
             .where(users.c.user_id == user_id)
+            .order_by(subscriptions.c.updated_at.desc())
         )
         result = db.session.execute(stmt).fetchone()
-        return result._asdict()
+        if result is None:
+            return None
+        else:
+            return result._asdict()
+

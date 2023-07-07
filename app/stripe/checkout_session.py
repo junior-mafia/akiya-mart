@@ -29,8 +29,8 @@ def create_stripe_checkout_session_for_subscription(line_items):
         mode="subscription",
         line_items=line_items,
         # Callbacks
-        success_url=f"{SERVER_URL}/#/success",
-        cancel_url=f"{SERVER_URL}/#/cancel",
+        success_url=f"{SERVER_URL}/#/success-payment",
+        cancel_url=f"{SERVER_URL}/#/cancel-payment",
     )
     return checkout_session.url
 

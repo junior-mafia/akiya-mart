@@ -3,7 +3,11 @@ from app.stripe.repo import (
 )
 from app.user.repo import fetch_user_by_stripe_customer_id
 from datetime import datetime
+import os
+import stripe
 
+
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 
 # If the subscription status is active or trialing, then you can grant access.
 # If the subscription status is past_due, unpaid, canceled, or incomplete, then you can deny access.
@@ -55,3 +59,8 @@ def handle_customer_subscription_updated(event):
         "updated_at": event_timestamp,
     }
     insert_or_update_subscription(event, subscription_record)
+
+
+def cancel_subscription(subscription_id):
+    stripe.api_key = STRIPE_SECRET_KEY
+    stripe.Subscription.delete(subscription_id)
