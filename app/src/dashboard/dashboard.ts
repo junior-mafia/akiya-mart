@@ -1,5 +1,6 @@
 interface DashboardData {
   email: string
+  is_admin: boolean
   subscription_id: string | undefined
   product_name: string | undefined
   status: string | undefined

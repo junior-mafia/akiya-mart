@@ -1,7 +1,7 @@
 from app.extensions import db
 from app.user.user import from_dict
-from sqlalchemy import select, case
-from sqlalchemy.sql import null
+from sqlalchemy import select
+from sqlalchemy import cast, Integer
 
 
 def insert_user(user_data):
@@ -85,6 +85,7 @@ def fetch_dashboard_data(user_id):
         stmt = (
             select(
                 users.c.email,
+                users.c.is_admin,
                 subscriptions.c.subscription_id,
                 products.c.name.label("product_name"),
                 subscriptions.c.status,
@@ -92,8 +93,8 @@ def fetch_dashboard_data(user_id):
                 prices.c.unit_amount,
                 prices.c.recurring_interval,
                 promotion_codes.c.code.label("promotion_code"),
-                coupons.c.percent_off,
-                coupons.c.amount_off,
+                cast(coupons.c.percent_off, Integer),
+                cast(coupons.c.amount_off, Integer),
                 coupons.c.currency.label("coupon_currency"),
                 coupons.c.duration,
                 coupons.c.duration_in_months,

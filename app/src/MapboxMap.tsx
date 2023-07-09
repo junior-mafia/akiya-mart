@@ -87,20 +87,23 @@ const MapboxMap = ({
   }
 
   const onFeatureClick = (e, map) => {
-    const listings = map
-      .queryRenderedFeatures(e.point, { layers: [BALLOON_LAYER] })
-      .map((feature) => {
-        const { source, bukken_id, price_usd } =
-          feature.properties as LiteListingFeatures
-        console.log(source, bukken_id)
-        handleFetchListingDetails(source, bukken_id)
+    const listings = map.queryRenderedFeatures(e.point, {
+      layers: [BALLOON_LAYER],
+    })
+    console.log(listings.length)
 
-        // const { coordinates } = feature.geometry
-        // const longitude = coordinates[0]
-        // const latitude = coordinates[1]
-        // const fullProps = { ...props, latitude, longitude }
-        // return fullProps
-      })
+    listings.map((feature) => {
+      const { source, bukken_id, price_usd } =
+        feature.properties as LiteListingFeatures
+      console.log(source, bukken_id)
+      handleFetchListingDetails(source, bukken_id)
+
+      // const { coordinates } = feature.geometry
+      // const longitude = coordinates[0]
+      // const latitude = coordinates[1]
+      // const fullProps = { ...props, latitude, longitude }
+      // return fullProps
+    })
     // if (listings.length > 0) {
     //   setListings(listings)
     // } else {

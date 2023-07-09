@@ -8,6 +8,7 @@ import CancelPayment from "./stripe/CancelPayment"
 import CancelSubscription from "./stripe/CancelSubscription"
 import Buy from "./stripe/Buy"
 import Dash from "./dashboard/Dash"
+import Admin from "./admin/AdminDash"
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/buy" element={<Buy />} />
         <Route path="/cancel-subscription" element={<CancelSubscription />} />
         <Route path="/dashboard" element={<Dash />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </HashRouter>
   )

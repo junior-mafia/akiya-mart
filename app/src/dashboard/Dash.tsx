@@ -80,6 +80,14 @@ const Dash = () => {
     }
   }
 
+  const handleAdminDashboard = async () => {
+    try {
+      navigate("/admin")
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
   const handleCancel = async () => {
     try {
       await cancelSubscription()
@@ -100,6 +108,7 @@ const Dash = () => {
   }, [])
 
   var displayEmail = ""
+  var isAdmin = false
   var displayProductName = ""
   var displayStatus = ""
   var displayBilling = ""
@@ -107,7 +116,7 @@ const Dash = () => {
   var promotionCode: string | undefined = undefined
   var promotionCodeDiscount: string | undefined = undefined
   var promotionCodeDuration: string | undefined = undefined
-  console.log(dashboardData)
+
   if (dashboardData) {
     if (dashboardData.subscription_id) {
       const email = dashboardData.email as string
@@ -122,6 +131,7 @@ const Dash = () => {
       promotionCodeDuration = promotionCodeDetails.duration
 
       displayEmail = email
+      isAdmin = dashboardData.is_admin as boolean
       displayProductName = toTitleCase(product_name)
       displayStatus = toTitleCase(status)
       displayBilling = `$${
@@ -130,6 +140,7 @@ const Dash = () => {
       subscriptionIsCancelable = status != "canceled"
     } else {
       displayEmail = dashboardData.email as string
+      isAdmin = dashboardData.is_admin as boolean
       displayProductName = "Free"
       displayStatus = "Active"
       displayBilling = "N/A"
@@ -202,6 +213,18 @@ const Dash = () => {
             Logout
           </button>
         </div>
+
+        {isAdmin && (
+          <div className="splash-item">
+            <h3 className="header">Admin</h3>
+            <button
+              className="dash-button safe-button"
+              onClick={handleAdminDashboard}
+            >
+              Admin Dashboard
+            </button>
+          </div>
+        )}
 
         {dashboardData && subscriptionIsCancelable && (
           <div className="splash-item">

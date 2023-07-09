@@ -37,6 +37,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(bp_listings, url_prefix="/listings")
 
+    from app.admin import bp as bp_admin
+
+    app.register_blueprint(bp_admin, url_prefix="/admin")
+
     return app
 
 

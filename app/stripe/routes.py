@@ -42,10 +42,6 @@ def create_checkout_session():
         validate_price_ids(price_ids)
         line_items = [{"price": price_id, "quantity": 1} for price_id in price_ids]
 
-        user = fetch_user_by_id(current_user.id)
-        if user is None:
-            raise Exception(f"User not found with id: {current_user.id}")
-
         url = create_stripe_checkout_session_for_subscription(line_items)
         result = {"url": url}
         return jsonify({"success": True, "result": result}), 200
