@@ -19,7 +19,7 @@ from app.stripe.webhook import (
     validate_stripe_event,
 )
 from app.stripe.subscription import (
-    cancel_subscription,
+    cancel_customer_subscription,
 )
 
 
@@ -111,7 +111,7 @@ def cancel():
             raise Exception(
                 f"User does not have a non-cancelled subscription. user: {current_user.id} {subscription['subscription_id']}"
             )
-        cancel_subscription(subscription["subscription_id"])
+        cancel_customer_subscription(subscription["subscription_id"])
         return jsonify({"success": True}), 200
     except Exception as e:
         stack_trace = traceback.format_exc()
@@ -126,6 +126,8 @@ def active_subscription():
     try:
         if current_user.is_authenticated:
             results = fetch_active_subscription(current_user.id)
+            if not results:
+                results = {"subscription_id": None}
         else:
             results = {"subscription_id": None}
         return jsonify({"success": True, "results": results}), 200

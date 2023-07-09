@@ -40,6 +40,7 @@ CREATE TABLE prices (
 CREATE TABLE subscriptions (
     subscription_id VARCHAR(255) PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(user_id),
+    promotion_code_id VARCHAR(255),
     status VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL , 
     updated_at TIMESTAMP NOT NULL
@@ -54,53 +55,24 @@ CREATE TABLE subscription_items (
     deleted_at TIMESTAMP
 );
 
+CREATE TABLE coupons (
+    coupon_id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    valid BOOLEAN NOT NULL,
+    currency VARCHAR(3),
+    amount_off DECIMAL(10, 2),
+    percent_off DECIMAL(5, 2),
+    duration VARCHAR(255),
+    duration_in_months INT,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
 
-
-
-
-
-
--- CREATE TABLE one_off_purchases (
---     one_off_purchase_id VARCHAR(255) PRIMARY KEY,
---     user_id INT NOT NULL REFERENCES users(user_id),
---     price_id VARCHAR(255) NOT NULL REFERENCES prices(price_id),
---     created_at TIMESTAMP NOT NULL,
---     updated_at TIMESTAMP NOT NULL,
---     deleted_at TIMESTAMP
--- );
-
-
-
-
-
-
--- also record payment_intent
--- payment_intent will store one-off purchases and subscriptions
--- invoices will store subscription payments
--- these records fail until they succeed and then no more events will fire for it
--- events may arrive out of order so we need to handle on conflict
-
-
--- CREATE TABLE invoices (
---     invoice_id VARCHAR(255) PRIMARY KEY,
---     subscription_id VARCHAR(255) NOT NULL,
---     currency VARCHAR(3) NOT NULL,
---     amount_due INT NOT NULL, -- cents for USD
---     amount_paid INT, -- cents for USD, might be NULL if the payment failed
---     status VARCHAR(255) NOT NULL,
---     paid_at TIMESTAMP,
---     created_at TIMESTAMP NOT NULL,
---     updated_at TIMESTAMP NOT NULL
--- );
-
--- CREATE TABLE payment_intents (
---     payment_intent_id VARCHAR(255) PRIMARY KEY,
---     currency VARCHAR(3) NOT NULL,
---     amount_requested INT NOT NULL, -- cents for USD
---     amount_received INT NOT NULL, -- cents for USD
---     invoice_id VARCHAR(255),
---     status VARCHAR(255) NOT NULL,
---     paid_at TIMESTAMP,
---     created_at TIMESTAMP NOT NULL,
---     updated_at TIMESTAMP NOT NULL
--- );
+CREATE TABLE promotion_codes (
+    promotion_code_id VARCHAR(255) PRIMARY KEY,
+    code VARCHAR(255) NOT NULL UNIQUE,
+    active BOOLEAN NOT NULL,
+    coupon_id VARCHAR(255) NOT NULL REFERENCES coupons(coupon_id),
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);

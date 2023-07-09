@@ -14,12 +14,51 @@ const toTitleCase = (str: string): string => {
   })
 }
 
+function getPromotionDetails(dashboardData: any) {
+  let promotionCode: string = ""
+  let discount: string = ""
+  let duration: string = ""
+
+  if (dashboardData?.promotion_code) {
+    promotionCode = dashboardData.promotion_code
+
+    if (dashboardData?.percent_off) {
+      const percent_off = dashboardData.percent_off
+      discount = `${percent_off}% off`
+    } else if (dashboardData?.amount_off) {
+      const amount_off = dashboardData.amount_off
+      const currency = dashboardData.coupon_currency
+      discount = `${amount_off} ${currency} off`
+    }
+
+    if (dashboardData?.duration) {
+      const durationType = dashboardData.duration
+
+      switch (durationType) {
+        case "forever":
+          duration = "For all billing periods"
+          break
+        case "once":
+          duration = "For one billing period"
+          break
+        case "repeating":
+          const duration_in_months = dashboardData.duration_in_months
+          duration = `For the first ${duration_in_months} billing periods`
+          break
+        default:
+          duration = "Unknown duration"
+      }
+    }
+  }
+
+  return { promotionCode, discount, duration }
+}
+
 const Dash = () => {
   const navigate = useNavigate()
   const [dashboardData, setDashboardData] = useState<DashboardData | undefined>(
     undefined
   )
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false)
 
   const checkIfLoggedIn = async () => {
     try {
@@ -65,6 +104,10 @@ const Dash = () => {
   var displayStatus = ""
   var displayBilling = ""
   var subscriptionIsCancelable = false
+  var promotionCode: string | undefined = undefined
+  var promotionCodeDiscount: string | undefined = undefined
+  var promotionCodeDuration: string | undefined = undefined
+  console.log(dashboardData)
   if (dashboardData) {
     if (dashboardData.subscription_id) {
       const email = dashboardData.email as string
@@ -73,6 +116,11 @@ const Dash = () => {
       const unit_amount = dashboardData.unit_amount as number
       const currency = dashboardData.currency as string
       const recurring_interval = dashboardData.recurring_interval as string
+      const promotionCodeDetails = getPromotionDetails(dashboardData)
+      promotionCode = promotionCodeDetails.promotionCode
+      promotionCodeDiscount = promotionCodeDetails.discount
+      promotionCodeDuration = promotionCodeDetails.duration
+
       displayEmail = email
       displayProductName = toTitleCase(product_name)
       displayStatus = toTitleCase(status)
@@ -86,6 +134,9 @@ const Dash = () => {
       displayStatus = "Active"
       displayBilling = "N/A"
       subscriptionIsCancelable = false
+      promotionCode = undefined
+      promotionCodeDiscount = undefined
+      promotionCodeDuration = undefined
     }
   }
 
@@ -126,6 +177,24 @@ const Dash = () => {
                 <div className="dashboard-data-label">Billing</div>
                 <div>{displayBilling}</div>
               </div>
+              {promotionCode && (
+                <div className="dashboard-item">
+                  <div className="dashboard-data-label">Promo code</div>
+                  <div>{promotionCode}</div>
+                </div>
+              )}
+              {promotionCodeDiscount && (
+                <div className="dashboard-item">
+                  <div className="dashboard-data-label">Discount</div>
+                  <div>{promotionCodeDiscount}</div>
+                </div>
+              )}
+              {promotionCodeDuration && (
+                <div className="dashboard-item">
+                  <div className="dashboard-data-label">Discount duration</div>
+                  <div>{promotionCodeDuration}</div>
+                </div>
+              )}
             </div>
           )}
 

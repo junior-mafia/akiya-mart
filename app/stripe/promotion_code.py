@@ -4,49 +4,49 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 
 
-def create_or_update_product(event):
+def create_or_update_promotion_code(event):
     event_timestamp = datetime.utcfromtimestamp(event["created"])
-    product_data = event["data"]["object"]
-    product_record = {
-        "product_id": product_data["id"],
-        "internal_name": product_data["metadata"].get("internal_name"),
-        "name": product_data["name"],
-        "description": product_data["description"],
-        "active": product_data["active"],
+    promotion_code_data = event["data"]["object"]
+    promotion_code_record = {
+        "promotion_code_id": promotion_code_data["id"],
+        "code": promotion_code_data["code"],
+        "active": promotion_code_data["active"],
+        "coupon_id": promotion_code_data["coupon"]["id"],
         "created_at": event_timestamp,  # Will only get inserted on insert not on update
         "updated_at": event_timestamp,
     }
-    insert_or_update_product(event, product_record)
+    insert_or_update_promotion_code(event, promotion_code_record)
 
 
-def insert_or_update_product(event, product_record):
+def insert_or_update_promotion_code(event, promotion_code_record):
     try:
         with db.session.begin():
-            products = db.metadata.tables["products"]
+            promotion_codes = db.metadata.tables["promotion_codes"]
             stripe_webhook_events = db.metadata.tables["stripe_webhook_events"]
 
             # Fetch existing record
-            existing_record_stmt = select(products.c.updated_at).where(
-                products.c.product_id == product_record["product_id"]
+            existing_record_stmt = select(promotion_codes.c.updated_at).where(
+                promotion_codes.c.promotion_code_id
+                == promotion_code_record["promotion_code_id"]
             )
             existing_record_result = db.session.execute(existing_record_stmt).fetchone()
 
             # Compare updated_at timestamp and proceed if the incoming data is fresher
             if (
                 not existing_record_result
-                or existing_record_result.updated_at < product_record["updated_at"]
+                or existing_record_result.updated_at
+                < promotion_code_record["updated_at"]
             ):
                 stmt1 = (
-                    insert(products)
-                    .values(product_record)
+                    insert(promotion_codes)
+                    .values(promotion_code_record)
                     .on_conflict_do_update(
-                        index_elements=["product_id"],
+                        index_elements=["promotion_code_id"],
                         set_=dict(
-                            internal_name=insert(products).excluded.internal_name,
-                            name=insert(products).excluded.name,
-                            description=insert(products).excluded.description,
-                            active=insert(products).excluded.active,
-                            updated_at=insert(products).excluded.updated_at,
+                            code=insert(promotion_codes).excluded.code,
+                            active=insert(promotion_codes).excluded.active,
+                            coupon_id=insert(promotion_codes).excluded.coupon_id,
+                            updated_at=insert(promotion_codes).excluded.updated_at,
                         ),
                     )
                 )

@@ -79,6 +79,8 @@ def fetch_dashboard_data(user_id):
         subscription_items = db.metadata.tables["subscription_items"]
         prices = db.metadata.tables["prices"]
         products = db.metadata.tables["products"]
+        promotion_codes = db.metadata.tables["promotion_codes"]
+        coupons = db.metadata.tables["coupons"]
 
         stmt = (
             select(
@@ -89,18 +91,30 @@ def fetch_dashboard_data(user_id):
                 prices.c.currency,
                 prices.c.unit_amount,
                 prices.c.recurring_interval,
+                promotion_codes.c.code.label("promotion_code"),
+                coupons.c.percent_off,
+                coupons.c.amount_off,
+                coupons.c.currency.label("coupon_currency"),
+                coupons.c.duration,
+                coupons.c.duration_in_months,
             )
             .select_from(
                 users.outerjoin(
                     subscriptions, users.c.user_id == subscriptions.c.user_id
                 )
-                .join(
+                .outerjoin(
                     subscription_items,
                     subscriptions.c.subscription_id
                     == subscription_items.c.subscription_id,
                 )
-                .join(prices, subscription_items.c.price_id == prices.c.price_id)
-                .join(products, products.c.product_id == prices.c.product_id)
+                .outerjoin(prices, subscription_items.c.price_id == prices.c.price_id)
+                .outerjoin(products, products.c.product_id == prices.c.product_id)
+                .outerjoin(
+                    promotion_codes,
+                    subscriptions.c.promotion_code_id
+                    == promotion_codes.c.promotion_code_id,
+                )
+                .outerjoin(coupons, promotion_codes.c.coupon_id == coupons.c.coupon_id)
             )
             .where(users.c.user_id == user_id)
             .order_by(subscriptions.c.created_at.desc())
