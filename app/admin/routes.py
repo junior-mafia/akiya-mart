@@ -4,24 +4,36 @@ from flask_login import current_user
 import traceback
 from datetime import datetime
 from app.tasks.tasks import (
-    # runtask_nifty_details,
-    # runtask_athome_details,
     task_rundate,
     task_listings_athome,
     task_listings_nifty,
+    task_listings_details_athome,
+    task_listings_details_nifty,
     # runtask_generate_geojson,
     # runtask_post_scrape_verification,
     # runtask_translate,
 )
 
+
+class UnauthorizedError(Exception):
+    pass
+
+
 @bp.route("/rundate", methods=["POST"])
 def rundate():
     try:
         if not current_user.is_admin:
-            return jsonify({"success": False, "message": "Not authorized"}), 401
+            raise UnauthorizedError("Not authorized")
+        
         task_rundate.delay()
         results = {"message": "Running task: rundate"}
+        
         return jsonify({"success": True, "results": results}), 200
+    except UnauthorizedError as e:
+        error = f"UnauthorizedError during access to admin dashboard: {str(e)}"
+        user_message = "Unauthorized access"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 401
     except Exception as e:
         stack_trace = traceback.format_exc()
         error = f"Exception during rundate task: {str(e)}\n{stack_trace}"
@@ -34,11 +46,18 @@ def rundate():
 def listings_athome():
     try:
         if not current_user.is_admin:
-            return jsonify({"success": False, "message": "Not authorized"}), 401
+            raise UnauthorizedError("Not authorized")
+        
         today = datetime.now().strftime("%Y-%m-%d")
         task_listings_athome.delay({"run_date": today})
         results = {"message": "Running task: listings-athome"}
+        
         return jsonify({"success": True, "results": results}), 200
+    except UnauthorizedError as e:
+        error = f"UnauthorizedError during access to admin dashboard: {str(e)}"
+        user_message = "Unauthorized access"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 401
     except Exception as e:
         stack_trace = traceback.format_exc()
         error = f"Exception during listings-athome task: {str(e)}\n{stack_trace}"
@@ -51,11 +70,18 @@ def listings_athome():
 def listings_nifty():
     try:
         if not current_user.is_admin:
-            return jsonify({"success": False, "message": "Not authorized"}), 401
+            raise UnauthorizedError("Not authorized")
+        
         today = datetime.now().strftime("%Y-%m-%d")
         task_listings_nifty.delay({"run_date": today})
         results = {"message": "Running task: listings-nifty"}
+        
         return jsonify({"success": True, "results": results}), 200
+    except UnauthorizedError as e:
+        error = f"UnauthorizedError during access to admin dashboard: {str(e)}"
+        user_message = "Unauthorized access"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 401
     except Exception as e:
         stack_trace = traceback.format_exc()
         error = f"Exception during listings-nifty task: {str(e)}\n{stack_trace}"
@@ -64,27 +90,67 @@ def listings_nifty():
         return jsonify({"success": False, "message": user_message}), 500
     
 
+@bp.route("/listings-details-athome", methods=["POST"])
+def listings_details_athome():
+    try:
+        if not current_user.is_admin:
+            raise UnauthorizedError("Not authorized")
+        
+        today = datetime.now().strftime("%Y-%m-%d")
+        task_listings_details_athome.delay({"run_date": today})
+        results = {"message": "Running task: listings-details-athome"}
+        
+        return jsonify({"success": True, "results": results}), 200
+    except UnauthorizedError as e:
+        error = f"UnauthorizedError during access to admin dashboard: {str(e)}"
+        user_message = "Unauthorized access"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 401
+    except Exception as e:
+        stack_trace = traceback.format_exc()
+        error = f"Exception during listings-details-athome task: {str(e)}\n{stack_trace}"
+        user_message = "Oops something went wrong"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 500
 
 
-# @app.route("/post-scrape-verification")
-# def post_scrape_verification():
-#     today = datetime.now().strftime("%Y-%m-%d")
-#     runtask_post_scrape_verification.delay({"run_date": today})
-#     return "Running task: post-scrape-verification"
+@bp.route("/listings-details-nifty", methods=["POST"])
+def listings_details_nifty():
+    try:
+        if not current_user.is_admin:
+            raise UnauthorizedError("Not authorized")
+        
+        today = datetime.now().strftime("%Y-%m-%d")
+        task_listings_details_nifty.delay({"run_date": today})
+        results = {"message": "Running task: listings-details-nifty"}
+        
+        return jsonify({"success": True, "results": results}), 200
+    except UnauthorizedError as e:
+        error = f"UnauthorizedError during access to admin dashboard: {str(e)}"
+        user_message = "Unauthorized access"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 401
+    except Exception as e:
+        stack_trace = traceback.format_exc()
+        error = f"Exception during listings-details-nifty task: {str(e)}\n{stack_trace}"
+        user_message = "Oops something went wrong"
+        app.logger.error(error)
+        return jsonify({"success": False, "message": user_message}), 500
 
 
-# @app.route("/nifty-details")
-# def nifty_details():
-#     today = datetime.now().strftime("%Y-%m-%d")
-#     runtask_nifty_details.delay({"run_date": today})
-#     return "Running task: nifty-details"
 
 
-# @app.route("/athome-details")
-# def athome_details():
-#     today = datetime.now().strftime("%Y-%m-%d")
-#     runtask_athome_details.delay({"run_date": today})
-#     return "Running task: athome-details"
+
+
+
+
+
+
+
+
+
+
+
 
 
 # @app.route("/translate")

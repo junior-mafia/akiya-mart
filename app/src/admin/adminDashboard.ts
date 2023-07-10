@@ -50,4 +50,43 @@ const executeListingsNiftyTask = async (): Promise<TaskData> => {
   }
 }
 
-export { executeRundateTask, TaskData, executeListingsAthomeTask, executeListingsNiftyTask }
+const executeListingsDetailsAthomeTask = async (): Promise<TaskData> => {
+  const response = await fetch("/admin/listings-details-athome", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  } else {
+    return data.results
+  }
+}
+
+const executeListingsDetailsNiftyTask = async (): Promise<TaskData> => {
+  const response = await fetch("/admin/listings-details-nifty", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  } else {
+    return data.results
+  }
+}
+ 
+export { 
+  executeRundateTask, 
+  TaskData, 
+  executeListingsAthomeTask, 
+  executeListingsNiftyTask, 
+  executeListingsDetailsAthomeTask,
+  executeListingsDetailsNiftyTask
+}

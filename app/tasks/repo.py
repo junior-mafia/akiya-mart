@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import insert
 metadata = MetaData()
 
 
-def insert_rundate(run_date, session):
+def insert_rundate(session, run_date):
     try:
         engine = session.get_bind()
         metadata.reflect(bind=engine)
@@ -38,7 +38,7 @@ def insert_listings(session, items):
         raise e
 
 
-def select_listings_missing_details(source, session):
+def select_listings_missing_details(session, source):
     engine = session.get_bind()
     metadata.reflect(bind=engine)
     etl_runs = Table('etl_runs', metadata, autoload_with=engine)
@@ -86,7 +86,7 @@ def select_listings_missing_details(source, session):
     return [result._asdict() for result in results]
 
 
-def select_coordinates(address, session):
+def select_coordinates(session, address):
     engine = session.get_bind()
     metadata.reflect(bind=engine)
     listings_details = Table('listings_details', metadata, autoload_with=engine)
@@ -110,7 +110,7 @@ def select_coordinates(address, session):
     return coordinates
 
 
-def insert_listings_details(items, session):
+def insert_listings_details(session, items):
     try:
         engine = session.get_bind()
         metadata.reflect(bind=engine)

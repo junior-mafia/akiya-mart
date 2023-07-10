@@ -11,10 +11,17 @@ from app.tasks.google_maps import gelocate
 from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 import re
+from app import Session
+import os
 
 WAIT_UNTIL = EC.presence_of_element_located((By.CSS_SELECTOR, "div#mainBody"))
+ENVIRONMENT = os.environ["ENVIRONMENT"]
 
-CHUNK_SIZE = 500
+
+if ENVIRONMENT == "DEV":
+    CHUNK_SIZE = 50
+else:
+    CHUNK_SIZE = 500
 
 
 def dedupe(items):
@@ -195,7 +202,8 @@ class AtHomeDetailsSpider(scrapy.Spider):
 
     def __init__(self, *args, **kwargs):
         super(AtHomeDetailsSpider, self).__init__(*args, **kwargs)
-        self.listings = select_listings_missing_details(self.source)[:2500]
+        self.session = Session()
+        self.listings = select_listings_missing_details(self.session, self.source)[:2500]
         # self.listings = [
         #     {
         #         "bukken_id": "6978751646",
@@ -223,7 +231,7 @@ class AtHomeDetailsSpider(scrapy.Spider):
             # If coordinates are not found, fetch from Google Maps API
             coordinates = parse_coordinates(driver)
             if coordinates["lat"] is None or coordinates["lon"] is None:
-                coordinates = select_coordinates(address)
+                coordinates = select_coordinates(self.session, address)
                 if coordinates["lat"] is None or coordinates["lon"] is None:
                     self.logger.info(
                         "AKIYA-MART-TASKS GOOGLE MAPS API. bukken_id: {bukken_id} address: {address}".format(
@@ -280,7 +288,7 @@ class AtHomeDetailsSpider(scrapy.Spider):
                     n=len(self.items)
                 )
             )
-            insert_listings_details(dedupe(self.items))
+            insert_listings_details(self.session, dedupe(self.items))
             self.items = []
 
         if len(self.listings) > 0:
@@ -291,11 +299,12 @@ class AtHomeDetailsSpider(scrapy.Spider):
                 )
 
     def close(self, reason):
+        self.session.close()
         if len(self.items) > 0:
             self.logger.info(
                 "AKIYA-MART-TASKS: INSERTING {n} ITEMS INTO LISTINGS-DETAILS.".format(
                     n=len(self.items)
                 )
             )
-            insert_listings_details(dedupe(self.items))
+            insert_listings_details(self.session, dedupe(self.items))
             self.items = []

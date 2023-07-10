@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from app.tasks.undetected_request import undetected_request
 from app.tasks.repo import insert_listings
 import os
+from app import Session
 
 ENVIRONMENT = os.environ["ENVIRONMENT"]
 
@@ -17,7 +18,13 @@ WAIT_UNTIL = EC.presence_of_element_located((By.CSS_SELECTOR, "div.buy_list"))
 # to 20 here as a reminder that this is what is happening.
 RESULTS_PER_PAGE = 20
 BASE_URL = "https://myhome.nifty.com/chuko/ikkodate/search/?subtype=buh&sort1=money1-asc&b2=30000000&page={page_num}"
-CHUNK_SIZE = 2000
+
+
+if ENVIRONMENT == "DEV":
+    CHUNK_SIZE = 100
+else:
+    CHUNK_SIZE = 1000
+
 
 
 def parse_url(bukken):
@@ -79,9 +86,9 @@ class NiftySpider(scrapy.Spider):
         # 'CONCURRENT_REQUESTS': 1,
     }
 
-    def __init__(self, session, run_date=None, *args, **kwargs):
+    def __init__(self, run_date=None, *args, **kwargs):
         super(NiftySpider, self).__init__(*args, **kwargs)
-        self.session = session
+        self.session = Session()
         self.run_date = run_date
         self.items = []
 
@@ -166,6 +173,7 @@ class NiftySpider(scrapy.Spider):
             )
 
     def close(self, reason):
+        self.session.close()
         if len(self.items) > 0:
             deduped_items = dedupe(self.items)
             self.logger.info(

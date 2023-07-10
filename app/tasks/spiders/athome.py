@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from app.tasks.repo import insert_listings
 import os
+from app import Session
 
 ENVIRONMENT = os.environ["ENVIRONMENT"]
 
@@ -62,8 +63,11 @@ WAIT_UNTIL = EC.presence_of_element_located((By.CSS_SELECTOR, "div#mainBody"))
 
 RESULTS_PER_PAGE = 50
 BASE_URL = "https://www.athome.co.jp/kodate/chuko/{prefecture}/list/page{page_num}/?RND_TIME_PRM=61853&RND_MODE=&ITEMNUM={results_per_page}&PRICETO=kp106"
-CHUNK_SIZE = 2000
 
+if ENVIRONMENT == "DEV":
+    CHUNK_SIZE = 100
+else:
+    CHUNK_SIZE = 1000
 
 def parse_url(bukken):
     url = bukken.find_element(By.CSS_SELECTOR, "a.kslisttitle").get_attribute("href")
@@ -109,9 +113,9 @@ class AtHomeSpider(Spider):
     }
     prefectures = PREFECTURES
 
-    def __init__(self, session, run_date=None, *args, **kwargs):
+    def __init__(self, run_date=None, *args, **kwargs):
         super(AtHomeSpider, self).__init__(*args, **kwargs)
-        self.session = session
+        self.session = Session()
         self.run_date = run_date
         self.items = []
 
@@ -195,6 +199,7 @@ class AtHomeSpider(Spider):
                 yield undetected_request(url=url, wait_until=WAIT_UNTIL)
 
     def close(self, reason):
+        self.session.close()
         if len(self.items) > 0:
             deduped_items = dedupe(self.items)
             self.logger.info(
