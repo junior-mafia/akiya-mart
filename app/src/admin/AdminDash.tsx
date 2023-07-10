@@ -2,19 +2,26 @@ import React, { useEffect } from "react"
 import "../styles/splash-page.css"
 import "../styles/navbar.css"
 import { Link } from "react-router-dom"
-import { fetchAdminDashboardData } from "./adminDashboard"
+import { executeRundateTask, executeListingsAthomeTask, executeListingsNiftyTask } from "./adminDashboard"
+import "./styles/admin.css"
 
 const AdminDash = () => {
   const [message, setMessage] = React.useState("")
 
-  const handleFetchAdminDashboardData = async () => {
-    const data = await fetchAdminDashboardData()
+  const handleExecuteRundateTask = async () => {
+    const data = await executeRundateTask()
     setMessage(data.message)
   }
 
-  useEffect(() => {
-    handleFetchAdminDashboardData()
-  }, [])
+  const handleExecuteListingsAthomeTask = async () => {
+    const data = await executeListingsAthomeTask()
+    setMessage(data.message)
+  }
+
+  const handleExecuteListingsNiftyTask = async () => {
+    const data = await executeListingsNiftyTask()
+    setMessage(data.message)
+  }
 
   return (
     <div className="splash-page-container">
@@ -33,7 +40,20 @@ const AdminDash = () => {
 
       <div className="splash-container">
         <div className="splash-item">
-          <h3 className="header">Admin Dashboard</h3>
+          <h3 className="header">Rundate</h3>
+          <button className="dash-button safe-button" onClick={handleExecuteRundateTask}>Run</button>
+          {message}
+        </div>
+
+        <div className="splash-item">
+          <h3 className="header">Listings AtHome</h3>
+          <button className="dash-button safe-button" onClick={handleExecuteListingsAthomeTask}>Run</button>
+          {message}
+        </div>
+
+        <div className="splash-item">
+          <h3 className="header">Listings Nifty</h3>
+          <button className="dash-button safe-button" onClick={handleExecuteListingsNiftyTask}>Run</button>
           {message}
         </div>
       </div>

@@ -1,20 +1,41 @@
 from flask import Flask
 from config import Config
 from app.extensions import db, bcrypt, login_manager
-from app.extensions import login_manager
 from app.user.repo import fetch_user_by_id
+from celery import Celery
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+
+BROKER_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
+if BROKER_URL != "redis://localhost:6379/0":
+    BROKER_URL += "?ssl_cert_reqs=CERT_NONE"
+
+
+celery = Celery(__name__, broker=BROKER_URL)
+
+
+# Database setup for Celery tasks
+engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
+Session = sessionmaker(bind=engine)
 
 
 def create_app(config_class=Config):
     app = Flask(__name__, static_folder="build")
     app.config.from_object(config_class)
 
-    # Initialize Flask extensions here
+    # Db extension
     db.init_app(app)
     with app.app_context():
         db.reflect()
+
+    # Login extension
     bcrypt.init_app(app)
     login_manager.init_app(app)
+
+    # Celery configuration
+    celery.conf.update(app.config)
 
     # Register blueprints here
     from app.home import bp as bp_home
