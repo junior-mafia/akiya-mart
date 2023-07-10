@@ -26,7 +26,6 @@ else:
     CHUNK_SIZE = 1000
 
 
-
 def parse_url(bukken):
     url = bukken.find_element(
         By.CSS_SELECTOR, "div.nayose_head > h2.link > p a"

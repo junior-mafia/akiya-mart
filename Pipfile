@@ -15,11 +15,11 @@ stripe = "*"
 celery = "*"
 redis = "*"
 scrapy = "*"
-googletranslate = {git = "https://github.com/ultrafunkamsterdam/googletranslate"}
 undetected-chromedriver = {git = "https://github.com/ultrafunkamsterdam/undetected-chromedriver.git"}
 selenium = "*"
 beautifulsoup4 = "*"
 crochet = "*"
+googletranslate = {ref = "jms/api_params", git = "https://github.com/jstoxrocky/googletranslate.git"}
 
 [dev-packages]
 

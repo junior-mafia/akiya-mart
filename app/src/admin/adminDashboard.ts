@@ -81,12 +81,63 @@ const executeListingsDetailsNiftyTask = async (): Promise<TaskData> => {
     return data.results
   }
 }
- 
-export { 
-  executeRundateTask, 
-  TaskData, 
-  executeListingsAthomeTask, 
-  executeListingsNiftyTask, 
+
+const executeListingsDetailsTranslateTask = async (): Promise<TaskData> => {
+  const response = await fetch("/admin/listings-details-translate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  } else {
+    return data.results
+  }
+}
+
+const executeGenerateGeojsonTask = async (): Promise<TaskData> => {
+  const response = await fetch("/admin/generate-geojson", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  } else {
+    return data.results
+  }
+}
+
+const executeRunAllTask = async (): Promise<TaskData> => {
+  const response = await fetch("/admin/run-all", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    const message = `${data.message}`
+    throw new Error(message)
+  } else {
+    return data.results
+  }
+}
+
+export {
+  executeRundateTask,
+  TaskData,
+  executeListingsAthomeTask,
+  executeListingsNiftyTask,
   executeListingsDetailsAthomeTask,
-  executeListingsDetailsNiftyTask
+  executeListingsDetailsNiftyTask,
+  executeListingsDetailsTranslateTask,
+  executeGenerateGeojsonTask,
+  executeRunAllTask,
 }

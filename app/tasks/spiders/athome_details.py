@@ -203,7 +203,9 @@ class AtHomeDetailsSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(AtHomeDetailsSpider, self).__init__(*args, **kwargs)
         self.session = Session()
-        self.listings = select_listings_missing_details(self.session, self.source)[:2500]
+        self.listings = select_listings_missing_details(self.session, self.source)[
+            :2500
+        ]
         # self.listings = [
         #     {
         #         "bukken_id": "6978751646",

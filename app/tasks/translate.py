@@ -1,5 +1,5 @@
 from googletranslate import translate
-from akiya_mart_tasks.database import (
+from app.tasks.repo import (
     select_details_missing_translation,
     insert_translations,
 )
@@ -19,8 +19,8 @@ def chunker(seq, size):
     return (seq[pos : pos + size] for pos in range(0, len(seq), size))
 
 
-def translation_task():
-    details = select_details_missing_translation()
+def translation_task(session):
+    details = select_details_missing_translation(session)
     for chunk in chunker(details, CHUNK_SIZE):
         translated_details = []
         for row in chunk:
@@ -40,4 +40,4 @@ def translation_task():
                 n=len(translated_details)
             )
         )
-        insert_translations(translated_details)
+        insert_translations(session, translated_details)

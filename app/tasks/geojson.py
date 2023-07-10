@@ -1,4 +1,4 @@
-from akiya_mart_tasks.database import select_listings_for_geojson
+from app.tasks.repo import select_listings_for_geojson
 import os
 import json
 import requests
@@ -114,7 +114,7 @@ def sample_listings(listings, size):
     return sampled_list
 
 
-def geojson_task():
+def geojson_task(session):
     storage_zone_name = "akiya-mart-tasks"
     pull_zone_id = "akiya-mart-tasks"
     if ENVIRONMENT == "PROD":
@@ -129,7 +129,7 @@ def geojson_task():
 
         lite_file_name = "dev-lite-listings.geojson"
         lite_free_filename = "dev-lite-listings-free.geojson"
-    listings = select_listings_for_geojson()
+    listings = select_listings_for_geojson(session)
     yen_per_usd = get_yen_per_usd()
 
     # Paid tier
@@ -141,7 +141,7 @@ def geojson_task():
     purge_cache(pull_zone_id, file_name)
 
     # Free tier
-    sample_size = 500
+    sample_size = int(len(listings) * 0.005)  # Roughly 500 listings
     free_listings = sample_listings(listings, sample_size)
     free_geojson_content = generate_geojson(free_listings, yen_per_usd)
     upload_geojson_to_wasabi(storage_zone_name, free_filename, free_geojson_content)

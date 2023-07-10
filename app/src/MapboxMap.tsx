@@ -43,6 +43,16 @@ const paidMapSource: MapSource = {
   url: "https://akiya-mart-tasks.b-cdn.net/lite-listings.geojson",
 }
 
+const devFreeMapSource: MapSource = {
+  name: "listings-free",
+  url: "https://akiya-mart-tasks.b-cdn.net/dev-lite-listings-free.geojson",
+}
+
+const devPaidMapSource: MapSource = {
+  name: "listings",
+  url: "https://akiya-mart-tasks.b-cdn.net/dev-lite-listings.geojson",
+}
+
 const fetchListingDetails = async (
   source: string,
   bukken_id: string
@@ -113,7 +123,14 @@ const MapboxMap = ({
 
   const handleFetchActiveSubscription = async (map: Map) => {
     const subscriptionId = await fetchActiveSubscription()
-    const mapSource = subscriptionId ? paidMapSource : freeMapSource
+
+    var mapSource: MapSource
+    if (process.env.ENVIRONMENT === "PROD") {
+      mapSource = subscriptionId ? paidMapSource : freeMapSource
+    } else {
+      mapSource = subscriptionId ? devPaidMapSource : devFreeMapSource
+    }
+
     setupMap(map, mapSource, onFeatureClick)
     setMap(map)
   }

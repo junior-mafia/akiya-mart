@@ -69,6 +69,7 @@ if ENVIRONMENT == "DEV":
 else:
     CHUNK_SIZE = 1000
 
+
 def parse_url(bukken):
     url = bukken.find_element(By.CSS_SELECTOR, "a.kslisttitle").get_attribute("href")
     return url
