@@ -1,7 +1,7 @@
 .listing-background {
   font-family: "YuseiMagic" !important;
   position: absolute;
-  z-index: 1;
+  /* z-index: 1; */
   top: 0%;
   left: 0%;
   width: 100%;
@@ -21,7 +21,7 @@
 }
 
 .listing {
-  z-index: 2;
+  /* z-index: 2; */
   color: #dcdbdc;
   display: flex;
   flex-direction: column;
@@ -114,7 +114,7 @@
   width: 50%;
   height: 100%;
   cursor: pointer;
-  z-index: 5;
+  /* z-index: 5; */
 }
 
 .left {

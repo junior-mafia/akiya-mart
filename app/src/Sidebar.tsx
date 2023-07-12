@@ -2,6 +2,9 @@ import React, { useState } from "react"
 import RangeSlider from "./RangeSlider"
 import "./styles/sidebar.css"
 import "./styles/main.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+
 
 interface SidebarProps {
   priceUsdMin: number
@@ -53,10 +56,30 @@ const Sidebar = ({
   return (
     <div className="sidebar-container">
       <div
-        className="sidebar-item transparent-until-hover"
+        className="sidebar-left"
         onClick={minOrMaxIt}
       >
-        Filters
+        {/* <div id="sidebar-item-title" className="sidebar-item navbar-clickable">
+          Filters
+        </div> */}
+        <button className="sidebar-button">
+          <span>Price</span>
+          <span className="icon">
+            <FontAwesomeIcon icon={faChevronDown} />
+          </span>
+        </button>
+        <button className="sidebar-button">
+          <span>Year Built</span>
+          <span className="icon">
+            <FontAwesomeIcon icon={faChevronDown} />
+          </span>
+        </button>
+        <button className="sidebar-button">
+          <span>Days on AkiyaMart</span>
+          <span className="icon">
+            <FontAwesomeIcon icon={faChevronDown} />
+          </span>
+        </button>
       </div>
 
       {/* {!isMinimized && (

@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import MapboxMap from "./MapboxMap"
+
 import Sidebar from "./Sidebar"
-import Footer from "./Footer"
-import NavBar from "./NavBar"
+import SearchPage from "./SearchPage"
+import "./styles/main.css"
 
 const Main = () => {
   const [isPaidTier, setIsPaidTier] = useState(false)
@@ -32,9 +32,6 @@ const Main = () => {
 
   return (
     <>
-      <div className="main-container">
-        <NavBar />
-
         <Sidebar
           priceUsdMin={priceUsdMin}
           priceUsdMax={priceUsdMax}
@@ -56,22 +53,9 @@ const Main = () => {
           setUnderXDaysOnMarketUpper={setUnderXDaysOnMarketUpper}
         />
 
+        <SearchPage />
+
         {/* <Footer isPaidTier={isPaidTier} setIsPaidTier={setIsPaidTier} /> */}
-
-        <div style={{ width: "100%", height: "70vh" }}>
-          <MapboxMap
-            isPaidTier={isPaidTier}
-            priceUsdLower={priceUsdLower}
-            priceUsdUpper={priceUsdUpper}
-            yearLower={yearLower}
-            yearUpper={yearUpper}
-            underXDaysOnMarketLower={underXDaysOnMarketLower}
-            underXDaysOnMarketUpper={underXDaysOnMarketUpper}
-          />
-        </div>
-      </div>
-
-      <div id="container"></div>
     </>
   )
 }

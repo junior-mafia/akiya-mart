@@ -1,98 +1,49 @@
 .sidebar-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 54px; /* Required or else spalsh-container can take over when flex-grow. */
+  height: 54px;
+  background-color: white;
+  font-size: 16px;
+  border-bottom: 1px solid rgb(209, 209, 213);
+}
+
+.sidebar-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  padding-left: 15px;
 }
 
 .sidebar-item {
-  background-color: #f0ebe9;
-  padding: 20px;
-  margin: 20px;
-  width: fit-content;
-  cursor: pointer;
-  pointer-events: auto;
+  color: #3d3d3d;
+  text-align: center;
+  padding: 15px;
 }
 
-/* 
-
-
-.sidebar-header-title {
-  margin-left: 10px;
+.sidebar-button {
+  font-size: 12px;
+  background-color: rgb(242, 250, 255);
+  border: 1px solid rgb(0, 106, 255);
+  padding: 0px 10px;
+  border-radius: 4px;
+  line-height: 40px;
+  margin-right: 10px;
+  color: rgb(42, 42, 51);
 }
 
-.sidebar-header-logo {
-  border-radius: 100%;
-  border: solid 1px #dcdbdc;
+.icon {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 1000;
 }
 
-.sidebar-expand-collapse-icon {
-  border-radius: 100%;
-  padding: 5px;
+.sidebar-button:hover {
+  background-color: rgb(241, 241, 244);
+  border-color: rgb(167, 166, 171);
+  color: rgb(42, 42, 51);
 }
 
-.sidebar-expand-collapse-icon:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-.sidebar-header-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  color: #dcdbdc;
-  font-family: "YuseiMagic";
-}
-
-.sidebar-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-@media (max-width: 767px) {
-  .sidebar-container {
-    width: calc(100% - 20px - 20px);
-    padding: 20px;
-  }
-
-  .sidebar-header-logo {
-    width: 40px;
-  }
-
-  .sidebar-header-title {
-    font-size: 1.5rem;
-  }
-
-  .sidebar-expand-collapse-icon {
-    font-size: 2rem;
-  }
-
-  .sidebar-filter {
-    margin-top: 10px;
-  }
-}
-
-@media (min-width: 768px) {
-  .sidebar-container {
-    margin: 1%;
-    padding: 20px;
-    width: 350px;
-  }
-
-  .sidebar-header-logo {
-    width: 50px;
-  }
-
-  .sidebar-header-title {
-    font-size: 1.75rem;
-  }
-
-  .sidebar-expand-collapse-icon {
-    font-size: 2rem;
-  }
-
-  .sidebar-filter {
-    margin-top: 5%;
-  }
-} 
-*/

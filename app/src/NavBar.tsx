@@ -35,14 +35,21 @@ const NavBar = () => {
   }, [])
 
   return (
-    <div className="navbar-container transparent-until-hover">
+    <div className="navbar-container">
       <div className="navbar-left">
         <Link to="/">
-          <div id="navbar-item-title" className="navbar-item navbar-clickable">
-            AkiyaMart
+          <div className="navbar-item navbar-clickable">
+            Map
           </div>
         </Link>
       </div>
+
+      <div className="navbar-center">
+        <div id="navbar-item-title" className="navbar-item">
+          AkiyaMart
+        </div>
+      </div>
+
       <div className="navbar-right">
         <div
           id="navbar-item-unlock"

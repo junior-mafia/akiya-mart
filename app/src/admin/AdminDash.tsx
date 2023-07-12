@@ -1,5 +1,6 @@
 import React from "react"
 import "../styles/splash-page.css"
+import "./styles/admin.css"
 import "../styles/navbar.css"
 import { Link } from "react-router-dom"
 import {
@@ -12,7 +13,7 @@ import {
   executeGenerateGeojsonTask,
   executeRunAllTask,
 } from "./adminDashboard"
-import "./styles/admin.css"
+
 
 const AdminDash = () => {
   const [message, setMessage] = React.useState("")
@@ -59,18 +60,6 @@ const AdminDash = () => {
 
   return (
     <div className="splash-page-container">
-      <div className="navbar-container">
-        <div className="navbar-left">
-          <Link to="/">
-            <div
-              id="navbar-item-title"
-              className="navbar-item navbar-clickable"
-            >
-              AkiyaMart
-            </div>
-          </Link>
-        </div>
-      </div>
 
       <div className="splash-container">
         {message}

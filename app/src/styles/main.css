@@ -16,6 +16,7 @@ body {
 
 #root {
   height: 100%;
+  /* pointer-events: none; */
 }
 
 p {
@@ -32,31 +33,7 @@ button {
   outline: inherit;
 }
 
-#container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  z-index: 0;
-}
-
 .mapboxgl-popup {
   max-width: 100% !important;
 }
 
-.main-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.transparent-until-hover:hover {
-  opacity: 1;
-}
-
-.transparent-until-hover {
-  opacity: 0.25;
-}

@@ -9,21 +9,26 @@ import CancelSubscription from "./stripe/CancelSubscription"
 import Buy from "./stripe/Buy"
 import Dash from "./dashboard/Dash"
 import Admin from "./admin/AdminDash"
+import NavBar from "./NavBar"
+import "./styles/app.css"
 
 const App = () => {
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/auth" element={<Authenticator />} />
-        <Route path="/success-payment" element={<Success />} />
-        <Route path="/cancel-payment" element={<CancelPayment />} />
-        <Route path="/buy" element={<Buy />} />
-        <Route path="/cancel-subscription" element={<CancelSubscription />} />
-        <Route path="/dashboard" element={<Dash />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
-    </HashRouter>
+      <HashRouter>
+        <div className="app-container">
+          <NavBar />
+          <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/auth" element={<Authenticator />} />
+              <Route path="/success-payment" element={<Success />} />
+              <Route path="/cancel-payment" element={<CancelPayment />} />
+              <Route path="/buy" element={<Buy />} />
+              <Route path="/cancel-subscription" element={<CancelSubscription />} />
+              <Route path="/dashboard" element={<Dash />} />
+              <Route path="/admin" element={<Admin />} />
+          </Routes>
+        </div>
+      </HashRouter>
   )
 }
 
