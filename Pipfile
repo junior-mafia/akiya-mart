@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+black = "*"
+psycopg2 = "*"
+flask-bcrypt = "*"
+gunicorn = "*"
+flask-login = "*"
+stripe = "*"
+celery = "*"
+redis = "*"
+scrapy = "*"
+undetected-chromedriver = {git = "https://github.com/ultrafunkamsterdam/undetected-chromedriver.git"}
+selenium = "*"
+beautifulsoup4 = "*"
+crochet = "*"
+googletranslate = {ref = "jms/api_params", git = "https://github.com/jstoxrocky/googletranslate.git"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

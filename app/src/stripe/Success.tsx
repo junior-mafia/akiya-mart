@@ -1,0 +1,34 @@
+import React from "react"
+import "../styles/splash-page.css"
+import "../styles/navbar.css"
+import { useNavigate, Link } from "react-router-dom"
+
+const Success = () => {
+  const navigate = useNavigate()
+
+  const message = `
+  Thank you for your subscription!
+  `
+
+  const handleViewMap = () => {
+    navigate("/")
+  }
+
+  return (
+    <div className="splash-page-container">
+
+      <div className="splash-container">
+        <div className="splash-item">
+          <h3 className="header">{message}</h3>
+          <div className="splash-input-field">
+            <button onClick={handleViewMap} className="splash-submit-button">
+              View map
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Success

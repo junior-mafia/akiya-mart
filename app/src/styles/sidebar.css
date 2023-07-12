@@ -1,0 +1,49 @@
+.sidebar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 54px; /* Required or else spalsh-container can take over when flex-grow. */
+  height: 54px;
+  background-color: white;
+  font-size: 16px;
+  border-bottom: 1px solid rgb(209, 209, 213);
+}
+
+.sidebar-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  padding-left: 15px;
+}
+
+.sidebar-item {
+  color: #3d3d3d;
+  text-align: center;
+  padding: 15px;
+}
+
+.sidebar-button {
+  font-size: 12px;
+  background-color: rgb(242, 250, 255);
+  border: 1px solid rgb(0, 106, 255);
+  padding: 0px 10px;
+  border-radius: 4px;
+  line-height: 40px;
+  margin-right: 10px;
+  color: rgb(42, 42, 51);
+}
+
+.icon {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.sidebar-button:hover {
+  background-color: rgb(241, 241, 244);
+  border-color: rgb(167, 166, 171);
+  color: rgb(42, 42, 51);
+}
+

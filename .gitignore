@@ -13,3 +13,7 @@ parcel-debug.log
 *.pyc
 __pycache__/
 .DS_Store
+info.md
+dump.rdb
+app/build/
+.metals/

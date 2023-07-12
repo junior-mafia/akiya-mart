@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "/Users/jstoxrocky/.local/share/virtualenvs/akiya_mart-TOetJ-RQ",
+  "python.terminal.activateEnvironment": true,
+  "files.watcherExclude": {
+    "**/target": true
+  }
+}

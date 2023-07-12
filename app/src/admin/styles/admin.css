@@ -1,0 +1,23 @@
+.dash-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  /* margin: 4px 2px; */
+  cursor: pointer;
+  min-width: 350px;
+}
+
+.danger-button {
+  background-color: #f75149;
+  color: white;
+}
+
+.safe-button {
+  background-color: #007bff;
+  color: white;
+}
